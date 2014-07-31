@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/tx 
+       http://www.springframework.org/schema/tx/spring-tx-3.1.xsd 
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+    
+    
+    <bean id="commonaudit" class="edu.aspen.capstone.estimation.relative.utils.CommonSaveOrUpdateDateListener" />
+    
+    <bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+          p:location="/WEB-INF/jdbc.properties" />
+              
+    <context:component-scan base-package="edu.aspen.capstone.estimation.relative"/> 
+    <bean id="dataSource"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+          p:driverClassName="${jdbc.driverClassName}"
+          p:url="${jdbc.url}"
+          p:username="${jdbc.username}"
+          p:password="${jdbc.password}" />
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="eventListeners">
+            <map>
+                <entry key="save-update" value-ref="commonaudit"/>
+                <entry key="save" value-ref="commonaudit"/>
+                <entry key="update" value-ref="commonaudit"/>
+            </map>
+        </property>
+         
+        <property name="annotatedClasses"> 
+            <list>
+                <value>edu.aspen.capstone.estimation.relative.entity.ApplicationUser</value>
+                <value>edu.aspen.capstone.estimation.relative.entity.Project</value>
+                <value>edu.aspen.capstone.estimation.relative.entity.ProjectMetric</value>
+                <value>edu.aspen.capstone.estimation.relative.entity.Feature</value>
+                <value>edu.aspen.capstone.estimation.relative.entity.Priority</value>
+                <value>edu.aspen.capstone.estimation.relative.entity.Businesscase</value>
+                <value>edu.aspen.capstone.estimation.relative.entity.AssumptionType</value>
+                <value>edu.aspen.capstone.estimation.relative.entity.Assumption</value>
+                <value>edu.aspen.capstone.estimation.relative.entity.DevelopmentGroup</value>
+                <value>edu.aspen.capstone.estimation.relative.entity.UserGroup</value>
+                <value>edu.aspen.capstone.estimation.relative.entity.ProjectGroups</value>
+                <value>edu.aspen.capstone.estimation.relative.entity.Sizing</value>
+                <value>edu.aspen.capstone.estimation.relative.entity.ProjectFeatureSizing</value>
+                <value>edu.aspen.capstone.estimation.relative.entity.ProjectContributors</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">${jdbc.hibernate.dialect}</prop>
+                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.connection.pool_size">${hibernate.connection.pool_size}</prop>
+                <prop key="hibernate.connection.autocommit">true</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <tx:annotation-driven />
+    <!-- Configure to plugin JSON as request and response in method handler -->
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <ref bean="jsonMessageConverter"/>
+            </list>
+        </property>
+    </bean>
+     
+    <!-- Configure bean to convert JSON to POJO and vice versa -->
+    <bean id="jsonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+    </bean> 
+</beans>
