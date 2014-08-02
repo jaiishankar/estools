@@ -3,7 +3,9 @@ Ext.define('estools.view.project.Edit', {
     alias: 'widget.projectedit',
     // Default proeprties
     layout: 'fit',
+    width: '680', height: '450',
     autoShow: false,
+    closable:false,
     config: {
         selectedProjectId: 0
     },
@@ -19,11 +21,13 @@ Ext.define('estools.view.project.Edit', {
         } else {
             this.groupsStore.sync();
         }
+
+
         // Create and add the form
         this.items = [
             {
                 xtype: 'tabpanel',
-                width: '400', height: '350',
+                
                 items: [
                     {
                         title: 'Main',
@@ -100,12 +104,11 @@ Ext.define('estools.view.project.Edit', {
                                         name: 'groupIds',
                                         id: 'itemselector-field',
                                         anchor: '100%',
-                                        fieldLabel: 'Select Groups',
+                                        fieldLabel: '',
                                         imagePath: '../../../extjs/ux/images/',
                                         store: this.groupsStore,
                                         displayField: 'name',
                                         valueField: 'id',
-                                        value: this.getProjectGroupValues(),
                                         allowBlank: false,
                                         msgTarget: 'side',
                                         fromTitle: 'Available',
@@ -117,13 +120,14 @@ Ext.define('estools.view.project.Edit', {
                 ]
             }
         ];
+        this.on('afterrender', this.getProjectGroupValues, this);
         // Add the save/cancel buttons
         this.callParent();
     },
     getProjectGroupValues: function() {
         //calls the server and gets the selected groups for the selected project
-        //
-        var url = './v1/projectgroups/' + globalvar.currentUserId;
+        var url = './v1/projectgroups/' + this.selectedProjectId;
+        console.log(url);
         Ext.Ajax.request({
             method: 'GET',
             url: url,
@@ -132,13 +136,15 @@ Ext.define('estools.view.project.Edit', {
             },
             scope: this,
             success: function(response, options) {
+                var item = this.down("#itemselector-field");
                 var responseData = Ext.decode(response.responseText);
                 if (responseData.success) {
-                    return responseData.results.groupIds;
+                    item.setValue(responseData.results.groupIds);
                 }
                 else {
-                    return [];
+                    item.setValue([]);
                 }
             }});
+
     }
 });

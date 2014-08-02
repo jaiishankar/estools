@@ -32,7 +32,8 @@
     background-image: url(../images/preview-hide.gif);
 }
 .icon-project {
-     background-image: url(../images/project-tab.gif) !important;
+     background-image: url(../images/project-tab.png) !important;
+      background-size: 16px 16px;
 }
 .summary {
      background-image: url(../images/details.gif) !important;

@@ -23,12 +23,31 @@ Ext.define('estools.controller.DevGroup', {
                 click: this.addNewGroup
             },
             'devgroupmasterpanel button[action=deletegroup]': {
-                click: this.deleteGroup
+                click: this.deleteGroupPrompt
             },
             'devgroupmasterpanel button[action=editgroup]': {
                 click: this.editGroup
             }
         });
+    },
+    deleteGroupPrompt: function() {
+
+        var grid = Ext.getCmp('devgroupgridid');
+        var devgrpsGridSM = grid.getSelectionModel();
+        var view = Ext.widget('devgroupedit');
+        var form = view.down('form');
+        var saveBtn = view.down('#saveButton');
+        saveBtn.text = "Update";
+        if (devgrpsGridSM.hasSelection()) {
+            Ext.MessageBox.confirm('Confirm', 'Are you sure you want to delete ?', this.deleteGroup, this);
+        } else {
+            Ext.Msg.show({
+                title: "Error !!!",
+                msg: "No Rows selected, Please select a ROW to delete.",
+                icon: Ext.Msg.ERROR,
+                buttons: Ext.Msg.OK
+            });
+        }
     },
     editGroup: function() {
         var grid = Ext.getCmp('devgroupgridid');
@@ -47,13 +66,6 @@ Ext.define('estools.controller.DevGroup', {
             form.loadRecord(editRecord);
             form.store = grid.getStore();
             view.show();
-        } else {
-            Ext.Msg.show({
-                title: "Error !!!",
-                msg: "No Rows selected, Please select a ROW to delete.",
-                icon: Ext.Msg.ERROR,
-                buttons: Ext.Msg.OK
-            });
         }
     },
     addNewGroup: function() {
@@ -62,52 +74,53 @@ Ext.define('estools.controller.DevGroup', {
         saveBtn.text = "Add";
         view.show();
     },
-    deleteGroup: function() {
-        var grid = Ext.getCmp('devgroupgridid');
-        var devgrpsGridSM = grid.getSelectionModel();
-        if (devgrpsGridSM.hasSelection()) {
-            var selectedRow = devgrpsGridSM.getSelection();
-            var record = {};
-            if (selectedRow.length === 1) {
-                record = (selectedRow[0].data);
+    deleteGroup: function(btn) {
+        if (btn === 'yes') {
+            var grid = Ext.getCmp('devgroupgridid');
+            var devgrpsGridSM = grid.getSelectionModel();
+            if (devgrpsGridSM.hasSelection()) {
+                var selectedRow = devgrpsGridSM.getSelection();
+                var record = {};
+                if (selectedRow.length === 1) {
+                    record = (selectedRow[0].data);
+                }
+                console.log(record);
+                Ext.Ajax.request({
+                    method: 'POST',
+                    url: './v1/devgroups/delete/' + record.id,
+                    headers: {
+                        'Accept': 'application/json'
+                    },
+                    scope: this,
+                    success: function(response, options) {
+                        var responseData = Ext.decode(response.responseText);
+                        if (responseData.success) {
+                            var grid = Ext.getCmp('devgroupgridid');
+                            grid.getStore().reload({
+                                callback: function() {
+                                    grid.getView().refresh();
+                                }
+                            });
+                            //win.close();
+                        }
+                        else {
+                            var errorObject = responseData.results;
+                            Ext.Msg.show({
+                                title: errorObject.title,
+                                msg: errorObject.msg,
+                                icon: Ext.Msg.ERROR,
+                                buttons: Ext.Msg.OK
+                            });
+                        }
+                    }});
+            } else {
+                Ext.Msg.show({
+                    title: "Error !!!",
+                    msg: "No Rows selected, Please select a ROW to delete.",
+                    icon: Ext.Msg.ERROR,
+                    buttons: Ext.Msg.OK
+                });
             }
-            console.log(record);
-            Ext.Ajax.request({
-                method: 'POST',
-                url: './v1/devgroups/delete/' + record.id,
-                headers: {
-                    'Accept': 'application/json'
-                },
-                scope: this,
-                success: function(response, options) {
-                    var responseData = Ext.decode(response.responseText);
-                    if (responseData.success) {
-                        var grid = Ext.getCmp('devgroupgridid');
-                        grid.getStore().reload({
-                            callback: function() {
-                                grid.getView().refresh();
-                            }
-                        });
-                        win.close();
-                    }
-                    else {
-                        var errorObject = responseData.results;
-                        Ext.Msg.show({
-                            title: errorObject.title,
-                            msg: errorObject.msg,
-                            icon: Ext.Msg.ERROR,
-                            buttons: Ext.Msg.OK
-                        });
-                    }
-                }});
-
-        } else {
-            Ext.Msg.show({
-                title: "Error !!!",
-                msg: "No Rows selected, Please select a ROW to delete.",
-                icon: Ext.Msg.ERROR,
-                buttons: Ext.Msg.OK
-            });
         }
     },
     onItemDblClick: function(grid, record) {
@@ -156,5 +169,5 @@ Ext.define('estools.controller.DevGroup', {
                 }
             }});
     }
-    //}
+//}
 });

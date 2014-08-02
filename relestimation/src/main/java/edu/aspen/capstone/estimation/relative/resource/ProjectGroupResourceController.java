@@ -20,9 +20,9 @@ public class ProjectGroupResourceController {
     ProjectGroupService service;
 
     @RequestMapping(method = RequestMethod.GET,
-            value = "/projectgroups/{id}", headers = "Accept=application/json")
+            value = "/projectgroups/project/{id}", headers = "Accept=application/json")
     public @ResponseBody
-    JSONResponseWrapper listProjectByUserId(@PathVariable Integer id) {
+    JSONResponseWrapper listProjectByProjectId(@PathVariable Integer id) {
         return service.getGroupsForProject(id);
     }
 }

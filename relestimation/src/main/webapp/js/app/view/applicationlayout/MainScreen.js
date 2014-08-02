@@ -11,7 +11,8 @@ Ext.define('estools.view.applicationlayout.MainScreen', {
     },
     items: [
         {
-            xtype:'projectmasterpanel'
+            xtype:'projectmasterpanel',
+            iconCls:'icon-project'
         },{
             xtype: 'usersmasterpanel',
             iconCls:'icon-user'
