@@ -1,0 +1,1 @@
+INSERT INTO `tms`.`applicationuser` (`CREATED_TS`, `email`, `fname`, `ACTIVE`, `lname`, `mname`, `passcode`, `phone`, `uname`, `UPDATED_TS`) VALUES (now(), 'admin@estool.com', 'Admin', 1, 'Admin', ' ', 'admin', '6000000911', 'root', now())

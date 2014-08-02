@@ -58,9 +58,10 @@
             <props>
                 <prop key="hibernate.dialect">${jdbc.hibernate.dialect}</prop>
                 <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
-                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.hbm2ddl.auto">create</prop>
                 <prop key="hibernate.connection.pool_size">${hibernate.connection.pool_size}</prop>
                 <prop key="hibernate.connection.autocommit">true</prop>
+                <prop key="hibernate.hbm2ddl.import_files">import.sql</prop>
             </props>
         </property>
     </bean>
