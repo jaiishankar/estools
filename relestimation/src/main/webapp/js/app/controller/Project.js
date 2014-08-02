@@ -17,7 +17,7 @@ Ext.define('estools.controller.Project', {
                 itemdblclick: this.onItemDblClick
             },
             'projectedit button[action=save]': {
-                click: this.updateProcess
+                click: this.updateProject
             },
             'projectedit button[action=saveProjectGroupsButton]': {
                 click: this.updateDevGroupWithProject
@@ -124,13 +124,15 @@ Ext.define('estools.controller.Project', {
         form.store = grid.store;
         view.show();
     },
-    updateProcess: function(button) {
+    updateProject: function(button) {
         var win = button.up('window'),
                 form = win.down('form'),
                 values = form.getValues();
         if (button.text !== 'Update') {
             delete values.id;
-        }
+            values.ownerId = globalvar.currentUserId;
+        } 
+        
         Ext.Ajax.request({
             method: 'POST',
             url: './v1/projects/',

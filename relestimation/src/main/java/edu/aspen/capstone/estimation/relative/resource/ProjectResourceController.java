@@ -48,11 +48,11 @@ public class ProjectResourceController {
     }
 
     @RequestMapping(method = RequestMethod.GET,
-            value = "/projects", headers = "Accept=application/json")
+            value = "/projects/both/{id}", headers = "Accept=application/json")
     public @ResponseBody
-    JSONResponseWrapper listAll() {
-        System.out.println("Listing all the projects");
-        return service.getAllProjects();
+    JSONResponseWrapper listAllForThisUser(@PathVariable Integer id) {
+        System.out.println("Listing all the projects for this user");
+        return service.getAllProjects(id);
     }
 
     @RequestMapping(method = RequestMethod.POST,

@@ -5,7 +5,7 @@ Ext.define('estools.view.project.Edit', {
     layout: 'fit',
     width: '680', height: '450',
     autoShow: false,
-    closable:false,
+    closable: false,
     config: {
         selectedProjectId: 0
     },
@@ -27,7 +27,6 @@ Ext.define('estools.view.project.Edit', {
         this.items = [
             {
                 xtype: 'tabpanel',
-                
                 items: [
                     {
                         title: 'Main',
@@ -112,7 +111,9 @@ Ext.define('estools.view.project.Edit', {
                                         allowBlank: false,
                                         msgTarget: 'side',
                                         fromTitle: 'Available',
+                                        value: [],
                                         toTitle: 'Selected'
+                                        
                                     }
                                 ]
                             }]
@@ -125,26 +126,28 @@ Ext.define('estools.view.project.Edit', {
         this.callParent();
     },
     getProjectGroupValues: function() {
-        //calls the server and gets the selected groups for the selected project
-        var url = './v1/projectgroups/' + this.selectedProjectId;
-        console.log(url);
-        Ext.Ajax.request({
-            method: 'GET',
-            url: url,
-            headers: {
-                'Accept': 'application/json'
-            },
-            scope: this,
-            success: function(response, options) {
-                var item = this.down("#itemselector-field");
-                var responseData = Ext.decode(response.responseText);
-                if (responseData.success) {
-                    item.setValue(responseData.results.groupIds);
-                }
-                else {
-                    item.setValue([]);
-                }
-            }});
+        if (this.selectedProjectId > 0) {
+            //calls the server and gets the selected groups for the selected project
+            var url = './v1/projectgroups/' + this.selectedProjectId;
+            console.log(url);
+            Ext.Ajax.request({
+                method: 'GET',
+                url: url,
+                headers: {
+                    'Accept': 'application/json'
+                },
+                scope: this,
+                success: function(response, options) {
+                    var item = this.down("#itemselector-field");
+                    var responseData = Ext.decode(response.responseText);
+                    if (responseData.success) {
+                        item.setValue(responseData.results.groupIds);
+                    }
+                    else {
+                        item.setValue([]);
+                    }
+                }});
+        }
 
     }
 });

@@ -3,6 +3,7 @@ package edu.aspen.capstone.estimation.relative.service;
 import edu.aspen.capstone.estimation.relative.dao.ProjectDAO;
 import edu.aspen.capstone.estimation.relative.domain.ProjectDO;
 import edu.aspen.capstone.estimation.relative.entity.Project;
+import edu.aspen.capstone.estimation.relative.utils.DOUtils;
 import edu.aspen.capstone.estimation.relative.utils.JSONExceptionWrapper;
 import edu.aspen.capstone.estimation.relative.utils.JSONResponseWrapper;
 import java.util.ArrayList;
@@ -23,16 +24,24 @@ public class ProjectServiceImpl implements ProjectService {
     private ProjectDAO projectDAO;
 
     @Override
-    public JSONResponseWrapper getAllProjects() {
+    public JSONResponseWrapper getAllProjects(Integer id) {
         try {
             ModelMapper modelMapper = new ModelMapper();
-            List<Project> projects = projectDAO.listAll();
-            ArrayList<ProjectDO> appProjects = new ArrayList<ProjectDO>();
-            for (Project project : projects) {
-                ProjectDO tempPrj = modelMapper.map(project, ProjectDO.class);
-                appProjects.add(tempPrj);
+
+            List<Project> userProjects = projectDAO.listAllByUser(id);
+            List<Project> ownerProjects = projectDAO.listAllByOwner(id);
+            //merge both projects avoid duplicates
+            List<Project> projects = DOUtils.mergeAndRemoveDuplicatesForProjects(userProjects, ownerProjects);
+            if (CollectionUtils.isNotEmpty(projects)) {
+                ArrayList<ProjectDO> appProjects = new ArrayList<ProjectDO>();
+                for (Project project : projects) {
+                    ProjectDO tempPrj = modelMapper.map(project, ProjectDO.class);
+                    appProjects.add(tempPrj);
+                }
+                return JSONResponseWrapper.getResponseInstance(appProjects);
+            } else {
+                return JSONResponseWrapper.getResponseInstance(new ArrayList<ProjectDO>());
             }
-            return JSONResponseWrapper.getResponseInstance(appProjects);
         } catch (Exception e) {
             return JSONResponseWrapper.getErrorResponseInstance(
                     new JSONExceptionWrapper("Error", e));
@@ -45,13 +54,13 @@ public class ProjectServiceImpl implements ProjectService {
         try {
             ModelMapper modelMapper = new ModelMapper();
             List<Project> projects = projectDAO.listAllByUser(id);
-            if(CollectionUtils.isNotEmpty(projects)){
-            ArrayList<ProjectDO> appProjects = new ArrayList<ProjectDO>();
-            for (Project project : projects) {
-                ProjectDO tempPrj = modelMapper.map(project, ProjectDO.class);
-                appProjects.add(tempPrj);
-            }
-            return JSONResponseWrapper.getResponseInstance(appProjects);
+            if (CollectionUtils.isNotEmpty(projects)) {
+                ArrayList<ProjectDO> appProjects = new ArrayList<ProjectDO>();
+                for (Project project : projects) {
+                    ProjectDO tempPrj = modelMapper.map(project, ProjectDO.class);
+                    appProjects.add(tempPrj);
+                }
+                return JSONResponseWrapper.getResponseInstance(appProjects);
             } else {
                 return JSONResponseWrapper.getResponseInstance(new ArrayList<ProjectDO>());
             }

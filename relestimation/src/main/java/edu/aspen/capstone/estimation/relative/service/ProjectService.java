@@ -21,7 +21,7 @@ public interface ProjectService {
     
     //R
     //gets all the projects in the system
-    JSONResponseWrapper getAllProjects();
+    JSONResponseWrapper getAllProjects(Integer userId);
     
     //update Project details C U
     JSONResponseWrapper saveOrUpdateProject(ProjectDO prj);

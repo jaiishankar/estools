@@ -25,7 +25,7 @@ Ext.define('estools.view.project.Grid', {
         this.callParent();
     },
     loadStore: function() {
-        this.getStore().getProxy().url = ('./v1/projects/user/'+ globalvar.currentUserId);
+        this.getStore().getProxy().url = ('./v1/projects/both/'+ globalvar.currentUserId);
         this.getStore().load();
     }
 });
