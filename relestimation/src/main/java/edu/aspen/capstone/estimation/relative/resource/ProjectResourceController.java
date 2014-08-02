@@ -33,13 +33,13 @@ public class ProjectResourceController {
         return service.getProjectsByUserId(id);
     }
 
-        @RequestMapping(method = RequestMethod.GET,
+    @RequestMapping(method = RequestMethod.GET,
             value = "/projects/owner/{id}", headers = "Accept=application/json")
     public @ResponseBody
     JSONResponseWrapper listProjectByOwnerId(@PathVariable Integer id) {
         return service.getProjectsByOwner(id);
     }
-    
+
     @RequestMapping(method = RequestMethod.GET,
             value = "/projects/{id}", headers = "Accept=application/json")
     public @ResponseBody

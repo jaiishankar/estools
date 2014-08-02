@@ -120,8 +120,25 @@ Ext.define('estools.view.project.Edit', {
         // Add the save/cancel buttons
         this.callParent();
     },
-    getProjectGroupValues : function(){
+    getProjectGroupValues: function() {
         //calls the server and gets the selected groups for the selected project
-        return [7,6];
+        //
+        var url = './v1/projectgroups/' + globalvar.currentUserId;
+        Ext.Ajax.request({
+            method: 'GET',
+            url: url,
+            headers: {
+                'Accept': 'application/json'
+            },
+            scope: this,
+            success: function(response, options) {
+                var responseData = Ext.decode(response.responseText);
+                if (responseData.success) {
+                    return responseData.results.groupIds;
+                }
+                else {
+                    return [];
+                }
+            }});
     }
 });

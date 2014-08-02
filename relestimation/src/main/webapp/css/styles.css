@@ -1,11 +1,9 @@
 .x-form-multiselect-body .x-boundlist .x-mask {
     background: none;
 }
-
 .x-form-itemselector-body .x-form-item {
     margin: 0;
 }
-
 .x-form-itemselector-top {
     background-image: url(../images/top2.gif);
 }
@@ -24,8 +22,6 @@
 .x-form-itemselector-bottom {
     background-image: url(../images/bottom2.gif);
 }
-
-
 .x-menu-item img.preview-right, .preview-right {
     background-image: url(../images/preview-right.gif);
 }
@@ -35,7 +31,9 @@
 .x-menu-item img.preview-hide, .preview-hide {
     background-image: url(../images/preview-hide.gif);
 }
-
+.icon-project {
+     background-image: url(../images/project-tab.gif) !important;
+}
 .summary {
      background-image: url(../images/details.gif) !important;
 }
