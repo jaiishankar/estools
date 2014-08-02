@@ -9,9 +9,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -19,7 +19,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -41,8 +40,7 @@ public class Sizing implements AuditableBaseDomainObject, Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
-    @NotNull
+    @GeneratedValue
     @Column(name = "id")
     private Integer id;
     @Size(max = 45)
@@ -51,7 +49,7 @@ public class Sizing implements AuditableBaseDomainObject, Serializable {
     @Column(name = "sizevalue")
     private Integer sizeValue;
     @Column(name = "uom")
-    private Integer uom;
+    private String uom;
     @OneToMany(mappedBy = "sizingId")
     private Collection<ProjectFeatureSizing> projectFeatureSizingCollection;
 
@@ -96,11 +94,11 @@ public class Sizing implements AuditableBaseDomainObject, Serializable {
         this.sizeValue = sizeValue;
     }
 
-    public Integer getUom() {
+    public String getUom() {
         return uom;
     }
 
-    public void setUom(Integer uom) {
+    public void setUom(String uom) {
         this.uom = uom;
     }
 
