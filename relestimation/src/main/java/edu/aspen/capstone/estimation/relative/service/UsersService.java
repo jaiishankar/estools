@@ -33,7 +33,4 @@ public interface UsersService {
 
     //internal functions for developers
     JSONResponseWrapper listAll(); //lists all the current user data from DB
-
-    //first time load data admin function
-    JSONResponseWrapper addAllData();
 }

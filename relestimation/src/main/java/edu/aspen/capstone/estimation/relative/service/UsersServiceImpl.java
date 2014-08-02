@@ -134,17 +134,16 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public JSONResponseWrapper addAllData() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
     public JSONResponseWrapper getUserById(Integer id) {
         try {
             ModelMapper modelMapper = new ModelMapper();
             ApplicationUser dbuser = usersDAO.getByID(id);
-            UserDO response = modelMapper.map(dbuser, UserDO.class);
-            return JSONResponseWrapper.getResponseInstance(response);
+            if (dbuser != null) {
+                UserDO response = modelMapper.map(dbuser, UserDO.class);
+                return JSONResponseWrapper.getResponseInstance(response);
+            } else {
+                return JSONResponseWrapper.getDefaultFailResponseInstance();
+            }
         } catch (Exception e) {
             return JSONResponseWrapper.getErrorResponseInstance(
                     new JSONExceptionWrapper("Error", e));
