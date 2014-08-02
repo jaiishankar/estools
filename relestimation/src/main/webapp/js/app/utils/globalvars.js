@@ -13,6 +13,9 @@ globalvar = {
 
 Ext.define('estools.utils', {
     statics: {
+        clearCache: function(){
+            localStorage.clear();
+        },
         updateCache: function (data) {
             localStorage.setItem("globalvars", Ext.encode(data)); 
         },
