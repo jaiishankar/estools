@@ -11,5 +11,7 @@ public interface ProjectGroupDAO {
 
     List<ProjectGroups> getAllByProject(Integer projectId);
 
-    Boolean updateGroupsForProject(Integer projectId, List<ProjectGroups> groups);
+    List<ProjectGroups> updateGroupsForProject(List<ProjectGroups> groups);
+    
+    Boolean deleteGroupsForProject(List<ProjectGroups> groups);
 }

@@ -29,7 +29,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "UserGroup.findAll", query = "SELECT u FROM UserGroup u"),
-    @NamedQuery(name = "UserGroup.findById", query = "SELECT u FROM UserGroup u WHERE u.id = :id")})
+    @NamedQuery(name = "UserGroup.findById", query = "SELECT u FROM UserGroup u WHERE u.id = :id"),
+    @NamedQuery(name = "UserGroup.findByUserId", query = "SELECT u FROM UserGroup u WHERE u.userId = :id"),
+    @NamedQuery(name = "UserGroup.deletByUserId", query = "DELETE FROM UserGroup u WHERE u.userId = :id")
+})
 public class UserGroup implements AuditableBaseDomainObject, Serializable {
 
     private static final long serialVersionUID = 1L;

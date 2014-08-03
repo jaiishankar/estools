@@ -1,5 +1,6 @@
 package edu.aspen.capstone.estimation.relative.resource;
 
+import edu.aspen.capstone.estimation.relative.domain.ProjectGroupDO;
 import edu.aspen.capstone.estimation.relative.service.ProjectGroupService;
 import edu.aspen.capstone.estimation.relative.utils.JSONResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,4 +26,12 @@ public class ProjectGroupResourceController {
     JSONResponseWrapper listProjectByProjectId(@PathVariable Integer id) {
         return service.getGroupsForProject(id);
     }
+
+    @RequestMapping(method = RequestMethod.POST,
+            value = "/projectgroups/project/groups/", headers = "Accept=application/json")
+    public @ResponseBody
+    JSONResponseWrapper lupdateGroupsForProjects(@PathVariable ProjectGroupDO project) {
+        return service.updateAssociations(project);
+    }
+
 }

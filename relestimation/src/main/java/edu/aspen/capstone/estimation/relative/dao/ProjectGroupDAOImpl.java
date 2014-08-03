@@ -1,8 +1,9 @@
 package edu.aspen.capstone.estimation.relative.dao;
 
-import edu.aspen.capstone.estimation.relative.entity.Project;
 import edu.aspen.capstone.estimation.relative.entity.ProjectGroups;
+import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.collections4.CollectionUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -39,8 +40,42 @@ public class ProjectGroupDAOImpl implements ProjectGroupDAO {
     }
 
     @Override
-    public Boolean updateGroupsForProject(Integer projectId, List<ProjectGroups> groups) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<ProjectGroups> updateGroupsForProject(List<ProjectGroups> groups) {
+        //iterate towards each group and insert and update the list
+        List<ProjectGroups> updated = new ArrayList<ProjectGroups>();
+        try {
+            if (CollectionUtils.isNotEmpty(groups)) {
+                for (ProjectGroups grp : groups) {
+                    sessionFactory.getCurrentSession().saveOrUpdate(grp);
+                    sessionFactory.getCurrentSession().flush();
+                    sessionFactory.getCurrentSession().refresh(grp);
+                    updated.add(grp);
+                }
+            }
+            return updated;
+        } catch (HibernateException hbe) {
+            hbe.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public Boolean deleteGroupsForProject(List<ProjectGroups> groups) {
+        try {
+            if (CollectionUtils.isNotEmpty(groups)) {
+                for (ProjectGroups grp : groups) {
+                    sessionFactory.getCurrentSession().delete(grp);
+                    sessionFactory.getCurrentSession().flush();
+                    sessionFactory.getCurrentSession().refresh(grp);
+                }
+                return true;
+            } else {
+                return false;
+            }
+        } catch (HibernateException hbe) {
+            hbe.printStackTrace();
+            return false;
+        }
     }
 
 }

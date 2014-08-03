@@ -1,5 +1,6 @@
 package edu.aspen.capstone.estimation.relative.service;
 
+import edu.aspen.capstone.estimation.relative.domain.ProjectGroupDO;
 import edu.aspen.capstone.estimation.relative.utils.JSONResponseWrapper;
 
 /**
@@ -8,6 +9,5 @@ import edu.aspen.capstone.estimation.relative.utils.JSONResponseWrapper;
  */
 public interface ProjectGroupService {
     JSONResponseWrapper getGroupsForProject(Integer prjId);
-    JSONResponseWrapper addAssociations(Integer projectId, Integer[] groupIds);
-    JSONResponseWrapper removeAssociations(Integer projectId, Integer[] groupIds);
+    JSONResponseWrapper updateAssociations(ProjectGroupDO project);
 }
