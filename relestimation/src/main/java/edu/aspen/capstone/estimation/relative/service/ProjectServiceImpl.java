@@ -106,9 +106,8 @@ public class ProjectServiceImpl implements ProjectService {
         try {
             ModelMapper modelMapper = new ModelMapper();
             Project prj = projectDAO.getProjectById(id);
-            ProjectDO updatedPrj = modelMapper.map(prj, ProjectDO.class);
-
-            if (updatedPrj != null) {
+            if (prj != null) {
+                ProjectDO updatedPrj = modelMapper.map(prj, ProjectDO.class);
                 return JSONResponseWrapper.getResponseInstance(updatedPrj);
             } else {
                 return JSONResponseWrapper.getDefaultFailResponseInstance();
