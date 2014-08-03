@@ -138,7 +138,7 @@ Ext.define('estools.controller.Project', {
     },
     onItemDblClick: function(grid, record) {
         var view = Ext.widget('projectedit');
-        view.selectedProjectId = record.id;
+        view.selectedProjectId = record.data.id;
         var form = view.down('form');
         var saveBtn = view.down('#saveButton');
         saveBtn.text = "Update";
@@ -189,6 +189,32 @@ Ext.define('estools.controller.Project', {
         var win = button.up('window'),
                 form = win.down('#projectGroupsForm'),
                 values = form.getValues();
+        values.projectId = win.selectedProjectId;
+        values.groupIds = values.groupIds.split(",").map(Number);
         console.log(values);
+
+        Ext.Ajax.request({
+            method: 'POST',
+            url: './v1/projectgroups/project/groups/',
+            headers: {
+                'Accept': 'application/json'
+            },
+            jsonData: values,
+            scope: this,
+            success: function(response, options) {
+                var responseData = Ext.decode(response.responseText);
+                if (responseData.success) {
+                    win.close();
+                }
+                else {
+                    var errorObject = responseData.results;
+                    Ext.Msg.show({
+                        title: errorObject.title,
+                        msg: errorObject.msg,
+                        icon: Ext.Msg.ERROR,
+                        buttons: Ext.Msg.OK
+                    });
+                }
+            }});
     }
 });

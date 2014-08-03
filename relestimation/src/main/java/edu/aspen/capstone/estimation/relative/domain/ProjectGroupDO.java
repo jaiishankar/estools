@@ -54,4 +54,9 @@ public class ProjectGroupDO {
         this.updated = updated;
     }
     private Date updated;
+    
+    @Override
+    public String toString(){
+        return "[" + this.projectId + ","+ this.groupIds.toString()+"]";
+    }
 }

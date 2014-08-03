@@ -72,6 +72,7 @@ Ext.define('estools.view.project.Edit', {
                             }]
                     }, {
                         title: 'Groups',
+                        itemId: 'groupsTab',
                         items: [{
                                 xtype: 'form',
                                 itemId: 'projectGroupsForm',
@@ -101,7 +102,7 @@ Ext.define('estools.view.project.Edit', {
                                     {
                                         xtype: 'itemselector',
                                         name: 'groupIds',
-                                        id: 'project-itemselector-field',
+                                        itemId: 'project-itemselector-field',
                                         anchor: '100%',
                                         fieldLabel: '',
                                         imagePath: '../../../extjs/ux/images/',
@@ -139,7 +140,6 @@ Ext.define('estools.view.project.Edit', {
                 scope: this,
                 success: function(response, options) {
                     var item = this.down("#project-itemselector-field");
-                    console.log(item);
                     var responseData = Ext.decode(response.responseText);
                     if (responseData.success) {
                         item.setValue(responseData.results.groupIds);
@@ -148,7 +148,9 @@ Ext.define('estools.view.project.Edit', {
                         item.setValue([]);
                     }
                 }});
+        } else {
+            //disable the groups tab abd other tabs.
+            this.down('#groupsTab').setDisabled(true);
         }
-
     }
 });

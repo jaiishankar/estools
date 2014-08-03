@@ -46,7 +46,9 @@ public class ProjectGroupDAOImpl implements ProjectGroupDAO {
         try {
             if (CollectionUtils.isNotEmpty(groups)) {
                 for (ProjectGroups grp : groups) {
+                    System.out.println("Updating the project id " + grp.getProjectId() + " for Group id: " + grp.getGroupId());
                     sessionFactory.getCurrentSession().saveOrUpdate(grp);
+                    System.out.println("updated");
                     sessionFactory.getCurrentSession().flush();
                     sessionFactory.getCurrentSession().refresh(grp);
                     updated.add(grp);

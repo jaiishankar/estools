@@ -6,6 +6,7 @@ import edu.aspen.capstone.estimation.relative.utils.JSONResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,7 +31,8 @@ public class ProjectGroupResourceController {
     @RequestMapping(method = RequestMethod.POST,
             value = "/projectgroups/project/groups/", headers = "Accept=application/json")
     public @ResponseBody
-    JSONResponseWrapper lupdateGroupsForProjects(@PathVariable ProjectGroupDO project) {
+    JSONResponseWrapper updateGroupsForProjects(@RequestBody ProjectGroupDO project) {
+        System.out.println(project.toString());
         return service.updateAssociations(project);
     }
 

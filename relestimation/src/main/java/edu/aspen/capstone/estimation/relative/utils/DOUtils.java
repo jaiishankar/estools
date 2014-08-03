@@ -49,7 +49,7 @@ public class DOUtils {
                 tempgrp.setGroupId(grpId);
             }
         }
-        return null;
+        return groups;
     }
     
     /**
