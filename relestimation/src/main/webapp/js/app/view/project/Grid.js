@@ -16,9 +16,7 @@ Ext.define('estools.view.project.Grid', {
 
         // Note the use of a storeId, this will register thisStore
         // with the StoreManager and allow us to retrieve it very easily.
-        this.store = new estools.store.Project({
-            storeId: 'gridProjectProcessStore'
-        });
+        this.store = Ext.StoreMgr.get("Project");
 
         this.on('render', this.loadStore, this);
         // finally call the superclasses implementation

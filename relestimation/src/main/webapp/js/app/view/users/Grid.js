@@ -18,9 +18,7 @@ Ext.define('estools.view.users.Grid', {
 
         // Note the use of a storeId, this will register thisStore
         // with the StoreManager and allow us to retrieve it very easily.
-        this.store = new estools.store.User({
-            storeId: 'gridUserProcessStore'
-        });
+        this.store = Ext.StoreMgr.get("User");
         this.on('render', this.loadStore, this);
         // finally call the superclasses implementation
         this.callParent();
