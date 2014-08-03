@@ -51,7 +51,6 @@ public class ProjectResourceController {
             value = "/projects/both/{id}", headers = "Accept=application/json")
     public @ResponseBody
     JSONResponseWrapper listAllForThisUser(@PathVariable Integer id) {
-        System.out.println("Listing all the projects for this user");
         return service.getAllProjects(id);
     }
 
@@ -60,6 +59,13 @@ public class ProjectResourceController {
     public @ResponseBody
     JSONResponseWrapper saveProject(@RequestBody ProjectDO prj) {
         return service.saveOrUpdateProject(prj);
+    }
+    
+    @RequestMapping(method = RequestMethod.POST,
+            value = "/projects/delete/{id}", headers = "Accept=application/json")
+    public @ResponseBody
+    JSONResponseWrapper deleteProject(@PathVariable Integer id) {
+        return service.deleteProject(id);
     }
 
 }

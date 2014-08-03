@@ -11,7 +11,7 @@ Ext.define('estools.view.project.Grid', {
             {text: "ID", width: 40, dataIndex: 'id', sortable: true, hidden:true},
             {text: "Project Name", width: 300, dataIndex: 'title', sortable: true},
             {text: "Project Description", width: 500, dataIndex: 'description', sortable: true},
-            {text: "Owner ID", width: 40, dataIndex: 'ownerid', sortable: true, hidden:true}
+            {text: "Owner ID", width: 40, dataIndex: 'ownerId', sortable: true, hidden:true}
         ];
 
         // Note the use of a storeId, this will register thisStore

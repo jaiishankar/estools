@@ -23,17 +23,32 @@ Ext.define('estools.controller.Project', {
                 click: this.updateDevGroupWithProject
             },
             'projectmasterpanel button[action=newproject]': {
-                click: this.addNewGroup
+                click: this.addNewProject
             },
             'projectmasterpanel button[action=deleteproject]': {
-                click: this.deleteGroup
+                click: this.deleteProjectWithPrompt
             },
             'projectmasterpanel button[action=editproject]': {
-                click: this.editGroup
+                click: this.editProject
             }
         });
     },
-    editGroup: function() {
+    deleteProjectWithPrompt: function() {
+
+        var grid = Ext.getCmp('projectgridid');
+        var devgrpsGridSM = grid.getSelectionModel();
+        if (devgrpsGridSM.hasSelection()) {
+            Ext.MessageBox.confirm('Confirm', 'Are you sure you want to delete ?', this.deleteProject, this);
+        } else {
+            Ext.Msg.show({
+                title: "Error !!!",
+                msg: "No Rows selected, Please select a ROW to delete.",
+                icon: Ext.Msg.ERROR,
+                buttons: Ext.Msg.OK
+            });
+        }
+    },
+    editProject: function() {
         var grid = Ext.getCmp('projectgridid');
         var projectsGridSM = grid.getSelectionModel();
         var view = Ext.widget('projectedit');
@@ -60,13 +75,13 @@ Ext.define('estools.controller.Project', {
             });
         }
     },
-    addNewGroup: function() {
+    addNewProject: function() {
         var view = Ext.widget('projectedit');
         var saveBtn = view.down('#saveButton');
         saveBtn.text = "Add";
         view.show();
     },
-    deleteGroup: function() {
+    deleteProject: function() {
         var grid = Ext.getCmp('projectgridid');
         var devgrpsGridSM = grid.getSelectionModel();
         if (devgrpsGridSM.hasSelection()) {
@@ -75,35 +90,42 @@ Ext.define('estools.controller.Project', {
             if (selectedRow.length === 1) {
                 record = (selectedRow[0].data);
             }
-            console.log(record);
-            Ext.Ajax.request({
-                method: 'POST',
-                url: './v1/projects/delete/' + record.id,
-                headers: {
-                    'Accept': 'application/json'
-                },
-                scope: this,
-                success: function(response, options) {
-                    var responseData = Ext.decode(response.responseText);
-                    if (responseData.success) {
-                        var grid = Ext.getCmp('projectgridid');
-                        grid.getStore().reload({
-                            callback: function() {
-                                grid.getView().refresh();
-                            }
-                        });
-                        win.close();
-                    }
-                    else {
-                        var errorObject = responseData.results;
-                        Ext.Msg.show({
-                            title: errorObject.title,
-                            msg: errorObject.msg,
-                            icon: Ext.Msg.ERROR,
-                            buttons: Ext.Msg.OK
-                        });
-                    }
-                }});
+            if (record.id === globalvar.currentUserId) {
+                Ext.Ajax.request({
+                    method: 'POST',
+                    url: './v1/projects/delete/' + record.id,
+                    headers: {
+                        'Accept': 'application/json'
+                    },
+                    scope: this,
+                    success: function(response, options) {
+                        var responseData = Ext.decode(response.responseText);
+                        if (responseData.success) {
+                            var grid = Ext.getCmp('projectgridid');
+                            grid.getStore().reload({
+                                callback: function() {
+                                    grid.getView().refresh();
+                                }
+                            });
+                        }
+                        else {
+                            var errorObject = responseData.results;
+                            Ext.Msg.show({
+                                title: errorObject.title,
+                                msg: errorObject.msg,
+                                icon: Ext.Msg.ERROR,
+                                buttons: Ext.Msg.OK
+                            });
+                        }
+                    }});
+            } else {
+                Ext.Msg.show({
+                    title: "Delete Fail !!!",
+                    msg: "You are not the Authorized to delete this project",
+                    icon: Ext.Msg.ERROR,
+                    buttons: Ext.Msg.OK
+                });
+            }
 
         } else {
             Ext.Msg.show({
@@ -131,8 +153,8 @@ Ext.define('estools.controller.Project', {
         if (button.text !== 'Update') {
             delete values.id;
             values.ownerId = globalvar.currentUserId;
-        } 
-        
+        }
+
         Ext.Ajax.request({
             method: 'POST',
             url: './v1/projects/',
@@ -163,8 +185,8 @@ Ext.define('estools.controller.Project', {
                 }
             }});
     },
-    updateDevGroupWithProject : function(button){
-         var win = button.up('window'),
+    updateDevGroupWithProject: function(button) {
+        var win = button.up('window'),
                 form = win.down('#projectGroupsForm'),
                 values = form.getValues();
         console.log(values);

@@ -31,12 +31,16 @@
 .x-menu-item img.preview-hide, .preview-hide {
     background-image: url(../images/preview-hide.gif);
 }
+.icon-settings {
+    background-image: url(../images/icon-settings.png) !important;
+    background-size: 16px 16px;
+}
 .icon-project {
-     background-image: url(../images/project-tab.png) !important;
-      background-size: 16px 16px;
+    background-image: url(../images/project-tab.png) !important;
+    background-size: 16px 16px;
 }
 .summary {
-     background-image: url(../images/details.gif) !important;
+    background-image: url(../images/details.gif) !important;
 }
 .icon-edit {
     background-image: url(../images/edit.png) !important;

@@ -35,7 +35,6 @@ Ext.define('estools.controller.DevGroup', {
         var grid = Ext.getCmp('devgroupgridid');
         var devgrpsGridSM = grid.getSelectionModel();
         var view = Ext.widget('devgroupedit');
-        var form = view.down('form');
         var saveBtn = view.down('#saveButton');
         saveBtn.text = "Update";
         if (devgrpsGridSM.hasSelection()) {

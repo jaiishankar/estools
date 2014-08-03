@@ -2,7 +2,7 @@ Ext.define('estools.model.Project', {
     extend: 'Ext.data.Model',
     fields: [
         {name: 'id', type: 'int'},
-        {name: 'ownerid', type: 'int'},
+        {name: 'ownerId', type: 'int'},
         {name: 'title', type: 'string'},
         {name: 'description', type: 'string'},
         {name: 'created', type: 'date'},

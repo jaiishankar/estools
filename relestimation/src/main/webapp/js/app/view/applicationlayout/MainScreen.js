@@ -19,5 +19,8 @@ Ext.define('estools.view.applicationlayout.MainScreen', {
         },{
             xtype:'devgroupmasterpanel',
             iconCls:'icon-group'
+        },{
+            xtype: 'panel',
+            title:'Settings'
         }]
 });
