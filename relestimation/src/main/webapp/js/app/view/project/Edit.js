@@ -15,7 +15,7 @@ Ext.define('estools.view.project.Edit', {
     initComponent: function() {
         // Set the window's title
         this.title = 'Add/Edit Project Window';
-        this.groupsStore = Ext.StoreMgr.get("gridDevProcessStore");
+        this.groupsStore = Ext.StoreMgr.get("DevGroup");
         if (this.groupsStore.getCount() <= 0) {
             this.groupsStore.load();
         } else {
@@ -101,7 +101,7 @@ Ext.define('estools.view.project.Edit', {
                                     {
                                         xtype: 'itemselector',
                                         name: 'groupIds',
-                                        id: 'itemselector-field',
+                                        id: 'project-itemselector-field',
                                         anchor: '100%',
                                         fieldLabel: '',
                                         imagePath: '../../../extjs/ux/images/',
@@ -128,7 +128,7 @@ Ext.define('estools.view.project.Edit', {
     getProjectGroupValues: function() {
         if (this.selectedProjectId > 0) {
             //calls the server and gets the selected groups for the selected project
-            var url = './v1/projectgroups/' + this.selectedProjectId;
+            var url = './v1/projectgroups/project/' + this.selectedProjectId;
             console.log(url);
             Ext.Ajax.request({
                 method: 'GET',
@@ -138,7 +138,8 @@ Ext.define('estools.view.project.Edit', {
                 },
                 scope: this,
                 success: function(response, options) {
-                    var item = this.down("#itemselector-field");
+                    var item = this.down("#project-itemselector-field");
+                    console.log(item);
                     var responseData = Ext.decode(response.responseText);
                     if (responseData.success) {
                         item.setValue(responseData.results.groupIds);

@@ -34,9 +34,6 @@ Ext.define('estools.controller.DevGroup', {
 
         var grid = Ext.getCmp('devgroupgridid');
         var devgrpsGridSM = grid.getSelectionModel();
-        var view = Ext.widget('devgroupedit');
-        var saveBtn = view.down('#saveButton');
-        saveBtn.text = "Update";
         if (devgrpsGridSM.hasSelection()) {
             Ext.MessageBox.confirm('Confirm', 'Are you sure you want to delete ?', this.deleteGroup, this);
         } else {
