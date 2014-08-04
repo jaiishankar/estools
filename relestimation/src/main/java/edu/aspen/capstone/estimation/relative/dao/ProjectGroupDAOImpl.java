@@ -48,7 +48,7 @@ public class ProjectGroupDAOImpl implements ProjectGroupDAO {
                 for (ProjectGroups grp : groups) {
                     System.out.println("Updating the project id " + grp.getProjectId() + " for Group id: " + grp.getGroupId());
                     sessionFactory.getCurrentSession().saveOrUpdate(grp);
-                    System.out.println("updated");
+                    System.out.println("updated" + grp.getGroupId());
                     sessionFactory.getCurrentSession().flush();
                     sessionFactory.getCurrentSession().refresh(grp);
                     updated.add(grp);
@@ -64,11 +64,13 @@ public class ProjectGroupDAOImpl implements ProjectGroupDAO {
     @Override
     public Boolean deleteGroupsForProject(List<ProjectGroups> groups) {
         try {
+            Query query = sessionFactory.getCurrentSession().getNamedQuery("ProjectGroups.deleteByGroupAndProjectId");
             if (CollectionUtils.isNotEmpty(groups)) {
                 for (ProjectGroups grp : groups) {
-                    sessionFactory.getCurrentSession().delete(grp);
-                    sessionFactory.getCurrentSession().flush();
-                    sessionFactory.getCurrentSession().refresh(grp);
+                     query.setInteger("projectId", grp.getProjectId());
+                     query.setInteger("groupId", grp.getGroupId());
+                     query.executeUpdate();
+                      System.out.println("deleted" + grp.getGroupId());
                 }
                 return true;
             } else {

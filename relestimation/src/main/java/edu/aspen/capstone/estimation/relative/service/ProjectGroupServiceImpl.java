@@ -45,14 +45,15 @@ public class ProjectGroupServiceImpl implements ProjectGroupService {
         try {
             List<ProjectGroups> currentList = projectgrpDAO.getAllByProject(project.getProjectId());
             List<ProjectGroups> reqList = DOUtils.encode(project);
+            System.out.println("Currentlist is: "+ currentList);
+            System.out.println("Request Data: "+ reqList);
             List<ProjectGroups> needsUpdate = new ArrayList<ProjectGroups>();
             List<ProjectGroups> needsDelete = new ArrayList<ProjectGroups>();
-
             //let us populate the needs insert&update list, we need to take the reqList 
             //and see if any not present in the current one.
             if (CollectionUtils.isNotEmpty(currentList)) {
                 for (ProjectGroups grp : currentList) {
-                    if (reqList.contains(grp)) {
+                    if (DOUtils.isGroupExists(reqList, grp)) {
                         needsUpdate.add(grp);
                     } else {
                         needsDelete.add(grp);
@@ -60,7 +61,7 @@ public class ProjectGroupServiceImpl implements ProjectGroupService {
                 }
 
                 for (ProjectGroups grp : reqList) {
-                    if (!currentList.contains(grp)) {
+                    if (!DOUtils.isGroupExists(currentList, grp)) {
                         needsUpdate.add(grp);
                     }
                 }
@@ -69,16 +70,37 @@ public class ProjectGroupServiceImpl implements ProjectGroupService {
                 needsUpdate.addAll(reqList);
             }
 
+            System.out.println("update List is: "+ needsUpdate);
+            System.out.println("Delete list is: "+ needsDelete);
+            
+            List<ProjectGroups> updated = null;
+            boolean result = false;
             //Now update insert and update needed and delete the ones we don't
             //need.
             if (CollectionUtils.isNotEmpty(needsUpdate)) {
                 System.out.println("calling to updated");
-                List<ProjectGroups> updated = projectgrpDAO.updateGroupsForProject(needsUpdate);
+                updated = projectgrpDAO.updateGroupsForProject(needsUpdate);
             }
             if (CollectionUtils.isNotEmpty(needsDelete)) {
-                boolean result = projectgrpDAO.deleteGroupsForProject(needsDelete);
+                 System.out.println("calling to delete");
+                result = projectgrpDAO.deleteGroupsForProject(needsDelete);
             }
-            return JSONResponseWrapper.getDefaultSuccessResponseInstance();
+
+            if (CollectionUtils.isNotEmpty(needsUpdate)
+                    && CollectionUtils.isNotEmpty(updated)
+                    && CollectionUtils.isNotEmpty(needsDelete) && result) {
+                return JSONResponseWrapper.getDefaultSuccessResponseInstance();
+            } else if (CollectionUtils.isNotEmpty(needsUpdate)
+                    && CollectionUtils.isNotEmpty(updated)
+                    && CollectionUtils.isEmpty(needsDelete) && !result) {
+                return JSONResponseWrapper.getDefaultSuccessResponseInstance();
+            } else if (CollectionUtils.isEmpty(needsUpdate)
+                    && CollectionUtils.isEmpty(updated)
+                    && CollectionUtils.isNotEmpty(needsDelete) && result) {
+                return JSONResponseWrapper.getDefaultSuccessResponseInstance();
+            } else {
+                return JSONResponseWrapper.getDefaultFailResponseInstance();
+            }
         } catch (Exception e) {
             return JSONResponseWrapper.getErrorResponseInstance(new JSONExceptionWrapper("Error", e));
         }

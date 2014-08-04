@@ -19,10 +19,11 @@ import org.apache.commons.collections4.CollectionUtils;
  * @author jaiishankar
  */
 public class DOUtils {
+
     /**
-     * 
+     *
      * @param pgroups
-     * @return 
+     * @return
      */
     public static ProjectGroupDO decode(List<ProjectGroups> pgroups) {
         ProjectGroupDO result = new ProjectGroupDO();
@@ -34,11 +35,11 @@ public class DOUtils {
         result.setGroupIds(groups);
         return result;
     }
-    
+
     /**
-     * 
+     *
      * @param req
-     * @return 
+     * @return
      */
     public static List<ProjectGroups> encode(ProjectGroupDO req) {
         List<ProjectGroups> groups = new ArrayList<ProjectGroups>();
@@ -47,36 +48,38 @@ public class DOUtils {
                 ProjectGroups tempgrp = new ProjectGroups();
                 tempgrp.setProjectId(req.getProjectId());
                 tempgrp.setGroupId(grpId);
+                groups.add(tempgrp);
             }
         }
         return groups;
     }
-    
+
     /**
-     * 
+     *
      * @param list
      * @param record
-     * @return 
+     * @return
      */
-    public static boolean isGroupExists(List<ProjectGroups> list, ProjectGroups record){
+    public static boolean isGroupExists(List<ProjectGroups> list, ProjectGroups record) {
         boolean result = false;
-        if(CollectionUtils.isNotEmpty(list) && record != null){
-            for(ProjectGroups grp : list){
-                if(record.equals(grp)){
+        if (CollectionUtils.isNotEmpty(list) && record != null) {
+            for (ProjectGroups grp : list) {
+                if ((record.getProjectId() == grp.getProjectId()) 
+                        && (record.getGroupId() == grp.getGroupId())) {
                     result = true;
                     break;
                 }
             }
         }
-        
+
         return result;
     }
-    
+
     /**
-     * 
+     *
      * @param list1
      * @param list2
-     * @return 
+     * @return
      */
     public static List<Project> mergeAndRemoveDuplicatesForProjects(List<Project> list1, List<Project> list2) {
         List<Project> merged = null;
@@ -86,16 +89,16 @@ public class DOUtils {
                 set.addAll(list2);
             }
             return new ArrayList<Project>(set);
-        }        
-        
+        }
+
         if (CollectionUtils.isNotEmpty(list2)) {
             Set<Project> set = new HashSet<Project>(list2);
             if (CollectionUtils.isNotEmpty(list1)) {
                 set.addAll(list1);
             }
             return new ArrayList<Project>(set);
-        }        
-        
+        }
+
         return merged;
     }
 }
