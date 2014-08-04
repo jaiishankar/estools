@@ -3,12 +3,10 @@
  *  
  * 
  */
-
 package edu.aspen.capstone.estimation.relative.service;
 
 import edu.aspen.capstone.estimation.relative.dao.UserGroupDAO;
 import edu.aspen.capstone.estimation.relative.domain.UserGroupDO;
-import edu.aspen.capstone.estimation.relative.entity.ProjectGroups;
 import edu.aspen.capstone.estimation.relative.entity.UserGroup;
 import edu.aspen.capstone.estimation.relative.utils.DOUtils;
 import edu.aspen.capstone.estimation.relative.utils.JSONExceptionWrapper;
@@ -29,7 +27,7 @@ public class UserGroupServiceImpl implements UserGroupService {
 
     @Autowired
     UserGroupDAO userGroupDAO;
-    
+
     @Override
     public JSONResponseWrapper getGroupsForUser(Integer usrId) {
         try {
@@ -64,7 +62,6 @@ public class UserGroupServiceImpl implements UserGroupService {
                         needsDelete.add(grp);
                     }
                 }
-
                 for (UserGroup grp : reqList) {
                     if (!DOUtils.isGroupExistsForUserGroups(currentList, grp)) {
                         needsUpdate.add(grp);
@@ -103,5 +100,5 @@ public class UserGroupServiceImpl implements UserGroupService {
             return JSONResponseWrapper.getErrorResponseInstance(new JSONExceptionWrapper("Error", e));
         }
     }
-    
+
 }

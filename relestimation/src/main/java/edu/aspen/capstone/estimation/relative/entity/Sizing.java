@@ -15,7 +15,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -50,9 +49,6 @@ public class Sizing implements AuditableBaseDomainObject, Serializable {
     private Integer sizeValue;
     @Column(name = "uom")
     private String uom;
-    @OneToMany(mappedBy = "sizingId")
-    private Collection<ProjectFeatureSizing> projectFeatureSizingCollection;
-
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREATED_TS",
             nullable = false,
@@ -102,16 +98,6 @@ public class Sizing implements AuditableBaseDomainObject, Serializable {
         this.uom = uom;
     }
 
-    @XmlTransient
-    @JsonIgnore
-    public Collection<ProjectFeatureSizing> getProjectFeatureSizingCollection() {
-        return projectFeatureSizingCollection;
-    }
-
-    public void setProjectFeatureSizingCollection(Collection<ProjectFeatureSizing> projectFeatureSizingCollection) {
-        this.projectFeatureSizingCollection = projectFeatureSizingCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -121,7 +107,6 @@ public class Sizing implements AuditableBaseDomainObject, Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Sizing)) {
             return false;
         }
