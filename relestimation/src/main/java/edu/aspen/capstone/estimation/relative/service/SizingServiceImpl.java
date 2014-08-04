@@ -47,4 +47,31 @@ public class SizingServiceImpl implements SizingService {
         }
     }
 
+    @Override
+    public JSONResponseWrapper saveOrUpdate(SizingDO sizing) {
+        try {
+            ModelMapper modelMapper = new ModelMapper();
+            Sizing mysize = modelMapper.map(sizing, Sizing.class);
+
+            Sizing tempSiz = sizingDAO.saveOrUpdate(mysize);
+            SizingDO response = modelMapper.map(tempSiz, SizingDO.class);
+            if (tempSiz != null) {
+
+                return (response != null)
+                        ? JSONResponseWrapper.getResponseInstance(response)
+                        : JSONResponseWrapper.getDefaultFailResponseInstance();
+            } else {
+                return JSONResponseWrapper.getDefaultFailResponseInstance();
+            }
+        } catch (Exception e) {
+            return JSONResponseWrapper.getErrorResponseInstance(
+                    new JSONExceptionWrapper("Error", e));
+        }
+    }
+
+    @Override
+    public JSONResponseWrapper delete(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

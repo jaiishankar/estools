@@ -56,11 +56,17 @@ public class DevelopmentGroupServiceImpl implements DevelopmentGroupService {
         try {
             ModelMapper modelMapper = new ModelMapper();
             DevelopmentGroup mygrp = modelMapper.map(grp, DevelopmentGroup.class);
-            
+
             DevelopmentGroup tempGrp = devGroupDAO.addGroup(mygrp);
-            return (tempGrp != null)
-                    ? JSONResponseWrapper.getResponseInstance(tempGrp)
-                    : JSONResponseWrapper.getDefaultFailResponseInstance();
+            if (tempGrp != null) {
+                DevelopmentGroupDO response = modelMapper.map(tempGrp, DevelopmentGroupDO.class);
+                return (response != null)
+                        ? JSONResponseWrapper.getResponseInstance(response)
+                        : JSONResponseWrapper.getDefaultFailResponseInstance();
+            } else {
+                return JSONResponseWrapper.getDefaultFailResponseInstance();
+            }
+
         } catch (Exception e) {
             return JSONResponseWrapper.getErrorResponseInstance(
                     new JSONExceptionWrapper("Error", e));

@@ -15,4 +15,10 @@ import java.util.List;
 public interface SizingDAO {
 
     List<Sizing> listAll();
+
+    Sizing saveOrUpdate(Sizing size);
+
+    Boolean delete(Integer id);
+
+    Sizing getSizingById(Integer id);
 }
