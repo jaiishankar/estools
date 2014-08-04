@@ -1,7 +1,9 @@
 package edu.aspen.capstone.estimation.relative.dao;
 
 import edu.aspen.capstone.estimation.relative.entity.UserGroup;
+import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.collections4.CollectionUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -21,14 +23,14 @@ public class UserGroupDAOImpl implements UserGroupDAO {
     private SessionFactory sessionFactory;
 
     @Override
-    public List<UserGroup> getAllByProject(Integer userId) {
+    public List<UserGroup> getAllByUser(Integer userId) {
         try {
-            Query query = sessionFactory.getCurrentSession().getNamedQuery("ProjectGroups.findByProjectId");
+            Query query = sessionFactory.getCurrentSession().getNamedQuery("UserGroup.findByUserId");
             query.setInteger("id", userId);
-            List<UserGroup> myProjects = query.list();
+            List<UserGroup> myUserGroups = query.list();
 
-            if (!myProjects.isEmpty()) {
-                return myProjects;
+            if (!myUserGroups.isEmpty()) {
+                return myUserGroups;
             }
             return null;
         } catch (HibernateException hbe) {
@@ -38,9 +40,18 @@ public class UserGroupDAOImpl implements UserGroupDAO {
     }
 
     @Override
-    public Boolean updateGroupsForUser(Integer userId, List<UserGroup> groups) {
+    public List<UserGroup> updateGroupsForUser(List<UserGroup> groups) {
+        List<UserGroup> updated = new ArrayList<UserGroup>();
         try {
-            return null;
+            if (CollectionUtils.isNotEmpty(groups)) {
+                for (UserGroup grp : groups) {
+                    sessionFactory.getCurrentSession().saveOrUpdate(grp);
+                    sessionFactory.getCurrentSession().flush();
+                    sessionFactory.getCurrentSession().refresh(grp);
+                    updated.add(grp);
+                }
+            }
+            return updated;
         } catch (HibernateException hbe) {
             hbe.printStackTrace();
             return null;
@@ -48,9 +59,19 @@ public class UserGroupDAOImpl implements UserGroupDAO {
     }
 
     @Override
-    public Boolean deleteGroupsForUser(Integer userId) {
+    public Boolean deleteGroupsForUser(List<UserGroup> groups) {
         try {
-            return null;
+            Query query = sessionFactory.getCurrentSession().getNamedQuery("UserGroup.deletByUserId");
+            if (CollectionUtils.isNotEmpty(groups)) {
+                for (UserGroup grp : groups) {
+                     query.setInteger("userId", grp.getUserId());
+                     query.setInteger("groupId", grp.getGroupId());
+                     query.executeUpdate();
+                }
+                return true;
+            } else {
+                return false;
+            }
         } catch (HibernateException hbe) {
             hbe.printStackTrace();
             return null;

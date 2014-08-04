@@ -9,9 +9,9 @@ import java.util.List;
  */
 public interface UserGroupDAO {
     
-    List<UserGroup> getAllByProject(Integer userId);
+    List<UserGroup> getAllByUser(Integer userId);
 
-    Boolean updateGroupsForUser(Integer userId, List<UserGroup> groups);
+    List<UserGroup> updateGroupsForUser(List<UserGroup> groups);
     
-    Boolean deleteGroupsForUser(Integer userId);
+    Boolean deleteGroupsForUser(List<UserGroup> groups);
 }

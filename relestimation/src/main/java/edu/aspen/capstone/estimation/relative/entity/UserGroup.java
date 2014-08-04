@@ -11,8 +11,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -31,7 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "UserGroup.findAll", query = "SELECT u FROM UserGroup u"),
     @NamedQuery(name = "UserGroup.findById", query = "SELECT u FROM UserGroup u WHERE u.id = :id"),
     @NamedQuery(name = "UserGroup.findByUserId", query = "SELECT u FROM UserGroup u WHERE u.userId = :id"),
-    @NamedQuery(name = "UserGroup.deletByUserId", query = "DELETE FROM UserGroup u WHERE u.userId = :id")
+    @NamedQuery(name = "UserGroup.deletByUserId", query = "DELETE FROM UserGroup u WHERE u.userId = :userId and u.groupId = :groupId")
 })
 public class UserGroup implements AuditableBaseDomainObject, Serializable {
 
@@ -40,12 +38,12 @@ public class UserGroup implements AuditableBaseDomainObject, Serializable {
     @GeneratedValue
     @Column(name = "id")
     private Integer id;
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @ManyToOne
-    private ApplicationUser userId;
-    @JoinColumn(name = "group_id", referencedColumnName = "id")
-    @ManyToOne
-    private DevelopmentGroup groupId;
+    @Column(name = "user_id")
+    private Integer userId;
+
+    @Column(name = "group_id")
+    private Integer groupId;
+    
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREATED_TS",
             nullable = false,
@@ -63,27 +61,29 @@ public class UserGroup implements AuditableBaseDomainObject, Serializable {
         this.id = id;
     }
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public void setId(Integer id) {
         this.id = id;
     }
 
-    public ApplicationUser getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(ApplicationUser userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
-    public DevelopmentGroup getGroupId() {
+    public Integer getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(DevelopmentGroup groupId) {
+    public void setGroupId(Integer groupId) {
         this.groupId = groupId;
     }
 

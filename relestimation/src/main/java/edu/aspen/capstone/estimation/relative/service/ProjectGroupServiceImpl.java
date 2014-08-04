@@ -31,7 +31,7 @@ public class ProjectGroupServiceImpl implements ProjectGroupService {
             ProjectGroupDO projectGroup = new ProjectGroupDO();
             projectGroup.setProjectId(prjId);
             if (CollectionUtils.isNotEmpty(projects)) {
-                projectGroup = DOUtils.decode(projects);
+                projectGroup = DOUtils.decodeProjectGroup(projects);
             }
             return JSONResponseWrapper.getResponseInstance(projectGroup);
         } catch (Exception e) {
@@ -44,16 +44,14 @@ public class ProjectGroupServiceImpl implements ProjectGroupService {
     public JSONResponseWrapper updateAssociations(ProjectGroupDO project) {
         try {
             List<ProjectGroups> currentList = projectgrpDAO.getAllByProject(project.getProjectId());
-            List<ProjectGroups> reqList = DOUtils.encode(project);
-            System.out.println("Currentlist is: "+ currentList);
-            System.out.println("Request Data: "+ reqList);
+            List<ProjectGroups> reqList = DOUtils.encodeProjectGroup(project);
             List<ProjectGroups> needsUpdate = new ArrayList<ProjectGroups>();
             List<ProjectGroups> needsDelete = new ArrayList<ProjectGroups>();
             //let us populate the needs insert&update list, we need to take the reqList 
             //and see if any not present in the current one.
             if (CollectionUtils.isNotEmpty(currentList)) {
                 for (ProjectGroups grp : currentList) {
-                    if (DOUtils.isGroupExists(reqList, grp)) {
+                    if (DOUtils.isGroupExistsForProjectGroups(reqList, grp)) {
                         needsUpdate.add(grp);
                     } else {
                         needsDelete.add(grp);
@@ -61,28 +59,23 @@ public class ProjectGroupServiceImpl implements ProjectGroupService {
                 }
 
                 for (ProjectGroups grp : reqList) {
-                    if (!DOUtils.isGroupExists(currentList, grp)) {
+                    if (!DOUtils.isGroupExistsForProjectGroups(currentList, grp)) {
                         needsUpdate.add(grp);
                     }
                 }
             } else {
-                System.out.println("Comming in all added part");
                 needsUpdate.addAll(reqList);
             }
 
-            System.out.println("update List is: "+ needsUpdate);
-            System.out.println("Delete list is: "+ needsDelete);
             
             List<ProjectGroups> updated = null;
             boolean result = false;
             //Now update insert and update needed and delete the ones we don't
             //need.
             if (CollectionUtils.isNotEmpty(needsUpdate)) {
-                System.out.println("calling to updated");
                 updated = projectgrpDAO.updateGroupsForProject(needsUpdate);
             }
             if (CollectionUtils.isNotEmpty(needsDelete)) {
-                 System.out.println("calling to delete");
                 result = projectgrpDAO.deleteGroupsForProject(needsDelete);
             }
 

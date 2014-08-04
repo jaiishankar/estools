@@ -31,7 +31,7 @@ public class ProjectServiceImpl implements ProjectService {
             List<Project> userProjects = projectDAO.listAllByUser(id);
             List<Project> ownerProjects = projectDAO.listAllByOwner(id);
             //merge both projects avoid duplicates
-            List<Project> projects = DOUtils.mergeAndRemoveDuplicatesForProjects(userProjects, ownerProjects);
+            List<Project> projects = (List<Project>) DOUtils.mergeAndRemoveDuplicatesForProjects(userProjects, ownerProjects);
             if (CollectionUtils.isNotEmpty(projects)) {
                 ArrayList<ProjectDO> appProjects = new ArrayList<ProjectDO>();
                 for (Project project : projects) {
