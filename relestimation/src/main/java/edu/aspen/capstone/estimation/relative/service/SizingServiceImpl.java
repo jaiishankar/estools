@@ -71,7 +71,16 @@ public class SizingServiceImpl implements SizingService {
 
     @Override
     public JSONResponseWrapper delete(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+        try {
 
+            if (sizingDAO.delete(id)) {
+                return JSONResponseWrapper.getDefaultSuccessResponseInstance();
+            } else {
+                return JSONResponseWrapper.getDefaultFailResponseInstance();
+            }
+        } catch (Exception e) {
+            return JSONResponseWrapper.getErrorResponseInstance(
+                    new JSONExceptionWrapper("Error", e));
+        }
+    }
 }

@@ -32,13 +32,13 @@ public class SizingResourceController {
             value = "/sizing", headers = "Accept=application/json")
     public @ResponseBody
     JSONResponseWrapper addNewSizing(@RequestBody SizingDO size) {
-        return service.saveOrUpdate(null);
+        return service.saveOrUpdate(size);
     }
 
     @RequestMapping(method = RequestMethod.POST,
             value = "/sizing/delete/{id}", headers = "Accept=application/json")
     public @ResponseBody
     JSONResponseWrapper deleteSizing(@PathVariable Integer id) {
-        return service.delete(null);
+        return service.delete(id);
     }
 }

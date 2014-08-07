@@ -20,6 +20,9 @@ Ext.define('estools.view.applicationlayout.MainScreen', {
             xtype:'devgroupmasterpanel',
             iconCls:'icon-group'
         },{
+            xtype:'sizingmasterpanel'
+            
+        },{
             xtype: 'panel',
             title:'Settings'
         }]
