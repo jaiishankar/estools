@@ -20,10 +20,12 @@ Ext.define('estools.view.applicationlayout.MainScreen', {
             xtype:'devgroupmasterpanel',
             iconCls:'icon-group'
         },{
-            xtype:'sizingmasterpanel'
+            xtype:'sizingmasterpanel',
+            iconCls:'icon-sizing'
             
         },{
             xtype: 'panel',
-            title:'Settings'
+            title:'Settings',
+            iconCls:'icon-settings'
         }]
 });

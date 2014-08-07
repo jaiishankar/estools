@@ -35,6 +35,10 @@
     background-image: url(../images/icon-settings.png) !important;
     background-size: 16px 16px;
 }
+.icon-sizing {
+    background-image: url(../images/icon-sizing.png) !important;
+    background-size: 16px 16px;
+}
 .icon-project {
     background-image: url(../images/project-tab.png) !important;
     background-size: 16px 16px;

@@ -11,7 +11,7 @@ Ext.define('estools.view.sizing.Grid', {
             {text: "ID", width: 10, dataIndex: 'id', sortable: true, hidden: true},
             {text: "Sizing Name", width: 200, dataIndex: 'sizeName', sortable: true},
             {text: "Sizing Value", width: 200, dataIndex: 'sizeValue', sortable: true},
-            {text: "Unit of Measurment", width: 200, dataIndex: 'sizeName', sortable: true},
+            {text: "Unit of Measurment", width: 200, dataIndex: 'uom', sortable: true},
             {text: "created", width: 3, dataIndex: 'created', hidden: true},
             {text: "updated", width: 3, dataIndex: 'updated', hidden: true}
         ];
