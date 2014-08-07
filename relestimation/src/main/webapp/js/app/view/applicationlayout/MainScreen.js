@@ -24,6 +24,8 @@ Ext.define('estools.view.applicationlayout.MainScreen', {
             iconCls:'icon-sizing'
             
         },{
+            xtype:'prioritymasterpanel'
+        },{
             xtype: 'panel',
             title:'Settings',
             iconCls:'icon-settings'

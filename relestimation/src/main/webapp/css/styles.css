@@ -35,6 +35,10 @@
     background-image: url(../images/icon-settings.png) !important;
     background-size: 16px 16px;
 }
+.icon-priority {
+    background-image: url(../images/icon-priority.png) !important;
+    background-size: 16px 16px;
+}
 .icon-sizing {
     background-image: url(../images/icon-sizing.png) !important;
     background-size: 16px 16px;
