@@ -24,3 +24,8 @@ INSERT INTO `tms`.`applicationuser` (`CREATED_TS`, `email`, `fname`, `ACTIVE`, `
 INSERT INTO `tms`.`developmentgroup` (`created_ts`, `name`, `updated_ts`) VALUES (now(), 'Default Development Group', now());
 INSERT INTO `tms`.`developmentgroup` (`created_ts`, `name`, `updated_ts`) VALUES (now(), 'Default Testing Group', now());
 INSERT INTO `tms`.`developmentgroup` (`created_ts`, `name`, `updated_ts`) VALUES (now(), 'Default UIX Group', now());
+
+-- Insert the priority data
+INSERT INTO `tms`.`priority` (`CREATED_TS`, `priority`, `UPDATED_TS`) VALUES (Now(), 'High', Now());
+INSERT INTO `tms`.`priority` (`CREATED_TS`, `priority`, `UPDATED_TS`) VALUES (Now(), 'Medium', Now());
+INSERT INTO `tms`.`priority` (`CREATED_TS`, `priority`, `UPDATED_TS`) VALUES (Now(), 'Low', Now());

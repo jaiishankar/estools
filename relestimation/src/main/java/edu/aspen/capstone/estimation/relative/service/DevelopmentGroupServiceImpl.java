@@ -26,6 +26,7 @@ public class DevelopmentGroupServiceImpl implements DevelopmentGroupService {
         try {
             ModelMapper modelMapper = new ModelMapper();
             List<DevelopmentGroup> groups = devGroupDAO.listAll();
+            //TODO do null check for all dao responses
             ArrayList<DevelopmentGroupDO> appGroups = new ArrayList<DevelopmentGroupDO>();
             for (DevelopmentGroup group : groups) {
                 DevelopmentGroupDO tempGrp = modelMapper.map(group, DevelopmentGroupDO.class);

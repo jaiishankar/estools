@@ -5,24 +5,19 @@
  */
 package edu.aspen.capstone.estimation.relative.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -39,15 +34,14 @@ public class Priority implements AuditableBaseDomainObject, Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
-    @NotNull
+    @GeneratedValue
     @Column(name = "id")
     private Integer id;
-    @Size(max = 4)
+
+    @Size(max = 10)
     @Column(name = "priority")
     private String priority;
-    @OneToMany(mappedBy = "priorityId")
-    private Collection<Businesscase> businesscaseCollection;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREATED_TS",
             nullable = false,
@@ -65,10 +59,12 @@ public class Priority implements AuditableBaseDomainObject, Serializable {
         this.id = id;
     }
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public void setId(Integer id) {
         this.id = id;
     }
@@ -79,16 +75,6 @@ public class Priority implements AuditableBaseDomainObject, Serializable {
 
     public void setPriority(String priority) {
         this.priority = priority;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Businesscase> getBusinesscaseCollection() {
-        return businesscaseCollection;
-    }
-
-    public void setBusinesscaseCollection(Collection<Businesscase> businesscaseCollection) {
-        this.businesscaseCollection = businesscaseCollection;
     }
 
     @Override
