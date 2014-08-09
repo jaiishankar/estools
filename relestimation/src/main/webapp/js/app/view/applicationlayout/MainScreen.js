@@ -11,24 +11,26 @@ Ext.define('estools.view.applicationlayout.MainScreen', {
     },
     items: [
         {
-            xtype:'projectmasterpanel',
-            iconCls:'icon-project'
-        },{
+            xtype: 'projectmasterpanel',
+            iconCls: 'icon-project'
+        }, {
             xtype: 'usersmasterpanel',
-            iconCls:'icon-user'
-        },{
-            xtype:'devgroupmasterpanel',
-            iconCls:'icon-group'
-        },{
-            xtype:'sizingmasterpanel',
-            iconCls:'icon-sizing'
-            
-        },{
-            xtype:'prioritymasterpanel',
-            iconCls:'icon-priority'
-        },{
+            iconCls: 'icon-user'
+        }, {
+            xtype: 'devgroupmasterpanel',
+            iconCls: 'icon-group'
+        }, {
+            xtype: 'sizingmasterpanel',
+            iconCls: 'icon-sizing'
+
+        }, {
+            xtype: 'prioritymasterpanel',
+            iconCls: 'icon-priority'
+        }, {
+            xtype: 'assumtypemasterpanel'
+        }, {
             xtype: 'panel',
-            title:'Settings',
-            iconCls:'icon-settings'
+            title: 'Settings',
+            iconCls: 'icon-settings'
         }]
 });

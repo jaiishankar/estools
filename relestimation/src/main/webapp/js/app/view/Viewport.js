@@ -9,11 +9,6 @@ Ext.define('estools.view.Viewport', {
                 region: 'north',
                 bodyStyle: 'background:transparent;'
             },
-//            {
-//                region: 'west',
-//                width: 150,
-//                xtype:'applicationmenuscreen'
-//            },
             {
                 region: 'center',
                 xtype: 'applicationmainscreen',

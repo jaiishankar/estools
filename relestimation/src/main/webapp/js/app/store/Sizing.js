@@ -2,7 +2,7 @@ Ext.define('estools.store.Sizing', {
     extend: 'Ext.data.Store',
     model: 'estools.model.Sizing',
     storeId: 'sizingStore',
-    autoLoad: true,
+    autoLoad: false,
     sorters: [
         {
             property: 'id',

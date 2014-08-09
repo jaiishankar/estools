@@ -32,21 +32,25 @@ Ext.application({
         'estools.view.sizing.Grid',
         'estools.view.sizing.DetailPanel',
         'estools.view.sizing.MasterPanel',
-        //,'estools.view.sizing.Edit'
+        'estools.view.sizing.Edit',
         'estools.view.priority.Grid',
         'estools.view.priority.DetailPanel',
-        'estools.view.priority.MasterPanel'
-                //,'estools.view.priority.Edit'
+        'estools.view.priority.MasterPanel',
+        'estools.view.priority.Edit',
+        'estools.view.assumptiontype.Grid',
+        'estools.view.assumptiontype.DetailPanel',
+        'estools.view.assumptiontype.MasterPanel',
+        'estools.view.assumptiontype.Edit'
     ],
     // Required controllers
     controllers: [
         'Logon', 'User', 'DevGroup', 'Project'
     ],
     models: [
-        'User', 'DevGroup', 'Project', 'Sizing', 'Priority'
+        'User', 'DevGroup', 'Project', 'Sizing', 'Priority','AssumptionType'
     ],
     stores: [
-        'User', 'DevGroup', 'Project', 'Sizing', 'Priority'
+        'User', 'DevGroup', 'Project', 'Sizing', 'Priority','AssumptionType'
     ],
     // Stuff to do at launch
     launch: function() {

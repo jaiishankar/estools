@@ -1,7 +1,7 @@
-Ext.define('estools.store.Priority', {
+Ext.define('estools.store.AssumptionType', {
     extend: 'Ext.data.Store',
-    model: 'estools.model.Priority',
-    storeId: 'priorityStore',
+    model: 'estools.model.AssumptionType',
+    storeId: 'assumTypeStore',
     autoLoad: false,
     sorters: [
         {
