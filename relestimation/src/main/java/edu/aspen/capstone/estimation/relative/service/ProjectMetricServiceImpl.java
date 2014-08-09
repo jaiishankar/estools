@@ -1,8 +1,13 @@
+/*
+ *  
+ *  
+ * 
+ */
 package edu.aspen.capstone.estimation.relative.service;
 
-import edu.aspen.capstone.estimation.relative.dao.SizingDAO;
-import edu.aspen.capstone.estimation.relative.domain.SizingDO;
-import edu.aspen.capstone.estimation.relative.entity.Sizing;
+import edu.aspen.capstone.estimation.relative.dao.ProjectMetricDAO;
+import edu.aspen.capstone.estimation.relative.domain.ProjectMetricDO;
+import edu.aspen.capstone.estimation.relative.entity.ProjectMetric;
 import edu.aspen.capstone.estimation.relative.utils.JSONExceptionWrapper;
 import edu.aspen.capstone.estimation.relative.utils.JSONResponseWrapper;
 import java.util.ArrayList;
@@ -17,25 +22,24 @@ import org.springframework.stereotype.Service;
  * @author jaiishankar
  */
 @Service
-public class SizingServiceImpl implements SizingService {
+public class ProjectMetricServiceImpl implements ProjectMetricService {
 
     @Autowired
-    SizingDAO sizingDAO;
+    ProjectMetricDAO projectmetricDAO;
 
     @Override
-    public JSONResponseWrapper listAll() {
+    public JSONResponseWrapper getMetricsForProject(Integer prjId) {
         try {
             ModelMapper modelMapper = new ModelMapper();
-            List<SizingDO> availableSizings = new ArrayList<SizingDO>();
-            List<Sizing> sizings = sizingDAO.listAll();
-            if (CollectionUtils.isNotEmpty(sizings)) {
-                for (Sizing size : sizings) {
-                    SizingDO tempSize = modelMapper.map(size, SizingDO.class);
-                    availableSizings.add(tempSize);
+            List<ProjectMetric> metrics = projectmetricDAO.getAllByProject(prjId);
+            List<ProjectMetricDO> projectMetrics = new ArrayList<ProjectMetricDO>();
+            if (CollectionUtils.isNotEmpty(metrics)) {
+                for (ProjectMetric mtrc : metrics) {
+                    ProjectMetricDO temp = modelMapper.map(metrics, ProjectMetricDO.class);
+                    projectMetrics.add(temp);
                 }
             }
-
-            return JSONResponseWrapper.getResponseInstance(availableSizings);
+            return JSONResponseWrapper.getResponseInstance(projectMetrics);
         } catch (Exception e) {
             return JSONResponseWrapper.getErrorResponseInstance(
                     new JSONExceptionWrapper("Error", e));
@@ -43,13 +47,13 @@ public class SizingServiceImpl implements SizingService {
     }
 
     @Override
-    public JSONResponseWrapper saveOrUpdate(SizingDO sizing) {
+    public JSONResponseWrapper save(ProjectMetricDO metric) {
         try {
             ModelMapper modelMapper = new ModelMapper();
-            Sizing mysize = modelMapper.map(sizing, Sizing.class);
+            ProjectMetric mysize = modelMapper.map(metric, ProjectMetric.class);
 
-            Sizing tempSiz = sizingDAO.saveOrUpdate(mysize);
-            SizingDO response = modelMapper.map(tempSiz, SizingDO.class);
+            ProjectMetric tempSiz = projectmetricDAO.save(mysize);
+            ProjectMetricDO response = modelMapper.map(tempSiz, ProjectMetricDO.class);
             if (tempSiz != null) {
 
                 return (response != null)
@@ -65,10 +69,9 @@ public class SizingServiceImpl implements SizingService {
     }
 
     @Override
-    public JSONResponseWrapper delete(Integer id) {
+    public JSONResponseWrapper delete(Integer metricId) {
         try {
-
-            if (sizingDAO.delete(id)) {
+            if (projectmetricDAO.delete(metricId)) {
                 return JSONResponseWrapper.getDefaultSuccessResponseInstance();
             } else {
                 return JSONResponseWrapper.getDefaultFailResponseInstance();
@@ -80,13 +83,12 @@ public class SizingServiceImpl implements SizingService {
     }
 
     @Override
-    public JSONResponseWrapper get(Integer id) {
+    public JSONResponseWrapper get(Integer metricId) {
         try {
-
             ModelMapper modelMapper = new ModelMapper();
-            Sizing p = sizingDAO.getSizingById(id);
+            ProjectMetric p = projectmetricDAO.get(metricId);
             if (p != null) {
-                SizingDO response = modelMapper.map(p, SizingDO.class);
+                ProjectMetricDO response = modelMapper.map(p, ProjectMetricDO.class);
                 return JSONResponseWrapper.getResponseInstance(response);
             } else {
                 return JSONResponseWrapper.getDefaultFailResponseInstance();
@@ -96,4 +98,5 @@ public class SizingServiceImpl implements SizingService {
                     new JSONExceptionWrapper("Error", e));
         }
     }
+
 }

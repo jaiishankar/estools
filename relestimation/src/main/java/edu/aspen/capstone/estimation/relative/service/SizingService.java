@@ -21,4 +21,6 @@ public interface SizingService {
     
     JSONResponseWrapper delete(Integer id);
     
+    JSONResponseWrapper get(Integer id);
+    
 }

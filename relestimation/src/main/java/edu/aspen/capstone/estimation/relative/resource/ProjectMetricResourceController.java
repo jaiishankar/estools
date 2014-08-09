@@ -1,7 +1,13 @@
+/*
+ *  
+ *  
+ * 
+ */
+
 package edu.aspen.capstone.estimation.relative.resource;
 
-import edu.aspen.capstone.estimation.relative.domain.SizingDO;
-import edu.aspen.capstone.estimation.relative.service.SizingService;
+import edu.aspen.capstone.estimation.relative.domain.ProjectMetricDO;
+import edu.aspen.capstone.estimation.relative.service.ProjectMetricService;
 import edu.aspen.capstone.estimation.relative.utils.JSONResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,20 +22,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author jaiishankar
  */
 @Controller
-public class SizingResourceController {
-
+public class ProjectMetricResourceController {
     @Autowired
-    SizingService service;
+    ProjectMetricService service;
 
     @RequestMapping(method = RequestMethod.GET,
-            value = "/sizing", headers = "Accept=application/json")
+            value = "/metrics/project/{id}", headers = "Accept=application/json")
     public @ResponseBody
-    JSONResponseWrapper listAll() {
-        return service.listAll();
+    JSONResponseWrapper listAll(@PathVariable Integer id) {
+        return service.getMetricsForProject(id);
     }
     
     @RequestMapping(method = RequestMethod.GET,
-            value = "/sizing/{id}", headers = "Accept=application/json")
+            value = "/metrics/{id}", headers = "Accept=application/json")
     public @ResponseBody
     JSONResponseWrapper getById(@PathVariable Integer id) {
         return service.get(id);
@@ -37,16 +42,16 @@ public class SizingResourceController {
 
 
     @RequestMapping(method = RequestMethod.POST,
-            value = "/sizing", headers = "Accept=application/json")
+            value = "/metrics", headers = "Accept=application/json")
     public @ResponseBody
-    JSONResponseWrapper addNewSizing(@RequestBody SizingDO size) {
-        return service.saveOrUpdate(size);
+    JSONResponseWrapper addMetric(@RequestBody ProjectMetricDO data) {
+        return service.save(data);
     }
 
     @RequestMapping(method = RequestMethod.POST,
-            value = "/sizing/delete/{id}", headers = "Accept=application/json")
+            value = "/metrics/delete/{id}", headers = "Accept=application/json")
     public @ResponseBody
-    JSONResponseWrapper deleteSizing(@PathVariable Integer id) {
+    JSONResponseWrapper deleteMetric(@PathVariable Integer id) {
         return service.delete(id);
     }
 }
