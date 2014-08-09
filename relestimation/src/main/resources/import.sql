@@ -29,3 +29,10 @@ INSERT INTO `tms`.`developmentgroup` (`created_ts`, `name`, `updated_ts`) VALUES
 INSERT INTO `tms`.`priority` (`CREATED_TS`, `priority`, `UPDATED_TS`) VALUES (Now(), 'High', Now());
 INSERT INTO `tms`.`priority` (`CREATED_TS`, `priority`, `UPDATED_TS`) VALUES (Now(), 'Medium', Now());
 INSERT INTO `tms`.`priority` (`CREATED_TS`, `priority`, `UPDATED_TS`) VALUES (Now(), 'Low', Now());
+
+-- Insert the Assumption Types
+INSERT INTO `tms`.`assumption_type` (`CREATED_TS`, `type_name`, `UPDATED_TS`) VALUES (now(), 'resource', now());
+INSERT INTO `tms`.`assumption_type` (`CREATED_TS`, `type_name`, `UPDATED_TS`) VALUES (now(), 'scope', now());
+INSERT INTO `tms`.`assumption_type` (`CREATED_TS`, `type_name`, `UPDATED_TS`) VALUES (now(), 'estimation', now());
+INSERT INTO `tms`.`assumption_type` (`CREATED_TS`, `type_name`, `UPDATED_TS`) VALUES (now(), 'feature', now());
+INSERT INTO `tms`.`assumption_type` (`CREATED_TS`, `type_name`, `UPDATED_TS`) VALUES (now(), 'timeline', now());

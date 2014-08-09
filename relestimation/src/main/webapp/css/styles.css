@@ -31,10 +31,17 @@
 .x-menu-item img.preview-hide, .preview-hide {
     background-image: url(../images/preview-hide.gif);
 }
+
+//user defined icons for the project
 .icon-settings {
     background-image: url(../images/icon-settings.png) !important;
     background-size: 16px 16px;
 }
+.icon-types {
+    background-image: url(../images/icon-types.png) !important;
+    background-size: 16px 16px;
+}
+
 .icon-priority {
     background-image: url(../images/icon-priority.png) !important;
     background-size: 16px 16px;

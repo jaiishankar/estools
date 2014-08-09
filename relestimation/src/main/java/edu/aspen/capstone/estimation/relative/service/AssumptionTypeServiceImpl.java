@@ -1,8 +1,8 @@
 package edu.aspen.capstone.estimation.relative.service;
 
-import edu.aspen.capstone.estimation.relative.dao.DevelopmentGroupDAO;
-import edu.aspen.capstone.estimation.relative.domain.DevelopmentGroupDO;
-import edu.aspen.capstone.estimation.relative.entity.DevelopmentGroup;
+import edu.aspen.capstone.estimation.relative.dao.AssumptionTypeDAO;
+import edu.aspen.capstone.estimation.relative.domain.AssumptionTypeDO;
+import edu.aspen.capstone.estimation.relative.entity.AssumptionType;
 import edu.aspen.capstone.estimation.relative.utils.JSONExceptionWrapper;
 import edu.aspen.capstone.estimation.relative.utils.JSONResponseWrapper;
 import java.util.ArrayList;
@@ -17,24 +17,25 @@ import org.springframework.stereotype.Service;
  * @author jaiishankar
  */
 @Service
-public class DevelopmentGroupServiceImpl implements DevelopmentGroupService {
+public class AssumptionTypeServiceImpl implements AssumptionTypeService {
 
     @Autowired
-    DevelopmentGroupDAO devGroupDAO;
+    AssumptionTypeDAO assumTypeDAO;
 
     @Override
-    public JSONResponseWrapper listAll() {
+    public JSONResponseWrapper getAll() {
         try {
             ModelMapper modelMapper = new ModelMapper();
-            List<DevelopmentGroup> groups = devGroupDAO.listAll();
-            ArrayList<DevelopmentGroupDO> appGroups = new ArrayList<DevelopmentGroupDO>();
-            if (CollectionUtils.isNotEmpty(groups)) {
-                for (DevelopmentGroup group : groups) {
-                    DevelopmentGroupDO tempGrp = modelMapper.map(group, DevelopmentGroupDO.class);
+            List<AssumptionType> assmTyps = assumTypeDAO.listAll();
+            ArrayList<AssumptionTypeDO> appGroups = new ArrayList<AssumptionTypeDO>();
+            if (CollectionUtils.isNotEmpty(assmTyps)) {
+                for (AssumptionType assumpType : assmTyps) {
+                    AssumptionTypeDO tempGrp = modelMapper.map(assumpType, AssumptionTypeDO.class);
                     appGroups.add(tempGrp);
                 }
             }
             return JSONResponseWrapper.getResponseInstance(appGroups);
+
         } catch (Exception e) {
             return JSONResponseWrapper.getErrorResponseInstance(
                     new JSONExceptionWrapper("Error", e));
@@ -42,11 +43,11 @@ public class DevelopmentGroupServiceImpl implements DevelopmentGroupService {
     }
 
     @Override
-    public JSONResponseWrapper listGroup(Integer id) {
+    public JSONResponseWrapper get(Integer id) {
         try {
             ModelMapper modelMapper = new ModelMapper();
-            DevelopmentGroup group = devGroupDAO.getGroup(id);
-            DevelopmentGroupDO tempGrp = modelMapper.map(group, DevelopmentGroupDO.class);
+            AssumptionType group = assumTypeDAO.getById(id);
+            AssumptionTypeDO tempGrp = modelMapper.map(group, AssumptionTypeDO.class);
             return JSONResponseWrapper.getResponseInstance(tempGrp);
         } catch (Exception e) {
             return JSONResponseWrapper.getErrorResponseInstance(
@@ -55,14 +56,14 @@ public class DevelopmentGroupServiceImpl implements DevelopmentGroupService {
     }
 
     @Override
-    public JSONResponseWrapper saveGroup(DevelopmentGroupDO grp) {
+    public JSONResponseWrapper save(AssumptionTypeDO asptyp) {
         try {
             ModelMapper modelMapper = new ModelMapper();
-            DevelopmentGroup mygrp = modelMapper.map(grp, DevelopmentGroup.class);
+            AssumptionType myasptyp = modelMapper.map(asptyp, AssumptionType.class);
 
-            DevelopmentGroup tempGrp = devGroupDAO.addGroup(mygrp);
+            AssumptionType tempGrp = assumTypeDAO.saveOrUpdate(myasptyp);
             if (tempGrp != null) {
-                DevelopmentGroupDO response = modelMapper.map(tempGrp, DevelopmentGroupDO.class);
+                AssumptionTypeDO response = modelMapper.map(tempGrp, AssumptionTypeDO.class);
                 return (response != null)
                         ? JSONResponseWrapper.getResponseInstance(response)
                         : JSONResponseWrapper.getDefaultFailResponseInstance();
@@ -77,9 +78,9 @@ public class DevelopmentGroupServiceImpl implements DevelopmentGroupService {
     }
 
     @Override
-    public JSONResponseWrapper deleteGroup(Integer grpId) {
+    public JSONResponseWrapper delete(Integer id) {
         try {
-            if (devGroupDAO.deleteGroup(grpId)) {
+            if (assumTypeDAO.delete(id)) {
                 return JSONResponseWrapper.getDefaultSuccessResponseInstance();
             } else {
                 return JSONResponseWrapper.getDefaultFailResponseInstance();

@@ -5,24 +5,19 @@
  */
 package edu.aspen.capstone.estimation.relative.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -39,15 +34,12 @@ public class AssumptionType implements AuditableBaseDomainObject, Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
-    @NotNull
+    @GeneratedValue
     @Column(name = "id")
     private Integer id;
     @Size(max = 45)
     @Column(name = "type_name")
     private String typeName;
-    @OneToMany(mappedBy = "type")
-    private Collection<Assumption> assumptionCollection;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREATED_TS",
             nullable = false,
@@ -73,16 +65,6 @@ public class AssumptionType implements AuditableBaseDomainObject, Serializable {
         this.typeName = typeName;
     }
 
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Assumption> getAssumptionCollection() {
-        return assumptionCollection;
-    }
-
-    public void setAssumptionCollection(Collection<Assumption> assumptionCollection) {
-        this.assumptionCollection = assumptionCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -92,7 +74,6 @@ public class AssumptionType implements AuditableBaseDomainObject, Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof AssumptionType)) {
             return false;
         }
