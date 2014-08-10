@@ -4,6 +4,7 @@ Ext.define('estools.view.users.Edit', {
     // Default proeprties
     layout: 'fit', width: '680', height: '450',
     autoShow: false,
+    maximized: true,
     /**
      * Initialize this component.
      */
@@ -22,7 +23,7 @@ Ext.define('estools.view.users.Edit', {
         this.items = [{
                 xtype: 'tabpanel',
                 items: [{
-                        title:'Main',
+                        title: 'Main',
                         xtype: 'form',
                         itemId: 'editForm',
                         border: 0,
@@ -85,6 +86,7 @@ Ext.define('estools.view.users.Edit', {
                         ]
                     }, {
                         title: 'Groups',
+                        itemId: 'groupsTab',
                         items: [{
                                 xtype: 'form',
                                 itemId: 'userGroupsForm',
@@ -108,12 +110,12 @@ Ext.define('estools.view.users.Edit', {
                                 items: [
                                     {
                                         xtype: 'hidden',
-                                        name: 'projectId',
+                                        name: 'userId',
                                         value: this.selectedProjectId
                                     },
                                     {
                                         xtype: 'itemselector',
-                                        name: 'userGroupIds',
+                                        name: 'groupIds',
                                         itemId: 'user-group-selector',
                                         anchor: '100%',
                                         fieldLabel: '',
@@ -133,7 +135,51 @@ Ext.define('estools.view.users.Edit', {
             }
 
         ];
-
+        this.on('afterrender', this.loadDefaultValues, this);
         this.callParent();
+    }, 
+    loadDefaultValues: function() {
+        if (this.isAdmin()) {
+            this.enableTabsForProject();
+            this.loadUserGroups();
+            //this.down('#projectmetricslistgrid').selectedProjectId = this.selectedProjectId;
+            //this.down('#projectmetricsForm').selectedProjectId = this.selectedProjectId;
+
+        } else {
+            this.disableTabsForProject();
+        }
+    },
+    isAdmin: function(){
+        return true;
+    },
+    enableTabsForProject: function() {
+        //disable the groups tab abd other tabs.
+        this.down('#groupsTab').setDisabled(false);
+    },
+    disableTabsForProject: function() {
+        //disable the groups tab abd other tabs.
+        this.down('#groupsTab').setDisabled(true);
+    },
+    loadUserGroups: function() {
+        //calls the server and gets the selected groups for the selected project
+        var url = './v1/usergroups/user/' + globalvar.currentUserId;
+        console.log(url);
+        Ext.Ajax.request({
+            method: 'GET',
+            url: url,
+            headers: {
+                'Accept': 'application/json'
+            },
+            scope: this,
+            success: function(response, options) {
+                var item = this.down("#user-group-selector");
+                var responseData = Ext.decode(response.responseText);
+                if (responseData.success) {
+                    item.setValue(responseData.results.groupIds);
+                }
+                else {
+                    item.setValue([]);
+                }
+            }});
     }
 });

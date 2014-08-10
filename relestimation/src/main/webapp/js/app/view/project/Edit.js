@@ -183,11 +183,11 @@ Ext.define('estools.view.project.Edit', {
                 ]
             }
         ];
-        this.on('afterrender', this.getProjectGroupValues, this);
+        this.on('afterrender', this.loadDefaultValues, this);
         // Add the save/cancel buttons
         this.callParent();
     },
-    getProjectGroupValues: function() {
+    loadDefaultValues: function() {
         if (this.selectedProjectId > 0) {
             this.enableTabsForProject();
             this.loadProjectGroups();

@@ -33,12 +33,14 @@ public class UserGroupServiceImpl implements UserGroupService {
         try {
             ModelMapper modelMapper = new ModelMapper();
             List<UserGroup> userGroups = userGroupDAO.getAllByUser(usrId);
-            UserGroupDO userGroup = new UserGroupDO();
-            userGroup.setUserId(usrId);
+             UserGroupDO userGroup = new UserGroupDO();
             if (CollectionUtils.isNotEmpty(userGroups)) {
+                
+                userGroup.setUserId(usrId);
                 userGroup = DOUtils.decodeUserGroup(userGroups);
             }
-            return JSONResponseWrapper.getResponseInstance(userGroup);
+            
+           return JSONResponseWrapper.getResponseInstance(userGroup);
         } catch (Exception e) {
             return JSONResponseWrapper.getErrorResponseInstance(
                     new JSONExceptionWrapper("Error", e));
