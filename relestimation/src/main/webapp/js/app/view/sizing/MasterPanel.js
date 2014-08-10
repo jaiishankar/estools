@@ -16,12 +16,8 @@ Ext.define('estools.view.sizing.MasterPanel', {
         // Set this panel's title
         this.title = 'Sizing';
 
-        // Create the detail panel to be displayed in the preview pane
-        this.previewpane = Ext.create('estools.view.sizing.DetailPanel');
-        //this.editPanel = Ext.create('estools.view.sizing.Edit');
-
         // Set the items (regions)
-        this.items = [this.createGrid(), this.createSouth(), this.createEast()];
+        this.items = [this.createGrid()];
 
         this.dockedItems = [this.createTopToolbar()];
 
@@ -42,63 +38,9 @@ Ext.define('estools.view.sizing.MasterPanel', {
 
         return this.grid;
     },
-    // Create the 'South' region that hold (by default) the Detail Pane
-    // The user could move the preview pane to the right or completly hide it
-    createSouth: function() {
-        this.south = Ext.create('Ext.panel.Panel', {
-            layout: 'fit',
-            region: 'south',
-            split: true,
-            collapsible: true,
-            border: false,
-            preventHeader: true,
-            title: 'Preview Pane',
-            flex: 1,
-            hidden: true
-        });
-
-        return this.south;
-    },
-    // Create 'East' region that could eventually hold the Detail Pane
-    // If the user select the preview pane to be on the right side
-    createEast: function() {
-        this.east = Ext.create('Ext.panel.Panel', {
-            layout: 'fit',
-            region: 'east',
-            split: true,
-            collapsible: true,
-            border: false,
-            preventHeader: true,
-            title: 'Preview Panel',
-            flex: 1,
-            items: this.previewpane
-        });
-        return this.east;
-    },
     createTopToolbar: function() {
         this.toolbar = Ext.create('widget.toolbar', {
-            items: [{
-                    xtype: 'cycle',
-                    text: 'Reading Pane',
-                    showText: true,
-                    prependText: 'Preview: ',
-                    scope: this,
-                    menu: {
-                        id: 'sizing-reading-menu',
-                        items: [{
-                                text: 'Bottom',
-                                checked: true,
-                                iconCls: 'preview-bottom'
-                            }, {
-                                text: 'Right',
-                                iconCls: 'preview-right'
-                            }, {
-                                text: 'Hide',
-                                iconCls: 'preview-hide'
-                            }]
-                    },
-                    changeHandler: this.onPreviewPaneChange
-                },
+            items: [
                 {text: 'New', iconCls: 'icon-add', action: 'newsizing'},
                 {text: 'Delete', iconCls: 'icon-delete', action: 'deletesizing'},
                 {text: 'Edit', iconCls: 'icon-edit', action: 'editsizing'}
@@ -130,27 +72,6 @@ Ext.define('estools.view.sizing.MasterPanel', {
     initEvents: function() {
         // call the superclass's initEvents implementation
         this.callParent();
-
-        // now add application specific events
-        // notice we use the selectionmodel's rowselect event rather
-        // than a click event from the grid to provide key navigation
-        // as well as mouse navigation
-        var usersGridSM = this.grid.getSelectionModel();
-        usersGridSM.on('selectionchange', this.onRowSelect, this);
-
-    },
-    // add a method called onRowSelect
-    // This matches the method signature as defined by the 'rowselect'
-    // event defined in Ext.selection.RowModel
-    onRowSelect: function(sm, rs) {
-        // getComponent will retrieve itemId's or id's. Note that itemId's
-        // are scoped locally to this instance of a component to avoid
-        // conflicts with the ComponentManager
-        if (rs.length) {
-            var detailPanel = this.previewpane;
-            detailPanel.updateDetail(rs[0].data);
-        }
-
     }
 
 });

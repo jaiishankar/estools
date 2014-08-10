@@ -4,6 +4,15 @@ Ext.define('estools.view.sizing.Grid', {
     alias: 'widget.sizinggrid',
     border: 0,
     id: 'sizinggridid',
+    plugins: [{
+            ptype: 'rowexpander',
+            rowBodyTpl: new Ext.XTemplate(
+                    'ID: <a href="./v1/sizing/{id}" target="_blank">{id}</a><br/>',
+                    'Size Name: {sizeName}<br/>',
+                    'Size Value: {sizeValue}<br/>',
+                    'Unit of Measurement: {uom}<br/>'
+                    )
+        }],
     // override
     initComponent: function() {
         // Pass in a column model definition

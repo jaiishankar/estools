@@ -5,7 +5,7 @@ Ext.define('estools.view.assumptiontype.DetailPanel', {
     // add tplMarkup as a new property
     tplMarkup: [
         'ID: <a href="./v1/assumptiontypes/{id}" target="_blank">{id}</a><br/>',
-        'Assumption Type Name: {name}<br/>',
+        'Assumption Type Name: {typeName}<br/>',
         '<br/><br/><hr/><b>Double click the row to edit</b><br/>'
     ],
     // startingMarup as a new property
