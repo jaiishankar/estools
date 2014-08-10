@@ -3,18 +3,23 @@ Ext.define('estools.controller.Project', {
     views: [
         'project.MasterPanel',
         'project.Edit',
-        'project.Grid'
+        'project.Grid',
+        'project.metrics.Grid'
     ],
     stores: [
-        'DevGroup'
+        'DevGroup', 'ProjectMetrics'
     ],
     models: [
-        'DevGroup'
+        'DevGroup', 'ProjectMetrics'
     ],
     init: function() {
         this.control({
             'projectgrid': {
                 itemdblclick: this.onItemDblClick
+            },
+            'projectmetricsgrid': {
+                select: this.metricsSelect,
+                itemdblclick: this.metricsSelect
             },
             'projectedit button[action=save]': {
                 click: this.updateProject
@@ -30,7 +35,14 @@ Ext.define('estools.controller.Project', {
             },
             'projectmasterpanel button[action=editproject]': {
                 click: this.editProject
+            },
+            'projectedit button[action=saveMetrics]': {
+                click: this.saveProjectMetrics
+            },
+            'projectedit button[action=newMetrics]': {
+                click: this.newProjectMetrics
             }
+
         });
     },
     deleteProjectWithPrompt: function() {
@@ -154,7 +166,6 @@ Ext.define('estools.controller.Project', {
             delete values.id;
             values.ownerId = globalvar.currentUserId;
         }
-
         Ext.Ajax.request({
             method: 'POST',
             url: './v1/projects/',
@@ -191,8 +202,6 @@ Ext.define('estools.controller.Project', {
                 values = form.getValues();
         values.projectId = win.selectedProjectId;
         values.groupIds = values.groupIds.split(",").map(Number);
-        console.log(values);
-
         Ext.Ajax.request({
             method: 'POST',
             url: './v1/projectgroups/project/groups/',
@@ -216,5 +225,58 @@ Ext.define('estools.controller.Project', {
                     });
                 }
             }});
+    },
+    saveProjectMetrics: function(button) {
+        var form = button.up('#projectmetricsForm'),
+                values = form.getValues();
+        values.projectId = form.selectedProjectId;
+        if (values.id === "") {
+            delete values.id;
+        } else {
+            values.id = parseInt(values.id);
+        }
+        
+        if (form.isValid()) {
+            Ext.Ajax.request({
+            method: 'POST',
+            url: './v1/metrics',
+            headers: {
+                'Accept': 'application/json'
+            },
+            jsonData: values,
+            scope: this,
+            success: function(response, options) {
+                var responseData = Ext.decode(response.responseText);
+                if (responseData.success) {
+                    metricsgrid = Ext.getCmp('projectmetricsgridid');
+                    metricsgrid.getStore().reload({
+                        callback: function() {
+                            metricsgrid.getView().refresh();
+                            var metricsForm = Ext.getCmp('projectmetricsForm');
+                            metricsForm.getForm().reset();
+                        }
+                    });
+                }
+                else {
+                    var errorObject = responseData.results;
+                    Ext.Msg.show({
+                        title: errorObject.title,
+                        msg: errorObject.msg,
+                        icon: Ext.Msg.ERROR,
+                        buttons: Ext.Msg.OK
+                    });
+                }
+            }});
+        }
+    },
+    metricsSelect: function(grid, record, index, options) {
+        var metricsForm = Ext.getCmp('projectmetricsForm');
+        metricsForm.loadRecord(record);
+        metricsForm.store = grid.store;
+
+    },
+    newProjectMetrics: function(button) {
+        var form = button.up('#projectmetricsForm');
+        form.getForm().reset();
     }
 });

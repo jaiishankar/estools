@@ -1,9 +1,3 @@
-/* 
- *  
- *  
- * 
- */
-
 Ext.define('estools.store.ProjectMetrics', {
     extend: 'Ext.data.Store',
     model: 'estools.model.ProjectMetrics',

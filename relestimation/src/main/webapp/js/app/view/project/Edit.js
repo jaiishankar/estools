@@ -1,11 +1,11 @@
 Ext.define('estools.view.project.Edit', {
     extend: 'Ext.window.Window',
     alias: 'widget.projectedit',
-    // Default proeprties
     layout: 'fit',
     width: '680', height: '450',
+    maximized: true,
     autoShow: false,
-    closable: false,
+    closable: true,
     config: {
         selectedProjectId: 0
     },
@@ -55,6 +55,11 @@ Ext.define('estools.view.project.Edit', {
                                         value: 0
                                     },
                                     {
+                                        xtype: 'hiddenfield',
+                                        name: 'ownerId',
+                                        value: 0
+                                    },
+                                    {
                                         xtype: 'textfield',
                                         itemId: 'projecttitleField',
                                         name: 'title',
@@ -65,36 +70,73 @@ Ext.define('estools.view.project.Edit', {
                                         itemId: 'projectdescField',
                                         name: 'description',
                                         fieldLabel: 'Project description'
-                                    },
-                                    {
                                     }
                                 ]
                             }]
                     }, {
                         title: 'Metrics',
                         itemId: 'metricsTab',
+                        layout: 'border',
                         items: [{
+                                region: 'center',
                                 xtype: 'projectmetricsgrid',
-                                itemId:'projectmetricsGrid',
+                                itemId: 'projectmetricslistgrid',
                                 selectedProjectId: this.selectedProjectId
-                            }],
-                        buttons: [{
+                            }, {
+                                region: 'south',
+                                xtype: 'form',
+                                id: 'projectmetricsForm',
+                                border: 0,
+                                boddyPadding: 5,
+                                selectedProjectId:0,
+                                buttons: [
+                                    {
+                                        itemId: 'newMetricsButton',
+                                        text: 'New',
+                                        action: 'newMetrics'
+                                    },
+                                    {
                                         itemId: 'saveMetricsButton',
-                                        text: 'Upadte',
+                                        text: 'Save',
                                         action: 'saveMetrics'
+                                    },
+                                    {
+                                        itemId: 'deleteMetricsButton',
+                                        text: 'Delete',
+                                        action: 'deleteMetrics'
                                     },
                                     {
                                         itemId: 'cancelButton',
                                         text: 'Cancel',
                                         scope: this,
                                         handler: this.destroy
-                                    }]
+                                    }],
+                                items: [
+                                    {
+                                        xtype: 'hidden',
+                                        name: 'projectId',
+                                        value: this.selectedProjectId
+                                    },
+                                    {
+                                        xtype: 'hidden',
+                                        name: 'id'
+                                    },
+                                    {
+                                        fieldLabel: 'Enter Project Metrics:',
+                                        width: 800,
+                                        xtype: 'textarea',
+                                        name: 'description',
+                                        allowBlank:false
+                                    }
+                                ]
+                            }]
+
                     }, {
                         title: 'Groups',
                         itemId: 'groupsTab',
                         items: [{
                                 xtype: 'form',
-                                itemId: 'projectGroupsForm',
+                                id: 'projectGroupsForm',
                                 border: 0,
                                 bodyPadding: 5,
                                 width: 600,
@@ -149,7 +191,9 @@ Ext.define('estools.view.project.Edit', {
         if (this.selectedProjectId > 0) {
             this.enableTabsForProject();
             this.loadProjectGroups();
-            this.down('#projectmetricsGrid').selectedProjectId = this.selectedProjectId;
+            this.down('#projectmetricslistgrid').selectedProjectId = this.selectedProjectId;
+            this.down('#projectmetricsForm').selectedProjectId = this.selectedProjectId;
+            
         } else {
             this.disableTabsForProject();
         }
