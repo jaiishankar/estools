@@ -35,7 +35,7 @@ public class ProjectMetric implements AuditableBaseDomainObject, Serializable {
     @GeneratedValue
     @Column(name = "id")
     private Integer id;
-    @Size(max = 150)
+    @Size(max = 1500)
     @Column(name = "description")
     private String description;
 

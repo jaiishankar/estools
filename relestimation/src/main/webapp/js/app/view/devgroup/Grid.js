@@ -9,7 +9,7 @@ Ext.define('estools.view.devgroup.Grid', {
         // Pass in a column model definition
         this.columns = [
             {text: "ID", width: 40, dataIndex: 'id', sortable: true, hidden: true},
-            {text: "Group Name", width: 300, dataIndex: 'name', sortable: true},
+            {text: "Group Name",flex:1, dataIndex: 'name', sortable: true},
             {text: "created", width: 3, dataIndex: 'created', hidden: true},
             {text: "updated", width: 3, dataIndex: 'updated', hidden: true}
         ];

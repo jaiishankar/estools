@@ -1,8 +1,3 @@
-/*
- *  
- *  
- * 
- */
 package edu.aspen.capstone.estimation.relative.service;
 
 import edu.aspen.capstone.estimation.relative.dao.ProjectMetricDAO;
@@ -35,7 +30,7 @@ public class ProjectMetricServiceImpl implements ProjectMetricService {
             List<ProjectMetricDO> projectMetrics = new ArrayList<ProjectMetricDO>();
             if (CollectionUtils.isNotEmpty(metrics)) {
                 for (ProjectMetric mtrc : metrics) {
-                    ProjectMetricDO temp = modelMapper.map(metrics, ProjectMetricDO.class);
+                    ProjectMetricDO temp = modelMapper.map(mtrc, ProjectMetricDO.class);
                     projectMetrics.add(temp);
                 }
             }

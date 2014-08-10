@@ -29,6 +29,7 @@ Ext.application({
         'estools.view.project.DetailPanel',
         'estools.view.project.MasterPanel',
         'estools.view.project.Edit',
+        'estools.view.project.metrics.Grid',
         'estools.view.sizing.Grid',
         'estools.view.sizing.DetailPanel',
         'estools.view.sizing.MasterPanel',
@@ -47,10 +48,10 @@ Ext.application({
         'Logon', 'User', 'DevGroup', 'Project'
     ],
     models: [
-        'User', 'DevGroup', 'Project', 'Sizing', 'Priority','AssumptionType'
+        'User', 'DevGroup', 'Project', 'Sizing', 'Priority','AssumptionType','ProjectMetrics'
     ],
     stores: [
-        'User', 'DevGroup', 'Project', 'Sizing', 'Priority','AssumptionType'
+        'User', 'DevGroup', 'Project', 'Sizing', 'Priority','AssumptionType','ProjectMetrics'
     ],
     // Stuff to do at launch
     launch: function() {

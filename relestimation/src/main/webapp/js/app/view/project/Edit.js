@@ -71,6 +71,25 @@ Ext.define('estools.view.project.Edit', {
                                 ]
                             }]
                     }, {
+                        title: 'Metrics',
+                        itemId: 'metricsTab',
+                        items: [{
+                                xtype: 'projectmetricsgrid',
+                                itemId:'projectmetricsGrid',
+                                selectedProjectId: this.selectedProjectId
+                            }],
+                        buttons: [{
+                                        itemId: 'saveMetricsButton',
+                                        text: 'Upadte',
+                                        action: 'saveMetrics'
+                                    },
+                                    {
+                                        itemId: 'cancelButton',
+                                        text: 'Cancel',
+                                        scope: this,
+                                        handler: this.destroy
+                                    }]
+                    }, {
                         title: 'Groups',
                         itemId: 'groupsTab',
                         items: [{
@@ -114,7 +133,7 @@ Ext.define('estools.view.project.Edit', {
                                         fromTitle: 'Available',
                                         value: [],
                                         toTitle: 'Selected'
-                                        
+
                                     }
                                 ]
                             }]
@@ -128,29 +147,43 @@ Ext.define('estools.view.project.Edit', {
     },
     getProjectGroupValues: function() {
         if (this.selectedProjectId > 0) {
-            //calls the server and gets the selected groups for the selected project
-            var url = './v1/projectgroups/project/' + this.selectedProjectId;
-            console.log(url);
-            Ext.Ajax.request({
-                method: 'GET',
-                url: url,
-                headers: {
-                    'Accept': 'application/json'
-                },
-                scope: this,
-                success: function(response, options) {
-                    var item = this.down("#project-itemselector-field");
-                    var responseData = Ext.decode(response.responseText);
-                    if (responseData.success) {
-                        item.setValue(responseData.results.groupIds);
-                    }
-                    else {
-                        item.setValue([]);
-                    }
-                }});
+            this.enableTabsForProject();
+            this.loadProjectGroups();
+            this.down('#projectmetricsGrid').selectedProjectId = this.selectedProjectId;
         } else {
-            //disable the groups tab abd other tabs.
-            this.down('#groupsTab').setDisabled(true);
+            this.disableTabsForProject();
         }
+    },
+    enableTabsForProject: function() {
+        //disable the groups tab abd other tabs.
+        this.down('#groupsTab').setDisabled(false);
+        this.down('#metricsTab').setDisabled(false);
+    },
+    disableTabsForProject: function() {
+        //disable the groups tab abd other tabs.
+        this.down('#groupsTab').setDisabled(true);
+        this.down('#metricsTab').setDisabled(true);
+    },
+    loadProjectGroups: function() {
+        //calls the server and gets the selected groups for the selected project
+        var url = './v1/projectgroups/project/' + this.selectedProjectId;
+        console.log(url);
+        Ext.Ajax.request({
+            method: 'GET',
+            url: url,
+            headers: {
+                'Accept': 'application/json'
+            },
+            scope: this,
+            success: function(response, options) {
+                var item = this.down("#project-itemselector-field");
+                var responseData = Ext.decode(response.responseText);
+                if (responseData.success) {
+                    item.setValue(responseData.results.groupIds);
+                }
+                else {
+                    item.setValue([]);
+                }
+            }});
     }
 });

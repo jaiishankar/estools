@@ -1,3 +1,7 @@
+.wrap .x-grid-cell-inner {
+    white-space: normal;
+}
+
 .x-form-multiselect-body .x-boundlist .x-mask {
     background: none;
 }
