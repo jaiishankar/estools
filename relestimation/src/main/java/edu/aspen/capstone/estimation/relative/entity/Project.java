@@ -67,13 +67,13 @@ public class Project implements AuditableBaseDomainObject, Serializable {
     private Collection<Feature> featureCollection;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "CREATED_TS",
+    @Column(name = "created_id",
             nullable = false,
             updatable = false)
     private Date created;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "UPDATED_TS", nullable = false)
+    @Column(name = "updated_id", nullable = false)
     private Date updated;
 
     public Project() {

@@ -7,9 +7,9 @@ package edu.aspen.capstone.estimation.relative.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -18,7 +18,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -35,27 +34,30 @@ public class ProjectContributors implements AuditableBaseDomainObject, Serializa
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
-    @NotNull
+    @GeneratedValue
     @Column(name = "id")
     private Integer id;
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @ManyToOne
-    private ApplicationUser userId;
-    @JoinColumn(name = "group_id", referencedColumnName = "id")
-    @ManyToOne
-    private DevelopmentGroup groupId;
-    @JoinColumn(name = "project_id", referencedColumnName = "id")
-    @ManyToOne
-    private Project projectId;
+
+    @Column(name = "user_id")
+    private Integer userId;
+
+    @Column(name = "group_id")
+    private Integer groupId;
+
+    @Column(name = "project_id")
+    private Integer projectId;
+
+    @Column(name = "contributor_type")
+    private String contributorType;
+
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "CREATED_TS",
+    @Column(name = "created_ts",
             nullable = false,
             updatable = false)
     private Date created;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "UPDATED_TS", nullable = false)
+    @Column(name = "updated_ts", nullable = false)
     private Date updated;
 
     public ProjectContributors() {
@@ -65,36 +67,46 @@ public class ProjectContributors implements AuditableBaseDomainObject, Serializa
         this.id = id;
     }
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public void setId(Integer id) {
         this.id = id;
     }
 
-    public ApplicationUser getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(ApplicationUser userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
-    public DevelopmentGroup getGroupId() {
+    public Integer getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(DevelopmentGroup groupId) {
+    public void setGroupId(Integer groupId) {
         this.groupId = groupId;
     }
 
-    public Project getProjectId() {
+    public Integer getProjectId() {
         return projectId;
     }
 
-    public void setProjectId(Project projectId) {
+    public void setProjectId(Integer projectId) {
         this.projectId = projectId;
+    }
+
+    public String getContributorType() {
+        return contributorType;
+    }
+
+    public void setContributorType(String contributorType) {
+        this.contributorType = contributorType;
     }
 
     @Override

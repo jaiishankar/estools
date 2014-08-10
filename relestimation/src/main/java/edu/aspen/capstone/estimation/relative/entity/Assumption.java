@@ -49,13 +49,13 @@ public class Assumption implements AuditableBaseDomainObject, Serializable {
     @ManyToOne
     private AssumptionType type;
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "CREATED_TS",
+    @Column(name = "created_ts",
             nullable = false,
             updatable = false)
     private Date created;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "UPDATED_TS", nullable = false)
+    @Column(name = "updated_ts", nullable = false)
     private Date updated;
 
     public Assumption() {

@@ -74,18 +74,18 @@ public class ApplicationUser implements AuditableBaseDomainObject,Serializable {
     private Collection<ProjectContributors> projectContributorsCollection;
     @OneToMany(mappedBy = "userId")
     private Collection<ProjectFeatureSizing> projectFeatureSizingCollection;
-    @Column(name = "LOGGED_IN")
+    @Column(name = "logged_in")
     private Boolean isLoggedIn;
-    @Column(name = "ACTIVE")
+    @Column(name = "active")
     private Boolean isActive;
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "CREATED_TS",
+    @Column(name = "created_ts",
             nullable = false,
             updatable = false, columnDefinition="DATETIME")
     private Date created;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "UPDATED_TS", nullable = false, columnDefinition="DATETIME")
+    @Column(name = "updated_ts", nullable = false, columnDefinition="DATETIME")
     private Date updated;
 
     public ApplicationUser() {

@@ -43,13 +43,13 @@ public class Priority implements AuditableBaseDomainObject, Serializable {
     private String priority;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "CREATED_TS",
+    @Column(name = "created_ts",
             nullable = false,
             updatable = false)
     private Date created;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "UPDATED_TS", nullable = false)
+    @Column(name = "updated_ts", nullable = false)
     private Date updated;
 
     public Priority() {

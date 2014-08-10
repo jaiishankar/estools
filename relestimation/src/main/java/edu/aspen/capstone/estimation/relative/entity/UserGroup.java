@@ -43,15 +43,15 @@ public class UserGroup implements AuditableBaseDomainObject, Serializable {
 
     @Column(name = "group_id")
     private Integer groupId;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "CREATED_TS",
+    @Column(name = "created_ts",
             nullable = false,
             updatable = false)
     private Date created;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "UPDATED_TS", nullable = false)
+    @Column(name = "updated_ts", nullable = false)
     private Date updated;
 
     public UserGroup() {
