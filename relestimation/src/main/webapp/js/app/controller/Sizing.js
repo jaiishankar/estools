@@ -1,40 +1,43 @@
-Ext.define('estools.controller.DevGroup', {
+/* 
+ *contains all the controller actions for sizing tab
+ */
+Ext.define('estools.controller.Sizing', {
     extend: 'Ext.app.Controller',
     views: [
-        'devgroup.MasterPanel',
-        'devgroup.Edit',
-        'devgroup.Grid'
+        'sizing.MasterPanel',
+        'sizing.Edit',
+        'sizing.Grid'
     ],
     stores: [
-        'DevGroup'
+        'Sizing'
     ],
     models: [
-        'DevGroup'
+        'Sizing'
     ],
     init: function() {
         this.control({
-            'devgroupsgrid': {
+            'sizinggrid': {
                 itemdblclick: this.onItemDblClick
             },
-            'devgroupedit button[action=save]': {
-                click: this.updateProcess
+            'sizingmasterpanel button[action=editsizing]': {
+                click: this.editSizing
             },
-            'devgroupmasterpanel button[action=newgroup]': {
-                click: this.addNewGroup
+            'sizingedit button[action=save]': {
+                click: this.updateSizing
             },
-            'devgroupmasterpanel button[action=deletegroup]': {
-                click: this.deleteGroupPrompt
+            'sizingmasterpanel button[action=deletesizing]': {
+                click: this.deleteSizingPrompt
             },
-            'devgroupmasterpanel button[action=editgroup]': {
-                click: this.editGroup
+            'sizingmasterpanel button[action=newsizing]': {
+                click: this.newSizing
             }
         });
     },
-    deleteGroupPrompt: function() {
-        var grid = Ext.getCmp('devgroupgridid');
+    deleteSizingPrompt: function() {
+        var grid = Ext.getCmp('sizinggridid');
         var devgrpsGridSM = grid.getSelectionModel();
         if (devgrpsGridSM.hasSelection()) {
-            Ext.MessageBox.confirm('Confirm', 'Are you sure you want to delete ?', this.deleteGroup, this);
+            Ext.MessageBox.confirm('Confirm', 'Are you sure you want to delete ?', this.deleteSizing, this);
         } else {
             Ext.Msg.show({
                 title: "Error !!!",
@@ -44,10 +47,25 @@ Ext.define('estools.controller.DevGroup', {
             });
         }
     },
-    editGroup: function() {
-        var grid = Ext.getCmp('devgroupgridid');
+    newSizing: function() {
+        var view = Ext.widget('sizingedit');
+        var saveBtn = view.down('#saveButton');
+        saveBtn.text = "Add";
+        view.show();
+    },
+    onItemDblClick: function(grid, record) {
+        var view = Ext.widget('sizingedit');
+        var form = view.down('form');
+        var saveBtn = view.down('#saveButton');
+        saveBtn.text = "Update";
+        form.loadRecord(record);
+        form.store = grid.store;
+        view.show();
+    },
+    editSizing: function() {
+        var grid = Ext.getCmp('sizinggridid');
         var devgrpsGridSM = grid.getSelectionModel();
-        var view = Ext.widget('devgroupedit');
+        var view = Ext.widget('sizingedit');
         var form = view.down('form');
         var saveBtn = view.down('#saveButton');
         saveBtn.text = "Update";
@@ -63,15 +81,9 @@ Ext.define('estools.controller.DevGroup', {
             view.show();
         }
     },
-    addNewGroup: function() {
-        var view = Ext.widget('devgroupedit');
-        var saveBtn = view.down('#saveButton');
-        saveBtn.text = "Add";
-        view.show();
-    },
-    deleteGroup: function(btn) {
+    deleteSizing: function(btn) {
         if (btn === 'yes') {
-            var grid = Ext.getCmp('devgroupgridid');
+            var grid = Ext.getCmp('sizinggridid');
             var devgrpsGridSM = grid.getSelectionModel();
             if (devgrpsGridSM.hasSelection()) {
                 var selectedRow = devgrpsGridSM.getSelection();
@@ -82,7 +94,7 @@ Ext.define('estools.controller.DevGroup', {
                 console.log(record);
                 Ext.Ajax.request({
                     method: 'POST',
-                    url: './v1/devgroups/delete/' + record.id,
+                    url: './v1/sizing/delete/' + record.id,
                     headers: {
                         'Accept': 'application/json'
                     },
@@ -90,7 +102,7 @@ Ext.define('estools.controller.DevGroup', {
                     success: function(response, options) {
                         var responseData = Ext.decode(response.responseText);
                         if (responseData.success) {
-                            var grid = Ext.getCmp('devgroupgridid');
+                            var grid = Ext.getCmp('sizinggridid');
                             grid.getStore().reload({
                                 callback: function() {
                                     grid.getView().refresh();
@@ -118,16 +130,7 @@ Ext.define('estools.controller.DevGroup', {
             }
         }
     },
-    onItemDblClick: function(grid, record) {
-        var view = Ext.widget('devgroupedit');
-        var form = view.down('form');
-        var saveBtn = view.down('#saveButton');
-        saveBtn.text = "Update";
-        form.loadRecord(record);
-        form.store = grid.store;
-        view.show();
-    },
-    updateProcess: function(button) {
+    updateSizing: function(button) {
         var win = button.up('window'),
                 form = win.down('form'),
                 values = form.getValues();
@@ -136,7 +139,7 @@ Ext.define('estools.controller.DevGroup', {
         }
         Ext.Ajax.request({
             method: 'POST',
-            url: './v1/devgroups/',
+            url: './v1/sizing/',
             headers: {
                 'Accept': 'application/json'
             },
@@ -145,7 +148,7 @@ Ext.define('estools.controller.DevGroup', {
             success: function(response, options) {
                 var responseData = Ext.decode(response.responseText);
                 if (responseData.success) {
-                    var grid = Ext.getCmp('devgroupgridid');
+                    var grid = Ext.getCmp('sizinggridid');
                     grid.getStore().reload({
                         callback: function() {
                             grid.getView().refresh();
@@ -164,5 +167,5 @@ Ext.define('estools.controller.DevGroup', {
                 }
             }});
     }
-//}
 });
+
