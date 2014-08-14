@@ -45,7 +45,7 @@ Ext.application({
     ],
     // Required controllers
     controllers: [
-        'Logon', 'User', 'DevGroup', 'Project','Sizing'
+        'Logon', 'User', 'DevGroup', 'Project','Sizing','Priorities'
     ],
     models: [
         'User', 'DevGroup', 'Project', 'Sizing', 'Priority','AssumptionType','ProjectMetrics'
