@@ -1,7 +1,7 @@
 /* 
  *contains all the controller actions for sizing tab
  */
-Ext.define('estools.controller.Priorities', {
+Ext.define('estools.controller.Assumptiontype', {
     extend: 'Ext.app.Controller',
     views: [
         'priority.MasterPanel',
@@ -16,25 +16,25 @@ Ext.define('estools.controller.Priorities', {
     ],
     init: function() {
         this.control({
-            'prioritygrid': {
+            'assumtypegrid': {
                 itemdblclick: this.onItemDblClick
             },
-            'prioritymasterpanel button[action=editpriority]': {
+            'assumtypemasterpanel button[action=editAssumType]': {
                 click: this.editPriorities
             },
-            'priorityedit button[action=save]': {
+            'assumtypeedit button[action=save]': {
                 click: this.updatePriorities
             },
-            'prioritymasterpanel button[action=deletepriority]': {
+            'assumtypemasterpanel button[action=deleteAssumType]': {
                 click: this.deletePrioritiyPrompt
             },
-            'prioritymasterpanel button[action=newpriority]': {
+            'assumtypemasterpanel button[action=newAssumType]': {
                 click: this.newPriority
             }
         });
     },
     deletePrioritiyPrompt: function() {
-        var grid = Ext.getCmp('prioritygridid');
+        var grid = Ext.getCmp('assumtypegridid');
         var devgrpsGridSM = grid.getSelectionModel();
         if (devgrpsGridSM.hasSelection()) {
             Ext.MessageBox.confirm('Confirm', 'Are you sure you want to delete ?', this.deletePriority, this);
@@ -48,13 +48,13 @@ Ext.define('estools.controller.Priorities', {
         }
     },
     newPriority: function() {
-        var view = Ext.widget('priorityedit');
+        var view = Ext.widget('assumtypeedit');
         var saveBtn = view.down('#saveButton');
         saveBtn.text = "Add";
         view.show();
     },
     onItemDblClick: function(grid, record) {
-        var view = Ext.widget('priorityedit');
+        var view = Ext.widget('assumtypeedit');
         var form = view.down('form');
         var saveBtn = view.down('#saveButton');
         saveBtn.text = "Update";
@@ -63,9 +63,9 @@ Ext.define('estools.controller.Priorities', {
         view.show();
     },
     editPriorities: function() {
-        var grid = Ext.getCmp('sizinggridid');
+        var grid = Ext.getCmp('assumtypegridid');
         var devgrpsGridSM = grid.getSelectionModel();
-        var view = Ext.widget('priorityedit');
+        var view = Ext.widget('assumtypeedit');
         var form = view.down('form');
         var saveBtn = view.down('#saveButton');
         saveBtn.text = "Update";
@@ -83,7 +83,7 @@ Ext.define('estools.controller.Priorities', {
     },
     deletePriority: function(btn) {
         if (btn === 'yes') {
-            var grid = Ext.getCmp('prioritygridid');
+            var grid = Ext.getCmp('assumtypegridid');
             var devgrpsGridSM = grid.getSelectionModel();
             if (devgrpsGridSM.hasSelection()) {
                 var selectedRow = devgrpsGridSM.getSelection();
@@ -94,7 +94,7 @@ Ext.define('estools.controller.Priorities', {
                 console.log(record);
                 Ext.Ajax.request({
                     method: 'POST',
-                    url: './v1/priorities/delete/' + record.id,
+                    url: './v1/assumptiontypes/delete/' + record.id,
                     headers: {
                         'Accept': 'application/json'
                     },
@@ -102,7 +102,7 @@ Ext.define('estools.controller.Priorities', {
                     success: function(response, options) {
                         var responseData = Ext.decode(response.responseText);
                         if (responseData.success) {
-                            var grid = Ext.getCmp('prioritygridid');
+                            var grid = Ext.getCmp('assumtypegridid');
                             grid.getStore().reload({
                                 callback: function() {
                                     grid.getView().refresh();
@@ -139,7 +139,7 @@ Ext.define('estools.controller.Priorities', {
         }
         Ext.Ajax.request({
             method: 'POST',
-            url: './v1/priorities/',
+            url: './v1/assumptiontypes/',
             headers: {
                 'Accept': 'application/json'
             },
@@ -148,7 +148,7 @@ Ext.define('estools.controller.Priorities', {
             success: function(response, options) {
                 var responseData = Ext.decode(response.responseText);
                 if (responseData.success) {
-                    var grid = Ext.getCmp('prioritygridid');
+                    var grid = Ext.getCmp('assumtypegridid');
                     grid.getStore().reload({
                         callback: function() {
                             grid.getView().refresh();
@@ -168,4 +168,3 @@ Ext.define('estools.controller.Priorities', {
             }});
     }
 });
-

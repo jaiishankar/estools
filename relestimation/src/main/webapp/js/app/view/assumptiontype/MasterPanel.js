@@ -99,9 +99,9 @@ Ext.define('estools.view.assumptiontype.MasterPanel', {
                     },
                     changeHandler: this.onPreviewPaneChange
                 },
-                {text: 'New', iconCls: 'icon-add', action: 'newgroup'},
-                {text: 'Delete', iconCls: 'icon-delete', action: 'deletegroup'},
-                {text: 'Edit', iconCls: 'icon-edit', action: 'editgroup'}
+                {text: 'New', iconCls: 'icon-add', action: 'newAssumType'},
+                {text: 'Delete', iconCls: 'icon-delete', action: 'deleteAssumType'},
+                {text: 'Edit', iconCls: 'icon-edit', action: 'editAssumType'}
             ]
         });
 
