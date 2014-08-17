@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Feature.findByName", query = "SELECT f FROM Feature f WHERE f.name = :name"),
     @NamedQuery(name = "Feature.findByScoped", query = "SELECT f FROM Feature f WHERE f.scoped = :scoped"),
     @NamedQuery(name = "Feature.findByProject", query = "SELECT f FROM Feature f WHERE f.projectId = :projectId")
-        
+
 })
 public class Feature implements AuditableBaseDomainObject, Serializable {
 
@@ -44,6 +44,10 @@ public class Feature implements AuditableBaseDomainObject, Serializable {
 
     @Column(name = "type")
     private Integer type;
+
+    @Size(max = 200)
+    @Column(name = "title")
+    private String title;
 
     @Size(max = 200)
     @Column(name = "task")
@@ -167,4 +171,13 @@ public class Feature implements AuditableBaseDomainObject, Serializable {
     public Date getUpdated() {
         return this.updated;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    
 }

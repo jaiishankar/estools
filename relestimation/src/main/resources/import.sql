@@ -31,8 +31,8 @@ INSERT INTO `tms`.`priority` (`CREATED_TS`, `priority`, `UPDATED_TS`) VALUES (No
 INSERT INTO `tms`.`priority` (`CREATED_TS`, `priority`, `UPDATED_TS`) VALUES (Now(), 'Low', Now());
 
 -- Insert the Assumption Types
-INSERT INTO `tms`.`assumption_type` (`CREATED_TS`, `type_name`, `UPDATED_TS`) VALUES (now(), 'resource', now());
-INSERT INTO `tms`.`assumption_type` (`CREATED_TS`, `type_name`, `UPDATED_TS`) VALUES (now(), 'scope', now());
-INSERT INTO `tms`.`assumption_type` (`CREATED_TS`, `type_name`, `UPDATED_TS`) VALUES (now(), 'estimation', now());
-INSERT INTO `tms`.`assumption_type` (`CREATED_TS`, `type_name`, `UPDATED_TS`) VALUES (now(), 'feature', now());
-INSERT INTO `tms`.`assumption_type` (`CREATED_TS`, `type_name`, `UPDATED_TS`) VALUES (now(), 'timeline', now());
+INSERT INTO `tms`.`assumption_type` (`CREATED_TS`, `type_name`, `UPDATED_TS`) VALUES (now(), 'Resource', now());
+INSERT INTO `tms`.`assumption_type` (`CREATED_TS`, `type_name`, `UPDATED_TS`) VALUES (now(), 'Scope', now());
+INSERT INTO `tms`.`assumption_type` (`CREATED_TS`, `type_name`, `UPDATED_TS`) VALUES (now(), 'Estimation', now());
+INSERT INTO `tms`.`assumption_type` (`CREATED_TS`, `type_name`, `UPDATED_TS`) VALUES (now(), 'Feature', now());
+INSERT INTO `tms`.`assumption_type` (`CREATED_TS`, `type_name`, `UPDATED_TS`) VALUES (now(), 'Timeline', now());
