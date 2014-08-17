@@ -1,31 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package edu.aspen.capstone.estimation.relative.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -37,43 +24,37 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Businesscase.findAll", query = "SELECT b FROM Businesscase b"),
     @NamedQuery(name = "Businesscase.findById", query = "SELECT b FROM Businesscase b WHERE b.id = :id"),
-    @NamedQuery(name = "Businesscase.findByTaskDetails", query = "SELECT b FROM Businesscase b WHERE b.taskDetails = :taskDetails"),
-    @NamedQuery(name = "Businesscase.findByNotes", query = "SELECT b FROM Businesscase b WHERE b.notes = :notes"),
-    @NamedQuery(name = "Businesscase.findByQuestions", query = "SELECT b FROM Businesscase b WHERE b.questions = :questions"),
-    @NamedQuery(name = "Businesscase.findByName", query = "SELECT b FROM Businesscase b WHERE b.name = :name"),
-    @NamedQuery(name = "Businesscase.findByScoped", query = "SELECT b FROM Businesscase b WHERE b.scoped = :scoped")})
+    @NamedQuery(name = "Businesscase.findByScoped", query = "SELECT b FROM Businesscase b WHERE b.scoped = :scoped"),
+    @NamedQuery(name = "Businesscase.findByFeature", query = "SELECT b FROM Businesscase b WHERE b.featureId = :featureId")
+})
 public class Businesscase implements AuditableBaseDomainObject, Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
-    @NotNull
+    @GeneratedValue
     @Column(name = "id")
     private Integer id;
     @Size(max = 200)
     @Column(name = "task_details")
     private String taskDetails;
     @Size(max = 500)
-    @Column(name = "notes")
-    private String notes;
+    @Column(name = "note")
+    private String note;
     @Size(max = 500)
-    @Column(name = "questions")
-    private String questions;
+    @Column(name = "question")
+    private String question;
     @Size(max = 45)
     @Column(name = "name")
     private String name;
     @Size(max = 1)
     @Column(name = "scoped")
     private String scoped;
-    @OneToMany(mappedBy = "section")
-    private Collection<Assumption> assumptionCollection;
-    @JoinColumn(name = "priority_id", referencedColumnName = "id")
-    @ManyToOne
-    private Priority priorityId;
-    @JoinColumn(name = "feature_id", referencedColumnName = "id")
-    @ManyToOne
-    private Feature featureId;
-    
-        @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "priority_id")
+    private Integer priorityId;
+    @Column(name = "feature_id")
+    private Integer featureId;
+
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_ts",
             nullable = false,
             updatable = false)
@@ -106,20 +87,20 @@ public class Businesscase implements AuditableBaseDomainObject, Serializable {
         this.taskDetails = taskDetails;
     }
 
-    public String getNotes() {
-        return notes;
+    public String getNote() {
+        return note;
     }
 
-    public void setNotes(String notes) {
-        this.notes = notes;
+    public void setNote(String notes) {
+        this.note = notes;
     }
 
-    public String getQuestions() {
-        return questions;
+    public String getQuestion() {
+        return question;
     }
 
-    public void setQuestions(String questions) {
-        this.questions = questions;
+    public void setQuestion(String questions) {
+        this.question = questions;
     }
 
     public String getName() {
@@ -136,32 +117,6 @@ public class Businesscase implements AuditableBaseDomainObject, Serializable {
 
     public void setScoped(String scoped) {
         this.scoped = scoped;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Assumption> getAssumptionCollection() {
-        return assumptionCollection;
-    }
-
-    public void setAssumptionCollection(Collection<Assumption> assumptionCollection) {
-        this.assumptionCollection = assumptionCollection;
-    }
-
-    public Priority getPriorityId() {
-        return priorityId;
-    }
-
-    public void setPriorityId(Priority priorityId) {
-        this.priorityId = priorityId;
-    }
-
-    public Feature getFeatureId() {
-        return featureId;
-    }
-
-    public void setFeatureId(Feature featureId) {
-        this.featureId = featureId;
     }
 
     @Override
@@ -191,7 +146,7 @@ public class Businesscase implements AuditableBaseDomainObject, Serializable {
 
     @Override
     public void setCreated(Date date) {
-        this.created=date;
+        this.created = date;
     }
 
     @Override
@@ -201,12 +156,28 @@ public class Businesscase implements AuditableBaseDomainObject, Serializable {
 
     @Override
     public void setUpdated(Date date) {
-        this.updated=date;
+        this.updated = date;
     }
 
     @Override
     public Date getUpdated() {
         return this.updated;
     }
-    
+
+    public Integer getPriorityId() {
+        return priorityId;
+    }
+
+    public void setPriorityId(Integer priorityId) {
+        this.priorityId = priorityId;
+    }
+
+    public Integer getFeatureId() {
+        return featureId;
+    }
+
+    public void setFeatureId(Integer featureId) {
+        this.featureId = featureId;
+    }
+
 }

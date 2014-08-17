@@ -1,5 +1,6 @@
 package edu.aspen.capstone.estimation.relative.dao;
 
+import edu.aspen.capstone.estimation.relative.entity.Businesscase;
 import edu.aspen.capstone.estimation.relative.entity.Feature;
 import java.util.List;
 import org.hibernate.HibernateException;
@@ -13,20 +14,25 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author jaiishankar
  */
-@Repository("FeatureDAO")
+@Repository("BusinesscaseDAO")
 @Transactional
-public class FeatureDAOImpl implements FeatureDAO {
-
+public class BusinesscaseDAOImpl implements BusinesscaseDAO {
+    
+    
     @Autowired
     private SessionFactory sessionFactory;
-
+    /**
+     * 
+     * @param bc
+     * @return 
+     */
     @Override
-    public Feature add(Feature fea) {
+    public Businesscase add(Businesscase bc) {
         try {
-            sessionFactory.getCurrentSession().saveOrUpdate(fea);
+           sessionFactory.getCurrentSession().saveOrUpdate(bc);
             sessionFactory.getCurrentSession().flush();
-            sessionFactory.getCurrentSession().refresh(fea);
-            return fea;
+            sessionFactory.getCurrentSession().refresh(bc);
+            return bc;
         } catch (HibernateException hbe) {
             hbe.printStackTrace();
             return null;
@@ -34,9 +40,9 @@ public class FeatureDAOImpl implements FeatureDAO {
     }
 
     @Override
-    public Feature update(Feature fea) {
+    public Businesscase update(Businesscase bc) {
         try {
-            return this.add(fea);
+            return this.add(bc);
         } catch (HibernateException hbe) {
             hbe.printStackTrace();
             return null;
@@ -44,9 +50,9 @@ public class FeatureDAOImpl implements FeatureDAO {
     }
 
     @Override
-    public Feature get(Integer fId) {
+    public Businesscase get(Integer bcId) {
         try {
-            return (Feature) sessionFactory.getCurrentSession().get(Feature.class, fId);
+            return (Businesscase) sessionFactory.getCurrentSession().get(Businesscase.class, bcId);
         } catch (HibernateException hbe) {
             hbe.printStackTrace();
             return null;
@@ -54,9 +60,9 @@ public class FeatureDAOImpl implements FeatureDAO {
     }
 
     @Override
-    public Boolean delete(Integer fId) {
+    public Boolean delete(Integer bcId) {
         try {
-            sessionFactory.getCurrentSession().delete(this.get(fId));
+            sessionFactory.getCurrentSession().delete(this.get(bcId));
             return true;
         } catch (HibernateException hbe) {
             hbe.printStackTrace();
@@ -65,14 +71,19 @@ public class FeatureDAOImpl implements FeatureDAO {
     }
 
     @Override
-    public List<Feature> getAllForProject(Integer prjId) {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("Feature.findByProject");
-            query.setInteger("projectId", prjId);
-            List<Feature> myFeatures = query.list();
+    public List<Businesscase> getAllCasesForFeature(Integer fId) {
+        try {
+           Query query = sessionFactory.getCurrentSession().getNamedQuery("Businesscase.findByFeature");
+            query.setInteger("projectId", fId);
+            List<Businesscase> myFeatures = query.list();
             if (!myFeatures.isEmpty()) {
                 return myFeatures;
             }
             return null;
+        } catch (HibernateException hbe) {
+            hbe.printStackTrace();
+            return null;
+        }
     }
 
 }

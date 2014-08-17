@@ -1,6 +1,7 @@
 package edu.aspen.capstone.estimation.relative.dao;
 
 import edu.aspen.capstone.estimation.relative.entity.Feature;
+import java.util.List;
 
 /**
  *
@@ -15,5 +16,7 @@ public interface FeatureDAO {
     Feature get(Integer fId);
     
     Boolean delete(Integer fId);
+    
+    List<Feature> getAllForProject(Integer prjId);
 
 }

@@ -11,8 +11,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -31,7 +29,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Assumption.findAll", query = "SELECT a FROM Assumption a"),
     @NamedQuery(name = "Assumption.findById", query = "SELECT a FROM Assumption a WHERE a.id = :id"),
-    @NamedQuery(name = "Assumption.findByAssumption", query = "SELECT a FROM Assumption a WHERE a.assumption = :assumption")})
+    @NamedQuery(name = "Assumption.findByAssumption", query = "SELECT a FROM Assumption a WHERE a.assumption = :assumption"),
+    @NamedQuery(name = "Assumption.findByBusinesscase", query = "SELECT a FROM Assumption a WHERE a.caseId = :caseId"),
+})
 public class Assumption implements AuditableBaseDomainObject, Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,12 +42,11 @@ public class Assumption implements AuditableBaseDomainObject, Serializable {
     @Size(max = 1500)
     @Column(name = "assumption")
     private String assumption;
-    @JoinColumn(name = "section", referencedColumnName = "id")
-    @ManyToOne
-    private Businesscase section;
-    @JoinColumn(name = "type", referencedColumnName = "id")
-    @ManyToOne
-    private AssumptionType type;
+    @Column(name = "businesscase_id")
+    private Integer caseId;
+
+    @Column(name = "type_id")
+    private Integer typeId;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_ts",
             nullable = false,
@@ -73,22 +72,6 @@ public class Assumption implements AuditableBaseDomainObject, Serializable {
         this.assumption = assumption;
     }
 
-    public Businesscase getSection() {
-        return section;
-    }
-
-    public void setSection(Businesscase section) {
-        this.section = section;
-    }
-
-    public AssumptionType getType() {
-        return type;
-    }
-
-    public void setType(AssumptionType type) {
-        this.type = type;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -98,7 +81,6 @@ public class Assumption implements AuditableBaseDomainObject, Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Assumption)) {
             return false;
         }
