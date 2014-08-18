@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.aspen.capstone.estimation.relative.entity;
 
 import java.io.Serializable;
@@ -11,8 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -21,6 +14,7 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
+ * Entity object for recording contributors for this project
  *
  * @author jaiishankar
  */
@@ -29,7 +23,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ProjectContributors.findAll", query = "SELECT p FROM ProjectContributors p"),
-    @NamedQuery(name = "ProjectContributors.findById", query = "SELECT p FROM ProjectContributors p WHERE p.id = :id")})
+    @NamedQuery(name = "ProjectContributors.findById", query = "SELECT p FROM ProjectContributors p WHERE p.id = :id"),
+    @NamedQuery(name = "ProjectContributors.findByUserId", query = "SELECT p FROM ProjectContributors p WHERE p.userId = :userId"),
+    @NamedQuery(name = "ProjectContributors.findByGroupId", query = "SELECT p FROM ProjectContributors p WHERE p.groupId = :groupId"),
+    @NamedQuery(name = "ProjectContributors.findByProjectId", query = "SELECT p FROM ProjectContributors p WHERE p.projectId = :projectId")
+})
 public class ProjectContributors implements AuditableBaseDomainObject, Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -118,7 +116,6 @@ public class ProjectContributors implements AuditableBaseDomainObject, Serializa
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof ProjectContributors)) {
             return false;
         }

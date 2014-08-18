@@ -1,8 +1,3 @@
-/*
- *  
- *  
- * 
- */
 package edu.aspen.capstone.estimation.relative.resource;
 
 import edu.aspen.capstone.estimation.relative.domain.DevelopmentGroupDO;
@@ -17,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- *
+ * REST controller class for all the Development Groups actions for users
  * @author jaiishankar
  */
 @Controller
@@ -30,7 +25,6 @@ public class DevGroupResourceController {
             value = "/devgroups", headers = "Accept=application/json")
     public @ResponseBody
     JSONResponseWrapper listAll() {
-        System.out.println("Listing all the groups");
         return service.listAll();
     }
 
@@ -38,7 +32,6 @@ public class DevGroupResourceController {
             value = "/devgroups/{id}", headers = "Accept=application/json")
     public @ResponseBody
     JSONResponseWrapper getGroupById(@PathVariable Integer id) {
-        System.out.println("Listing all the groups");
         return service.listGroup(id);
     }
 
@@ -60,7 +53,6 @@ public class DevGroupResourceController {
             value = "/devgroups/delete/{id}", headers = "Accept=application/json")
     public @ResponseBody
     JSONResponseWrapper deleteGroup(@PathVariable Integer id) {
-        System.out.println("Inside delete for id: "+ id);
         return service.deleteGroup(id);
     }
 }

@@ -1,28 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.aspen.capstone.estimation.relative.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.Column;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
+ * Entity class for Project-feature-sizing data
  * @author jaiishankar
  */
 @Entity
@@ -30,30 +22,33 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ProjectFeatureSizing.findAll", query = "SELECT p FROM ProjectFeatureSizing p"),
-    @NamedQuery(name = "ProjectFeatureSizing.findById", query = "SELECT p FROM ProjectFeatureSizing p WHERE p.id = :id")})
+    @NamedQuery(name = "ProjectFeatureSizing.findById", query = "SELECT p FROM ProjectFeatureSizing p WHERE p.id = :id"),
+    @NamedQuery(name = "ProjectFeatureSizing.findByFeatureId", query = "SELECT p FROM ProjectFeatureSizing p WHERE p.featureId = :featureId"),
+    @NamedQuery(name = "ProjectFeatureSizing.findByProjectId", query = "SELECT p FROM ProjectFeatureSizing p WHERE p.projectId = :projectId")
+})
 public class ProjectFeatureSizing implements AuditableBaseDomainObject, Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
-    @NotNull
+    @GeneratedValue
     @Column(name = "id")
     private Integer id;
-    @JoinColumn(name = "sizing_id", referencedColumnName = "id")
-    @ManyToOne
-    private Sizing sizingId;
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @ManyToOne
-    private ApplicationUser userId;
-    @JoinColumn(name = "group_id", referencedColumnName = "id")
-    @ManyToOne
-    private DevelopmentGroup groupId;
-    @JoinColumn(name = "feature_id", referencedColumnName = "id")
-    @ManyToOne
-    private Feature featureId;
-    @JoinColumn(name = "project_id", referencedColumnName = "id")
-    @ManyToOne
-    private Project projectId;
+
+    @Column(name = "sizing_id")
+    private Integer sizingId;
+
+    @Column(name = "user_id")
+    private Integer userId;
+
+    @Column(name = "group_id")
+    private Integer groupId;
+
+    @Column(name = "feature_id")
+    private Integer featureId;
+
+    @Column(name = "project_id")
+    private Integer projectId;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_ts",
             nullable = false,
@@ -71,51 +66,53 @@ public class ProjectFeatureSizing implements AuditableBaseDomainObject, Serializ
         this.id = id;
     }
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public void setId(Integer id) {
         this.id = id;
     }
 
-    public Sizing getSizingId() {
+    public Integer getSizingId() {
         return sizingId;
     }
 
-    public void setSizingId(Sizing sizingId) {
+    public void setSizingId(Integer sizingId) {
         this.sizingId = sizingId;
     }
 
-    public ApplicationUser getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(ApplicationUser userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
-    public DevelopmentGroup getGroupId() {
+    public Integer getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(DevelopmentGroup groupId) {
+    public void setGroupId(Integer groupId) {
         this.groupId = groupId;
     }
 
-    public Feature getFeatureId() {
+    public Integer getFeatureId() {
         return featureId;
     }
 
-    public void setFeatureId(Feature featureId) {
+    public void setFeatureId(Integer featureId) {
         this.featureId = featureId;
     }
 
-    public Project getProjectId() {
+    public Integer getProjectId() {
         return projectId;
     }
 
-    public void setProjectId(Project projectId) {
+    public void setProjectId(Integer projectId) {
         this.projectId = projectId;
     }
 
