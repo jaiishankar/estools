@@ -64,9 +64,9 @@ public class UserGroupDAOImpl implements UserGroupDAO {
             Query query = sessionFactory.getCurrentSession().getNamedQuery("UserGroup.deletByUserId");
             if (CollectionUtils.isNotEmpty(groups)) {
                 for (UserGroup grp : groups) {
-                     query.setInteger("userId", grp.getUserId());
-                     query.setInteger("groupId", grp.getGroupId());
-                     query.executeUpdate();
+                    query.setInteger("userId", grp.getUserId());
+                    query.setInteger("groupId", grp.getGroupId());
+                    query.executeUpdate();
                 }
                 return true;
             } else {
@@ -78,4 +78,20 @@ public class UserGroupDAOImpl implements UserGroupDAO {
         }
     }
 
+    @Override
+    public List<UserGroup> getAllByGroup(Integer groupId) {
+        try {
+            Query query = sessionFactory.getCurrentSession().getNamedQuery("UserGroup.findByGroupId");
+            query.setInteger("id", groupId);
+            List<UserGroup> myUserGroups = query.list();
+
+            if (!myUserGroups.isEmpty()) {
+                return myUserGroups;
+            }
+            return null;
+        } catch (HibernateException hbe) {
+            hbe.printStackTrace();
+            return null;
+        }
+    }
 }

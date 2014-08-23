@@ -10,6 +10,8 @@ import java.util.List;
 public interface UserGroupDAO {
     
     List<UserGroup> getAllByUser(Integer userId);
+    
+    List<UserGroup> getAllByGroup(Integer groupId);
 
     List<UserGroup> updateGroupsForUser(List<UserGroup> groups);
     

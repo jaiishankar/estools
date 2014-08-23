@@ -1,8 +1,3 @@
-/*
- *  
- *  
- * 
- */
 package edu.aspen.capstone.estimation.relative.domain;
 
 import java.util.Date;

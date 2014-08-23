@@ -17,7 +17,10 @@ Ext.define('estools.controller.DevGroup', {
                 itemdblclick: this.onItemDblClick
             },
             'devgroupedit button[action=save]': {
-                click: this.updateProcess
+                click: this.updateDevGroup
+            },
+            'devgroupedit button[action=saveusertogroupsButton]': {
+                click: this.updateUserGroup
             },
             'devgroupmasterpanel button[action=newgroup]': {
                 click: this.addNewGroup
@@ -125,9 +128,11 @@ Ext.define('estools.controller.DevGroup', {
         saveBtn.text = "Update";
         form.loadRecord(record);
         form.store = grid.store;
+        view.selectedGroupdId = record.data.id;
+        console.log(view.selectedGroupdId);
         view.show();
     },
-    updateProcess: function(button) {
+    updateDevGroup: function(button) {
         var win = button.up('window'),
                 form = win.down('form'),
                 values = form.getValues();
@@ -151,6 +156,39 @@ Ext.define('estools.controller.DevGroup', {
                             grid.getView().refresh();
                         }
                     });
+                    win.close();
+                }
+                else {
+                    var errorObject = responseData.results;
+                    Ext.Msg.show({
+                        title: errorObject.title,
+                        msg: errorObject.msg,
+                        icon: Ext.Msg.ERROR,
+                        buttons: Ext.Msg.OK
+                    });
+                }
+            }});
+    },
+    updateUserGroup: function(button){
+        
+        var win = button.up('window'),
+                form = win.down('#userstogroupsForm'),
+                values = form.getValues();
+        console.log(values);
+        values.groupId = win.selectedGroupdId;
+        values.userIds = values.userIds.split(",").map(Number);
+        console.log(values);
+        Ext.Ajax.request({
+            method: 'POST',
+            url: './v1/usergroups/group/users/',
+            headers: {
+                'Accept': 'application/json'
+            },
+            jsonData: values,
+            scope: this,
+            success: function(response, options) {
+                var responseData = Ext.decode(response.responseText);
+                if (responseData.success) {
                     win.close();
                 }
                 else {

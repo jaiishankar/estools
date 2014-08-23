@@ -5,12 +5,11 @@
  */
 package edu.aspen.capstone.estimation.relative.utils;
 
+import edu.aspen.capstone.estimation.relative.domain.GroupUserDO;
 import edu.aspen.capstone.estimation.relative.domain.ProjectGroupDO;
-import edu.aspen.capstone.estimation.relative.domain.ProjectMetricDO;
 import edu.aspen.capstone.estimation.relative.domain.UserGroupDO;
 import edu.aspen.capstone.estimation.relative.entity.AuditableBaseDomainObject;
 import edu.aspen.capstone.estimation.relative.entity.ProjectGroups;
-import edu.aspen.capstone.estimation.relative.entity.ProjectMetric;
 import edu.aspen.capstone.estimation.relative.entity.UserGroup;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -37,6 +36,22 @@ public class DOUtils {
             groups.add(ugroup.getGroupId());
         }
         result.setGroupIds(groups);
+        return result;
+    }
+    
+      /**
+     *
+     * @param ugroups
+     * @return
+     */
+    public static GroupUserDO decodeGroupUsers(List<UserGroup> ugroups) {
+        GroupUserDO result = new GroupUserDO();
+        List<Integer> users = new ArrayList<Integer>();
+        for (UserGroup ugroup : ugroups) {
+            result.setGroupId(ugroup.getGroupId());
+            users.add(ugroup.getUserId());
+        }
+        result.setUserIds(users);
         return result;
     }
 
@@ -68,6 +83,24 @@ public class DOUtils {
                 UserGroup tempgrp = new UserGroup();
                 tempgrp.setUserId(req.getUserId());
                 tempgrp.setGroupId(grpId);
+                groups.add(tempgrp);
+            }
+        }
+        return groups;
+    }
+    
+        /**
+     *
+     * @param req
+     * @return
+     */
+    public static List<UserGroup> encodeUserGroup(GroupUserDO req) {
+        List<UserGroup> groups = new ArrayList<UserGroup>();
+        if (req != null && req.getUserIds().size() > 0) {
+            for (Integer usrId : req.getUserIds()) {
+                UserGroup tempgrp = new UserGroup();
+                tempgrp.setGroupId(req.getGroupId());
+                tempgrp.setUserId(usrId);
                 groups.add(tempgrp);
             }
         }
