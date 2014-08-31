@@ -41,8 +41,8 @@ public class BusinesscaseResourceController {
 
     @RequestMapping(method = RequestMethod.GET,
             value = "/cases/feature/{id}", headers = "Accept=application/json")
-    public @ResponseBody JSONResponseWrapper getCasesForFeature(@PathVariable Integer fId) {
-        return service.getCasesForFeature(fId);
+    public @ResponseBody JSONResponseWrapper getCasesForFeature(@PathVariable Integer id) {
+        return service.getCasesForFeature(id);
     }
     
     

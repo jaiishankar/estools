@@ -4,7 +4,9 @@ Ext.define('estools.controller.Project', {
         'project.MasterPanel',
         'project.Edit',
         'project.Grid',
-        'project.metrics.Grid'
+        'project.metrics.Grid',
+        'project.features.Grid',
+        'project.case.Grid'
     ],
     stores: [
         'DevGroup', 'ProjectMetrics'
@@ -19,11 +21,15 @@ Ext.define('estools.controller.Project', {
             },
             'projectfeaturesgrid': {
                 select: this.featuresSelect,
-                itemdblclick: this.featuresSelect
+                itemdblclick: this.loadBusinessCasesTab
             },
             'projectmetricsgrid': {
                 select: this.metricsSelect,
                 itemdblclick: this.metricsSelect
+            },
+            'featurescasegrid': {
+                select: this.casesSelect,
+                itemdblclick: this.casesSelect
             },
             'projectedit button[action=save]': {
                 click: this.updateProject
@@ -57,9 +63,121 @@ Ext.define('estools.controller.Project', {
             },
             'projectedit button[action=deleteFeatures]': {
                 click: this.deleteFeatures
+            },
+            'projectedit button[action=newCases]': {
+                click: this.newCases
+            },
+            'projectedit button[action=saveCases]': {
+                click: this.saveCases
+            },
+            'projectedit button[action=deleteCases]': {
+                click: this.deleteCases
             }
 
         });
+    },
+    saveCases: function(button) {
+    },
+    
+    loadBusinessCasesTab: function(grid, record) {
+        var view = grid.up('window');
+        var tabPanel = view.down('#projectmaintabpanel');
+        this.selectedFeatureId = record.data.id;
+        var addedTab = tabPanel.add({
+            title: 'Business cases',
+            closable: true,
+            itemId: 'casesTab',
+            layout: 'border',
+            items: [{
+                    region: 'center',
+                    xtype: 'featurescasegrid',
+                    itemId: 'featurescaselistgrid',
+                    selectedFeatureId: this.selectedFeatureId
+                }, {
+                    region: 'south',
+                    xtype: 'form',
+                    id: 'featurecasesForm',
+                    border: 0,
+                    boddyPadding: 5,
+                    selectedProjectId: 0,
+                    buttons: [
+                        {
+                            itemId: 'newCasesButton',
+                            text: 'New',
+                            action: 'newCases'
+                        },
+                        {
+                            itemId: 'saveCasesButton',
+                            text: 'Save',
+                            action: 'saveCases'
+                        },
+                        {
+                            itemId: 'deleteCasesButton',
+                            text: 'Delete',
+                            action: 'deleteCases'
+                        },
+                        {
+                            itemId: 'cancelButton',
+                            text: 'Cancel',
+                            scope: this,
+                            handler: this.destroy
+                        }],
+                    items: [
+                        {
+                            xtype: 'hidden',
+                            name: 'featureId',
+                            value: this.selectedFeatureId
+                        },
+                        {
+                            xtype: 'hidden',
+                            name: 'id'
+                        },
+                        {
+                            fieldLabel: 'Name',
+                            name: 'name',
+                            xtype: 'textfield'
+                        },
+                        {
+                            fieldLabel: 'Note',
+                            name: 'note',
+                            xtype: 'textfield'
+                        },
+                        {
+                            fieldLabel: 'Enter any queries:',
+                            width: 800,
+                            xtype: 'textarea',
+                            name: 'questions',
+                            allowBlank: false
+                        },
+                        {
+                            fieldLabel: 'Enter Task details:',
+                            width: 800,
+                            xtype: 'textarea',
+                            name: 'taskDetails',
+                            allowBlank: false
+                        },
+                        {
+                            fieldLabel: 'Scoped (Y/N)',
+                            name: 'scoped',
+                            xtype: 'textfield',
+                            size: 1
+                        },
+                        {
+                            xtype: 'combo',
+                            fieldLabel: 'Priority',
+                            editable: false,
+                            itemId: 'prioritiesComboTypeData',
+                            name: 'priorityId',
+                            valueField: 'id',
+                            displayField: 'priority',
+                            store: Ext.StoreMgr.get("Priority")
+                        }
+                    ]
+                }]
+        });
+        //get the focus of the newly added tab
+        tabPanel.setActiveTab(addedTab);
+
     },
     deleteProjectWithPrompt: function() {
         var grid = Ext.getCmp('projectgridid');
@@ -285,7 +403,7 @@ Ext.define('estools.controller.Project', {
                 }});
         }
     },
-    metricsSelect: function(grid, record, index, options) {
+    metricsSelect: function(grid, record) {
         var metricsForm = Ext.getCmp('projectmetricsForm');
         metricsForm.loadRecord(record);
         metricsForm.store = grid.store;
@@ -293,6 +411,14 @@ Ext.define('estools.controller.Project', {
     },
     newProjectMetrics: function(button) {
         var form = button.up('#projectmetricsForm');
+        form.getForm().reset();
+    },
+    newFeatures: function(button) {
+        var form = button.up('#projectfeaturesForm');
+        form.getForm().reset();
+    },
+    newCases: function(button) {
+        var form = button.up('#featurecasesForm');
         form.getForm().reset();
     },
     featuresSelect: function(grid, record, index, options) {
@@ -303,9 +429,12 @@ Ext.define('estools.controller.Project', {
         featuresForm.store = grid.store;
 
     },
-    newFeatures: function(button) {
-        var form = button.up('#projectfeaturesForm');
-        form.getForm().reset();
+    casesSelect: function(grid, record){
+        var featuresForm = Ext.getCmp('featurecasesForm');
+        featuresForm.loadRecord(record);
+        var typeComboItem = featuresForm.down("#prioritiesComboTypeData");
+        typeComboItem.setValue(record.data.priorityId);
+        featuresForm.store = grid.store;
     },
     saveFeatures: function(button) {
         var form = button.up('#projectfeaturesForm'),
@@ -361,7 +490,11 @@ Ext.define('estools.controller.Project', {
         var grid = Ext.getCmp('projectfeaturesgridid');
         this.deleteWithPrompt(grid, this.deleteSelectedFeatures);
     },
-    deleteWithPrompt: function(grid, followupfunction) {
+    deleteCases: function(button) {
+        var grid = Ext.getCmp('featurecasesgridid');
+        this.deleteWithPrompt(grid, this.deleteSelectedCases);
+    },
+    deleteWithPrompt: function(grid, followupfunction, scope) {
         var sm = grid.getSelectionModel();
         if (sm.hasSelection()) {
             Ext.MessageBox.confirm('Confirm', 'Are you sure you want to delete ?', followupfunction, this);
@@ -374,6 +507,9 @@ Ext.define('estools.controller.Project', {
                 buttons: Ext.Msg.OK
             });
         }
+    },
+    deleteSelectedCases: function(){
+        
     },
     deleteSelectedMetrics: function() {
         var grid = Ext.getCmp('projectmetricsgridid');

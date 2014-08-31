@@ -54,8 +54,12 @@ public class BusinesscaseServiceImpl implements BusinesscaseService {
         try {
             ModelMapper modelMapper = new ModelMapper();
             Businesscase thisCase = caseDAO.get(id);
-            BusinesscaseDO tempCase = modelMapper.map(thisCase, BusinesscaseDO.class);
-            return JSONResponseWrapper.getResponseInstance(tempCase);
+            if (thisCase != null) {
+                BusinesscaseDO tempCase = modelMapper.map(thisCase, BusinesscaseDO.class);
+                return JSONResponseWrapper.getResponseInstance(tempCase);
+            } else {
+                return JSONResponseWrapper.getDefaultFailResponseInstance();
+            }
         } catch (Exception e) {
             return JSONResponseWrapper.getErrorResponseInstance(
                     new JSONExceptionWrapper("Error", e));

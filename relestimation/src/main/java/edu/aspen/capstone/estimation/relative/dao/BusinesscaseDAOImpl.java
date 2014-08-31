@@ -74,7 +74,7 @@ public class BusinesscaseDAOImpl implements BusinesscaseDAO {
     public List<Businesscase> getAllCasesForFeature(Integer fId) {
         try {
            Query query = sessionFactory.getCurrentSession().getNamedQuery("Businesscase.findByFeature");
-            query.setInteger("projectId", fId);
+            query.setInteger("featureId", fId);
             List<Businesscase> myFeatures = query.list();
             if (!myFeatures.isEmpty()) {
                 return myFeatures;

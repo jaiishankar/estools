@@ -7,7 +7,8 @@ Ext.define('estools.view.project.Edit', {
     autoShow: false,
     closable: true,
     config: {
-        selectedProjectId: 0
+        selectedProjectId: 0,
+        selectedFeatureId:0
     },
     /**
      * Initialize this component.
@@ -25,6 +26,7 @@ Ext.define('estools.view.project.Edit', {
         this.items = [
             {
                 xtype: 'tabpanel',
+                itemId:'projectmaintabpanel',
                 items: [
                     {
                         title: 'Main',
