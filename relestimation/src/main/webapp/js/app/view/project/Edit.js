@@ -21,8 +21,6 @@ Ext.define('estools.view.project.Edit', {
         } else {
             this.groupsStore.sync();
         }
-
-
         // Create and add the form
         this.items = [
             {
@@ -88,7 +86,7 @@ Ext.define('estools.view.project.Edit', {
                                 id: 'projectmetricsForm',
                                 border: 0,
                                 boddyPadding: 5,
-                                selectedProjectId:0,
+                                selectedProjectId: 0,
                                 buttons: [
                                     {
                                         itemId: 'newMetricsButton',
@@ -126,7 +124,7 @@ Ext.define('estools.view.project.Edit', {
                                         width: 800,
                                         xtype: 'textarea',
                                         name: 'description',
-                                        allowBlank:false
+                                        allowBlank: false
                                     }
                                 ]
                             }]
@@ -175,7 +173,95 @@ Ext.define('estools.view.project.Edit', {
                                         fromTitle: 'Available',
                                         value: [],
                                         toTitle: 'Selected'
-
+                                    }
+                                ]
+                            }]
+                    }, {
+                        title: 'Features',
+                        itemId: 'featureTab',
+                        layout: 'border',
+                        items: [{
+                                region: 'center',
+                                xtype: 'projectfeaturesgrid',
+                                itemId: 'projectfeatureslistgrid',
+                                selectedProjectId: this.selectedProjectId
+                            }, {
+                                region: 'south',
+                                xtype: 'form',
+                                id: 'projectfeaturesForm',
+                                border: 0,
+                                boddyPadding: 5,
+                                selectedProjectId: 0,
+                                buttons: [
+                                    {
+                                        itemId: 'newFeaturesButton',
+                                        text: 'New',
+                                        action: 'newFeatures'
+                                    },
+                                    {
+                                        itemId: 'saveFeaturesButton',
+                                        text: 'Save',
+                                        action: 'saveFeatures'
+                                    },
+                                    {
+                                        itemId: 'deleteFeaturesButton',
+                                        text: 'Delete',
+                                        action: 'deleteFeatures'
+                                    },
+                                    {
+                                        itemId: 'cancelButton',
+                                        text: 'Cancel',
+                                        scope: this,
+                                        handler: this.destroy
+                                    }],
+                                items: [
+                                    {
+                                        xtype: 'hidden',
+                                        name: 'projectId',
+                                        value: this.selectedProjectId
+                                    },
+                                    {
+                                        xtype: 'hidden',
+                                        name: 'id'
+                                    },
+                                    {
+                                        fieldLabel: 'Title',
+                                        name: 'title',
+                                        xtype: 'textfield'
+                                    },
+                                    {
+                                        fieldLabel: 'Name',
+                                        name: 'name',
+                                        xtype: 'textfield'
+                                    },
+                                    {
+                                        fieldLabel: 'Enter Project Task:',
+                                        width: 800,
+                                        xtype: 'textarea',
+                                        name: 'task',
+                                        allowBlank: false
+                                    },
+                                    {
+                                        fieldLabel: 'Scoped (Y/N)',
+                                        name: 'scoped',
+                                        xtype: 'textfield',
+                                        size: 1
+                                    },
+                                    {
+                                        xtype: 'combo',
+                                        fieldLabel: 'Type',
+                                        editable: false,
+                                        itemId: 'featuresComboTypeData',
+                                        name: 'type',
+                                        valueField: 'id',
+                                        displayField: 'name',
+                                        store: {
+                                            fields: ['id', 'name'],
+                                            data: [
+                                                {id: 1, name: 'MVP'},
+                                                {id: 2, name: 'Non MVP'}
+                                            ]
+                                        }
                                     }
                                 ]
                             }]
@@ -193,7 +279,9 @@ Ext.define('estools.view.project.Edit', {
             this.loadProjectGroups();
             this.down('#projectmetricslistgrid').selectedProjectId = this.selectedProjectId;
             this.down('#projectmetricsForm').selectedProjectId = this.selectedProjectId;
-            
+            this.down('#projectfeatureslistgrid').selectedProjectId = this.selectedProjectId;
+            this.down('#projectfeaturesForm').selectedProjectId = this.selectedProjectId;
+
         } else {
             this.disableTabsForProject();
         }
@@ -202,11 +290,13 @@ Ext.define('estools.view.project.Edit', {
         //disable the groups tab abd other tabs.
         this.down('#groupsTab').setDisabled(false);
         this.down('#metricsTab').setDisabled(false);
+        this.down('#featureTab').setDisabled(false);
     },
     disableTabsForProject: function() {
         //disable the groups tab abd other tabs.
         this.down('#groupsTab').setDisabled(true);
         this.down('#metricsTab').setDisabled(true);
+        this.down('#featureTab').setDisabled(true);
     },
     loadProjectGroups: function() {
         //calls the server and gets the selected groups for the selected project
