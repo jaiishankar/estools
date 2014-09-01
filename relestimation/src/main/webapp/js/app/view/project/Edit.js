@@ -2,13 +2,14 @@ Ext.define('estools.view.project.Edit', {
     extend: 'Ext.window.Window',
     alias: 'widget.projectedit',
     layout: 'fit',
+    id: 'projectmaineditpanel',
     width: '680', height: '450',
     maximized: true,
     autoShow: false,
     closable: true,
     config: {
         selectedProjectId: 0,
-        selectedFeatureId:0
+        selectedFeatureId: 0
     },
     /**
      * Initialize this component.
@@ -26,7 +27,7 @@ Ext.define('estools.view.project.Edit', {
         this.items = [
             {
                 xtype: 'tabpanel',
-                itemId:'projectmaintabpanel',
+                itemId: 'projectmaintabpanel',
                 items: [
                     {
                         title: 'Main',
@@ -189,81 +190,106 @@ Ext.define('estools.view.project.Edit', {
                                 selectedProjectId: this.selectedProjectId
                             }, {
                                 region: 'south',
-                                xtype: 'form',
-                                id: 'projectfeaturesForm',
-                                border: 0,
-                                boddyPadding: 5,
-                                selectedProjectId: 0,
-                                buttons: [
-                                    {
-                                        itemId: 'newFeaturesButton',
-                                        text: 'New',
-                                        action: 'newFeatures'
-                                    },
-                                    {
-                                        itemId: 'saveFeaturesButton',
-                                        text: 'Save',
-                                        action: 'saveFeatures'
-                                    },
-                                    {
-                                        itemId: 'deleteFeaturesButton',
-                                        text: 'Delete',
-                                        action: 'deleteFeatures'
-                                    },
-                                    {
-                                        itemId: 'cancelButton',
-                                        text: 'Cancel',
-                                        scope: this,
-                                        handler: this.destroy
-                                    }],
-                                items: [
-                                    {
-                                        xtype: 'hidden',
-                                        name: 'projectId',
-                                        value: this.selectedProjectId
-                                    },
-                                    {
-                                        xtype: 'hidden',
-                                        name: 'id'
-                                    },
-                                    {
-                                        fieldLabel: 'Title',
-                                        name: 'title',
-                                        xtype: 'textfield'
-                                    },
-                                    {
-                                        fieldLabel: 'Name',
-                                        name: 'name',
-                                        xtype: 'textfield'
-                                    },
-                                    {
-                                        fieldLabel: 'Enter Project Task:',
-                                        width: 800,
-                                        xtype: 'textarea',
-                                        name: 'task',
-                                        allowBlank: false
-                                    },
-                                    {
-                                        fieldLabel: 'Scoped (Y/N)',
-                                        name: 'scoped',
-                                        xtype: 'textfield',
-                                        size: 1
-                                    },
-                                    {
-                                        xtype: 'combo',
-                                        fieldLabel: 'Type',
-                                        editable: false,
-                                        itemId: 'featuresComboTypeData',
-                                        name: 'type',
-                                        valueField: 'id',
-                                        displayField: 'name',
-                                        store: {
-                                            fields: ['id', 'name'],
-                                            data: [
-                                                {id: 1, name: 'MVP'},
-                                                {id: 2, name: 'Non MVP'}
-                                            ]
-                                        }
+                                xtype: 'panel',
+                                layout: {
+                                    type: 'hbox',
+                                    align: 'stretch'
+                                },
+                                items: [{
+                                        flex: 2,
+                                        title:'Details',
+                                        xtype: 'form',
+                                        id: 'projectfeaturesForm',
+                                        border: 0,
+                                        boddyPadding: 5,
+                                        selectedProjectId: 0,
+                                        buttons: [
+                                            {
+                                                itemId: 'newFeaturesButton',
+                                                text: 'New',
+                                                action: 'newFeatures'
+                                            },
+                                            {
+                                                itemId: 'saveFeaturesButton',
+                                                text: 'Save',
+                                                action: 'saveFeatures'
+                                            },
+                                            {
+                                                itemId: 'deleteFeaturesButton',
+                                                text: 'Delete',
+                                                action: 'deleteFeatures'
+                                            },
+                                            {
+                                                itemId: 'cancelButton',
+                                                text: 'Cancel',
+                                                scope: this,
+                                                handler: this.destroy
+                                            }],
+                                        items: [
+                                            {
+                                                xtype: 'hidden',
+                                                name: 'projectId',
+                                                value: this.selectedProjectId
+                                            },
+                                            {
+                                                xtype: 'hidden',
+                                                name: 'id'
+                                            },
+                                            {
+                                                fieldLabel: 'Title',
+                                                name: 'title',
+                                                xtype: 'textfield'
+                                            },
+                                            {
+                                                fieldLabel: 'Name',
+                                                name: 'name',
+                                                xtype: 'textfield'
+                                            },
+                                            {
+                                                fieldLabel: 'Enter Project Task:',
+                                                width: 800,
+                                                xtype: 'textarea',
+                                                name: 'task',
+                                                allowBlank: false
+                                            },
+                                            {
+                                                fieldLabel: 'Scoped (Y/N)',
+                                                name: 'scoped',
+                                                xtype: 'textfield',
+                                                size: 1,
+                                                msgTarget: 'side',
+                                                validator: function(value) {
+                                                    if (value && ((value === 'y' || value === 'Y') || (value === 'N' || value === 'n'))) {
+                                                        return true;
+                                                    } else {
+                                                        return 'Input can be only Y or N';
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                xtype: 'combo',
+                                                fieldLabel: 'Type',
+                                                editable: false,
+                                                itemId: 'featuresComboTypeData',
+                                                name: 'type',
+                                                valueField: 'id',
+                                                displayField: 'name',
+                                                store: {
+                                                    fields: ['id', 'name'],
+                                                    data: [
+                                                        {id: 1, name: 'MVP'},
+                                                        {id: 2, name: 'Non MVP'}
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },{
+                                        flex:2,
+                                        title:'Sizings',
+                                        disable: true,
+                                        xtype: 'featuressizinggrid',
+                                        itemId:'featuressizinggriditemid',
+                                        selectedProjectId: this.selectedProjectId
                                     }
                                 ]
                             }]
@@ -283,6 +309,7 @@ Ext.define('estools.view.project.Edit', {
             this.down('#projectmetricsForm').selectedProjectId = this.selectedProjectId;
             this.down('#projectfeatureslistgrid').selectedProjectId = this.selectedProjectId;
             this.down('#projectfeaturesForm').selectedProjectId = this.selectedProjectId;
+            this.down('#featuressizinggriditemid').selectedProjectId = this.selectedProjectId;
 
         } else {
             this.disableTabsForProject();
@@ -303,7 +330,6 @@ Ext.define('estools.view.project.Edit', {
     loadProjectGroups: function() {
         //calls the server and gets the selected groups for the selected project
         var url = './v1/projectgroups/project/' + this.selectedProjectId;
-        console.log(url);
         Ext.Ajax.request({
             method: 'GET',
             url: url,
@@ -311,7 +337,7 @@ Ext.define('estools.view.project.Edit', {
                 'Accept': 'application/json'
             },
             scope: this,
-            success: function(response, options) {
+            success: function(response) {
                 var item = this.down("#project-itemselector-field");
                 var responseData = Ext.decode(response.responseText);
                 if (responseData.success) {

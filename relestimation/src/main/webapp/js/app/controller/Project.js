@@ -18,17 +18,22 @@ Ext.define('estools.controller.Project', {
         this.control({
             'projectgrid': {
                 itemdblclick: this.onItemDblClick
+                //,
+                //itemclick:this.onItemDblClick
             },
             'projectfeaturesgrid': {
                 select: this.featuresSelect,
+                itemclick: this.featuresSelect,
                 itemdblclick: this.loadBusinessCasesTab
             },
             'projectmetricsgrid': {
                 select: this.metricsSelect,
+                itemclick: this.metricsSelect,
                 itemdblclick: this.metricsSelect
             },
             'featurescasegrid': {
                 select: this.casesSelect,
+                itemclick: this.casesSelect,
                 itemdblclick: this.casesSelect
             },
             'projectedit button[action=save]': {
@@ -76,9 +81,6 @@ Ext.define('estools.controller.Project', {
 
         });
     },
-    saveCases: function(button) {
-    },
-    
     loadBusinessCasesTab: function(grid, record) {
         var view = grid.up('window');
         var tabPanel = view.down('#projectmaintabpanel');
@@ -99,7 +101,7 @@ Ext.define('estools.controller.Project', {
                     id: 'featurecasesForm',
                     border: 0,
                     boddyPadding: 5,
-                    selectedProjectId: 0,
+                    selectedFeatureId: this.selectedFeatureId,
                     buttons: [
                         {
                             itemId: 'newCasesButton',
@@ -146,7 +148,7 @@ Ext.define('estools.controller.Project', {
                             fieldLabel: 'Enter any queries:',
                             width: 800,
                             xtype: 'textarea',
-                            name: 'questions',
+                            name: 'question',
                             allowBlank: false
                         },
                         {
@@ -160,7 +162,15 @@ Ext.define('estools.controller.Project', {
                             fieldLabel: 'Scoped (Y/N)',
                             name: 'scoped',
                             xtype: 'textfield',
-                            size: 1
+                            size: 1,
+                            msgTarget: 'side',
+                            validator: function(value) {
+                                if (value && ((value === 'y' || value === 'Y') || (value === 'N' || value === 'n'))) {
+                                    return true;
+                                } else {
+                                    return 'Input can be only Y or N';
+                                }
+                            }
                         },
                         {
                             xtype: 'combo',
@@ -177,7 +187,6 @@ Ext.define('estools.controller.Project', {
         });
         //get the focus of the newly added tab
         tabPanel.setActiveTab(addedTab);
-
     },
     deleteProjectWithPrompt: function() {
         var grid = Ext.getCmp('projectgridid');
@@ -283,8 +292,11 @@ Ext.define('estools.controller.Project', {
         }
     },
     onItemDblClick: function(grid, record) {
+        globalvar.selectedProjectId = record.data.id;
         var view = Ext.widget('projectedit');
         view.selectedProjectId = record.data.id;
+     
+        
         var form = view.down('form');
         var saveBtn = view.down('#saveButton');
         saveBtn.text = "Update";
@@ -360,6 +372,88 @@ Ext.define('estools.controller.Project', {
                 }
             }});
     },
+    metricsSelect: function(grid, record) {
+        var metricsForm = Ext.getCmp('projectmetricsForm');
+        metricsForm.loadRecord(record);
+        metricsForm.store = grid.store;
+
+    },
+    newProjectMetrics: function(button) {
+        var form = button.up('#projectmetricsForm');
+        form.getForm().reset();
+    },
+    newFeatures: function(button) {
+        var form = button.up('#projectfeaturesForm');
+        form.getForm().reset();
+    },
+    newCases: function(button) {
+        var form = button.up('#featurecasesForm');
+        form.getForm().reset();
+    },
+    featuresSelect: function(grid, record, index, options) {
+        var featuresForm = Ext.getCmp('projectfeaturesForm');
+        
+        var featuresSizingGrid = Ext.getCmp('featuresizegridid');
+        featuresSizingGrid.selectedFeatureId=record.data.id;
+        featuresSizingGrid.selectedProjectId=record.data.projectId;
+        featuresSizingGrid.loadStore();
+        
+        featuresForm.loadRecord(record);
+        var typeComboItem = featuresForm.down("#featuresComboTypeData");
+        typeComboItem.setValue(record.data.type);
+        featuresForm.store = grid.store;
+
+    },
+    casesSelect: function(grid, record) {
+        var featuresForm = Ext.getCmp('featurecasesForm');
+        featuresForm.selectedFeatureId = record.data.featureId;
+        featuresForm.loadRecord(record);
+        var typeComboItem = featuresForm.down("#prioritiesComboTypeData");
+        typeComboItem.setValue(record.data.priorityId);
+        featuresForm.store = grid.store;
+    },
+    saveCases: function(button) {
+        var form = button.up('#featurecasesForm'),
+                values = form.getValues();
+        values.featureId = form.selectedFeatureId;
+        if (values.id === "") {
+            delete values.id;
+        } else {
+            values.id = parseInt(values.id);
+        }
+        if (form.isValid()) {
+            Ext.Ajax.request({
+                method: 'POST',
+                url: './v1/cases/',
+                headers: {
+                    'Accept': 'application/json'
+                },
+                jsonData: values,
+                scope: this,
+                success: function(response, options) {
+                    var responseData = Ext.decode(response.responseText);
+                    if (responseData.success) {
+                        metricsgrid = Ext.getCmp('featurecasesgridid');
+                        metricsgrid.getStore().reload({
+                            callback: function() {
+                                metricsgrid.getView().refresh();
+                                var metricsForm = Ext.getCmp('featurecasesForm');
+                                metricsForm.getForm().reset();
+                            }
+                        });
+                    }
+                    else {
+                        var errorObject = responseData.results;
+                        Ext.Msg.show({
+                            title: errorObject.title,
+                            msg: errorObject.msg,
+                            icon: Ext.Msg.ERROR,
+                            buttons: Ext.Msg.OK
+                        });
+                    }
+                }});
+        }
+    },
     saveProjectMetrics: function(button) {
         var form = button.up('#projectmetricsForm'),
                 values = form.getValues();
@@ -403,39 +497,6 @@ Ext.define('estools.controller.Project', {
                 }});
         }
     },
-    metricsSelect: function(grid, record) {
-        var metricsForm = Ext.getCmp('projectmetricsForm');
-        metricsForm.loadRecord(record);
-        metricsForm.store = grid.store;
-
-    },
-    newProjectMetrics: function(button) {
-        var form = button.up('#projectmetricsForm');
-        form.getForm().reset();
-    },
-    newFeatures: function(button) {
-        var form = button.up('#projectfeaturesForm');
-        form.getForm().reset();
-    },
-    newCases: function(button) {
-        var form = button.up('#featurecasesForm');
-        form.getForm().reset();
-    },
-    featuresSelect: function(grid, record, index, options) {
-        var featuresForm = Ext.getCmp('projectfeaturesForm');
-        featuresForm.loadRecord(record);
-        var typeComboItem = featuresForm.down("#featuresComboTypeData");
-        typeComboItem.setValue(record.data.type);
-        featuresForm.store = grid.store;
-
-    },
-    casesSelect: function(grid, record){
-        var featuresForm = Ext.getCmp('featurecasesForm');
-        featuresForm.loadRecord(record);
-        var typeComboItem = featuresForm.down("#prioritiesComboTypeData");
-        typeComboItem.setValue(record.data.priorityId);
-        featuresForm.store = grid.store;
-    },
     saveFeatures: function(button) {
         var form = button.up('#projectfeaturesForm'),
                 values = form.getValues();
@@ -445,7 +506,6 @@ Ext.define('estools.controller.Project', {
         } else {
             values.id = parseInt(values.id);
         }
-        console.log(values);
         if (form.isValid()) {
             Ext.Ajax.request({
                 method: 'POST',
@@ -477,10 +537,7 @@ Ext.define('estools.controller.Project', {
                         });
                     }
                 }});
-            console.log("Save sucessful");
-        } else {
-            console.log("Form is not valid");
-        }
+        } 
     },
     deleteMetrics: function(button) {
         var grid = Ext.getCmp('projectmetricsgridid');
@@ -494,7 +551,7 @@ Ext.define('estools.controller.Project', {
         var grid = Ext.getCmp('featurecasesgridid');
         this.deleteWithPrompt(grid, this.deleteSelectedCases);
     },
-    deleteWithPrompt: function(grid, followupfunction, scope) {
+    deleteWithPrompt: function(grid, followupfunction) {
         var sm = grid.getSelectionModel();
         if (sm.hasSelection()) {
             Ext.MessageBox.confirm('Confirm', 'Are you sure you want to delete ?', followupfunction, this);
@@ -508,8 +565,52 @@ Ext.define('estools.controller.Project', {
             });
         }
     },
-    deleteSelectedCases: function(){
-        
+    deleteSelectedCases: function() {
+        var grid = Ext.getCmp('featurecasesgridid');
+        var devgrpsGridSM = grid.getSelectionModel();
+        if (devgrpsGridSM.hasSelection()) {
+            var selectedRow = devgrpsGridSM.getSelection();
+            var record = {};
+            if (selectedRow.length === 1) {
+                record = (selectedRow[0].data);
+            }
+            Ext.Ajax.request({
+                method: 'POST',
+                url: './v1/cases/delete/' + record.id,
+                headers: {
+                    'Accept': 'application/json'
+                },
+                scope: this,
+                success: function(response, options) {
+                    var responseData = Ext.decode(response.responseText);
+                    if (responseData.success) {
+                        var grid = Ext.getCmp('featurecasesgridid');
+                        grid.getStore().reload({
+                            callback: function() {
+                                grid.getView().refresh();
+                                var form = Ext.getCmp('featurecasesgridid');
+                                form.getForm().reset();
+                            }
+                        });
+                    }
+                    else {
+                        var errorObject = responseData.results;
+                        Ext.Msg.show({
+                            title: errorObject.title,
+                            msg: errorObject.msg,
+                            icon: Ext.Msg.ERROR,
+                            buttons: Ext.Msg.OK
+                        });
+                    }
+                }});
+        } else {
+            Ext.Msg.show({
+                title: "Error !!!",
+                msg: "No Rows selected, Please select a ROW to delete.",
+                icon: Ext.Msg.ERROR,
+                buttons: Ext.Msg.OK
+            });
+        }
     },
     deleteSelectedMetrics: function() {
         var grid = Ext.getCmp('projectmetricsgridid');

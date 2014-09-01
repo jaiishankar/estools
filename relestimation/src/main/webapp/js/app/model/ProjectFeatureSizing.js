@@ -1,17 +1,17 @@
-Ext.define('estools.model.Sizing', {
+Ext.define('estools.model.ProjectFeatureSizing', {
     extend: 'Ext.data.Model',
     fields: [
         {name: 'id', type: 'int'},
-        {name: 'sizeName', type: 'string'},
-        {name: 'sizeValue', type: 'int'},
-        {name: 'uom', type: 'string'},
+        {name: 'sizingId', type: 'string'},
+        {name: 'userId', type: 'string'},
+        {name: 'groupId', type: 'string'},
+        {name: 'featureId', type: 'int'},
+        {name: 'projectId', type: 'int'},
         {name: 'created', type: 'date'},
         {name: 'updated', type: 'date'}
     ],
     proxy: {
-        autoLoad:false,
         type: 'ajax',
-        url: './v1/sizing',
         reader: {
             type: 'json',
             root: 'results'

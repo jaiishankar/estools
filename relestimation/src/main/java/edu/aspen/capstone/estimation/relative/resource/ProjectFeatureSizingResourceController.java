@@ -51,7 +51,7 @@ public class ProjectFeatureSizingResourceController {
     @RequestMapping(method = RequestMethod.GET,
             value = "/mappings/{id}", headers = "Accept=application/json")
     public @ResponseBody
-    JSONResponseWrapper getMappingd(@PathVariable Integer id) {
+    JSONResponseWrapper getMappings(@PathVariable Integer id) {
         return service.get(id);
     }
 
