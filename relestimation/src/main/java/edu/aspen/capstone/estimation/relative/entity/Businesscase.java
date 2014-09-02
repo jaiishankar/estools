@@ -25,6 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Businesscase.findAll", query = "SELECT b FROM Businesscase b"),
     @NamedQuery(name = "Businesscase.findById", query = "SELECT b FROM Businesscase b WHERE b.id = :id"),
     @NamedQuery(name = "Businesscase.findByScoped", query = "SELECT b FROM Businesscase b WHERE b.scoped = :scoped"),
+    @NamedQuery(name="Businesscase.deletebyFeature", query="DELETE FROM Businesscase b WHERE b.featureId = :featureId"),
     @NamedQuery(name = "Businesscase.findByFeature", query = "SELECT b FROM Businesscase b WHERE b.featureId = :featureId")
 })
 public class Businesscase implements AuditableBaseDomainObject, Serializable {

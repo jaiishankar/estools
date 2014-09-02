@@ -1,7 +1,6 @@
 package edu.aspen.capstone.estimation.relative.dao;
 
 import edu.aspen.capstone.estimation.relative.entity.Businesscase;
-import edu.aspen.capstone.estimation.relative.entity.Feature;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -17,19 +16,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository("BusinesscaseDAO")
 @Transactional
 public class BusinesscaseDAOImpl implements BusinesscaseDAO {
-    
-    
+
     @Autowired
     private SessionFactory sessionFactory;
+
     /**
-     * 
+     *
      * @param bc
-     * @return 
+     * @return
      */
     @Override
     public Businesscase add(Businesscase bc) {
         try {
-           sessionFactory.getCurrentSession().saveOrUpdate(bc);
+            sessionFactory.getCurrentSession().saveOrUpdate(bc);
             sessionFactory.getCurrentSession().flush();
             sessionFactory.getCurrentSession().refresh(bc);
             return bc;
@@ -73,13 +72,26 @@ public class BusinesscaseDAOImpl implements BusinesscaseDAO {
     @Override
     public List<Businesscase> getAllCasesForFeature(Integer fId) {
         try {
-           Query query = sessionFactory.getCurrentSession().getNamedQuery("Businesscase.findByFeature");
+            Query query = sessionFactory.getCurrentSession().getNamedQuery("Businesscase.findByFeature");
             query.setInteger("featureId", fId);
             List<Businesscase> myFeatures = query.list();
             if (!myFeatures.isEmpty()) {
                 return myFeatures;
             }
             return null;
+        } catch (HibernateException hbe) {
+            hbe.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public Boolean deleteByFeature(Integer featureId) {
+        try {
+            Query query = sessionFactory.getCurrentSession().getNamedQuery("Businesscase.deletebyFeature");
+            query.setInteger("featureId", featureId);
+            query.executeUpdate();
+            return true;
         } catch (HibernateException hbe) {
             hbe.printStackTrace();
             return null;

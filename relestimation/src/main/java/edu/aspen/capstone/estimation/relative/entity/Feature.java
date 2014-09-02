@@ -28,6 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Feature.findByTask", query = "SELECT f FROM Feature f WHERE f.task = :task"),
     @NamedQuery(name = "Feature.findByName", query = "SELECT f FROM Feature f WHERE f.name = :name"),
     @NamedQuery(name = "Feature.findByScoped", query = "SELECT f FROM Feature f WHERE f.scoped = :scoped"),
+    @NamedQuery(name = "Feature.deleteByProject", query = "DELETE FROM Feature f WHERE f.projectId=:projectId"),
     @NamedQuery(name = "Feature.findByProject", query = "SELECT f FROM Feature f WHERE f.projectId = :projectId")
 
 })
@@ -179,5 +180,5 @@ public class Feature implements AuditableBaseDomainObject, Serializable {
     public void setTitle(String title) {
         this.title = title;
     }
-    
+
 }

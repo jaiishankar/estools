@@ -112,4 +112,17 @@ public class ProjectContributorsDAOImpl implements ProjectContributorsDAO {
         }
     }
 
+    @Override
+    public Boolean deleteAllByProject(Integer projectId) {
+        try {
+            Query query = sessionFactory.getCurrentSession().getNamedQuery("ProjectContributors.deleteByProject");
+            query.setInteger("projectId", projectId);
+            query.executeUpdate();
+            return true;
+        } catch (HibernateException hbe) {
+            hbe.printStackTrace();
+            return null;
+        }
+    }
+
 }

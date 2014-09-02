@@ -89,4 +89,18 @@ public class ProjectFeatureSizingDAOImpl implements ProjectFeatureSizingDAO {
         }
     }
 
+    @Override
+    public Boolean deleteAllByProject(Integer projectId) {
+        //
+        try {
+            Query query = sessionFactory.getCurrentSession().getNamedQuery("ProjectFeatureSizing.deleteByProject");
+            query.setInteger("projectId", projectId);
+            query.executeUpdate();
+            return true;
+        } catch (HibernateException hbe) {
+            hbe.printStackTrace();
+            return null;
+        }
+    }
+
 }

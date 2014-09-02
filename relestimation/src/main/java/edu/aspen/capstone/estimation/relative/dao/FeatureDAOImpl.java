@@ -67,12 +67,25 @@ public class FeatureDAOImpl implements FeatureDAO {
     @Override
     public List<Feature> getAllForProject(Integer prjId) {
         Query query = sessionFactory.getCurrentSession().getNamedQuery("Feature.findByProject");
-            query.setInteger("projectId", prjId);
-            List<Feature> myFeatures = query.list();
-            if (!myFeatures.isEmpty()) {
-                return myFeatures;
-            }
+        query.setInteger("projectId", prjId);
+        List<Feature> myFeatures = query.list();
+        if (!myFeatures.isEmpty()) {
+            return myFeatures;
+        }
+        return null;
+    }
+
+    @Override
+    public Boolean deleteAllByProject(Integer projectId) {
+        try {
+            Query query = sessionFactory.getCurrentSession().getNamedQuery("Feature.deleteByProject");
+            query.setInteger("projectId", projectId);
+            query.executeUpdate();
+            return true;
+        } catch (HibernateException hbe) {
+            hbe.printStackTrace();
             return null;
+        }
     }
 
 }

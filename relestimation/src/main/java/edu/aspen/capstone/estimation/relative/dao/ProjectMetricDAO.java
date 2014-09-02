@@ -15,6 +15,8 @@ public interface ProjectMetricDAO {
 
     Boolean deleteMetricsForProject(List<ProjectMetric> values);
     
+    Boolean deleteMetricsForProject(Integer projectId);
+    
     ProjectMetric save(ProjectMetric data);
     
     Boolean delete(Integer id);

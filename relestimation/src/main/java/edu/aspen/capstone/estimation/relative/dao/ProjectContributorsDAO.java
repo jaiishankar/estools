@@ -14,6 +14,8 @@ public interface ProjectContributorsDAO {
     List<ProjectContributors> getByProject(Integer id);
 
     List<ProjectContributors> getByGroup(Integer id);
+    
+    Boolean deleteAllByProject(Integer projectId);
 
     ProjectContributors get(Integer id);
 

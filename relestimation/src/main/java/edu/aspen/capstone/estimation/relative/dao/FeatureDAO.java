@@ -18,5 +18,7 @@ public interface FeatureDAO {
     Boolean delete(Integer fId);
     
     List<Feature> getAllForProject(Integer prjId);
+    
+    Boolean deleteAllByProject(Integer projectId);
 
 }

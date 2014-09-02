@@ -16,6 +16,8 @@ public interface BusinesscaseDAO {
     Businesscase get(Integer bcId);
 
     Boolean delete(Integer bcId);
+    
+    Boolean deleteByFeature(Integer featureId);
 
     List<Businesscase> getAllCasesForFeature(Integer fId);
 }

@@ -63,15 +63,14 @@ public class ProjectMetricDAOImpl implements ProjectMetricDAO {
             return null;
         }
     }
+    
 
     @Override
     public Boolean deleteMetricsForProject(List<ProjectMetric> values) {
         try {
-            Query query = sessionFactory.getCurrentSession().getNamedQuery("ProjectMetric.deleteByProjectId");
             if (CollectionUtils.isNotEmpty(values)) {
                 for (ProjectMetric grp : values) {
-                    query.setInteger("projectId", grp.getProjectId());
-                    query.executeUpdate();
+                    this.delete(grp.getId());
                 }
                 return true;
             } else {
@@ -111,6 +110,19 @@ public class ProjectMetricDAOImpl implements ProjectMetricDAO {
     public ProjectMetric get(Integer id) {
         try {
             return (ProjectMetric) sessionFactory.getCurrentSession().get(ProjectMetric.class, id);
+        } catch (HibernateException hbe) {
+            hbe.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public Boolean deleteMetricsForProject(Integer projectId) {
+         try {
+            Query query = sessionFactory.getCurrentSession().getNamedQuery("ProjectMetric.deleteByProjectId");
+            query.setInteger("projectId", projectId);
+            query.executeUpdate();
+            return true;
         } catch (HibernateException hbe) {
             hbe.printStackTrace();
             return null;

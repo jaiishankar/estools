@@ -79,4 +79,18 @@ public class ProjectGroupDAOImpl implements ProjectGroupDAO {
         }
     }
 
+    @Override
+    public Boolean deleteAllByProject(Integer projectId) {
+        //
+        try {
+            Query query = sessionFactory.getCurrentSession().getNamedQuery("ProjectGroups.deleteAllByProjectId");
+            query.setInteger("projectId", projectId);
+            query.executeUpdate();
+            return true;
+        } catch (HibernateException hbe) {
+            hbe.printStackTrace();
+            return null;
+        }
+    }
+
 }

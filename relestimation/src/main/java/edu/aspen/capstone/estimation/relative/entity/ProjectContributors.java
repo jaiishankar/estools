@@ -26,6 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ProjectContributors.findById", query = "SELECT p FROM ProjectContributors p WHERE p.id = :id"),
     @NamedQuery(name = "ProjectContributors.findByUserId", query = "SELECT p FROM ProjectContributors p WHERE p.userId = :userId"),
     @NamedQuery(name = "ProjectContributors.findByGroupId", query = "SELECT p FROM ProjectContributors p WHERE p.groupId = :groupId"),
+    @NamedQuery(name="ProjectContributors.deleteByProject", query="DELETE FROm ProjectContributors p WHERE p.projectId = :projectId"),
     @NamedQuery(name = "ProjectContributors.findByProjectId", query = "SELECT p FROM ProjectContributors p WHERE p.projectId = :projectId")
 })
 public class ProjectContributors implements AuditableBaseDomainObject, Serializable {

@@ -19,4 +19,6 @@ public interface ProjectFeatureSizingDAO {
     ProjectFeatureSizing save(ProjectFeatureSizing data);
 
     Boolean delete(Integer id);
+    
+    Boolean deleteAllByProject(Integer projectId);
 }
