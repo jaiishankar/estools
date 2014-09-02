@@ -2,6 +2,7 @@ Ext.define('estools.view.users.Grid', {
     extend: 'Ext.grid.Panel',
     requires: ['estools.store.User'],
     alias: 'widget.usersgrid',
+    id:'usersgridid',
     border: 0,
     // override
     initComponent: function() {

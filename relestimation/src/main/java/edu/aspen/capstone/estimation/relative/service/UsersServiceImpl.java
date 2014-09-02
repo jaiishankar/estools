@@ -162,7 +162,17 @@ public class UsersServiceImpl implements UsersService {
             return JSONResponseWrapper.getErrorResponseInstance(
                     new JSONExceptionWrapper("Error", e));
         }
-
     }
 
+    @Override
+    public JSONResponseWrapper deleteUser(Integer id) {
+        try {
+            boolean result = usersDAO.removeUser(id);
+            return (result) ? JSONResponseWrapper.getDefaultSuccessResponseInstance()
+                    : JSONResponseWrapper.getDefaultFailResponseInstance();
+        } catch (Exception e) {
+            return JSONResponseWrapper.getErrorResponseInstance(
+                    new JSONExceptionWrapper("Error", e));
+        }
+    }
 }

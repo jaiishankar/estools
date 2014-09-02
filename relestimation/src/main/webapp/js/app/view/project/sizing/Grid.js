@@ -110,7 +110,7 @@ Ext.define('estools.view.project.sizing.Grid', {
                 sortable: false,
                 menuDisabled: true,
                 items: [{
-                        icon: './images/add.png',
+                        icon: './images/save.png',
                         tooltip: 'Save',
                         scope: this,
                         handler: this.onSaveClick
@@ -180,7 +180,35 @@ Ext.define('estools.view.project.sizing.Grid', {
         }
     },
     onRemoveClick: function(grid, rowIndex) {
-        this.getStore().removeAt(rowIndex);
+        //this.getStore().removeAt(rowIndex);
+        var rec = grid.getStore().getAt(rowIndex);
+        Ext.Ajax.request({
+                method: 'POST',
+                url: './v1/mappings/delete/' + rec.data.id,
+                headers: {
+                    'Accept': 'application/json'
+                },
+                scope: this,
+                success: function(response, options) {
+                    var responseData = Ext.decode(response.responseText);
+                    if (responseData.success) {
+                        var grid = Ext.getCmp('featuresizegridid');
+                        grid.getStore().reload({
+                            callback: function() {
+                                grid.getView().refresh();
+                            }
+                        });
+                    }
+                    else {
+                        var errorObject = responseData.results;
+                        Ext.Msg.show({
+                            title: errorObject.title,
+                            msg: errorObject.msg,
+                            icon: Ext.Msg.ERROR,
+                            buttons: Ext.Msg.OK
+                        });
+                    }
+                }});
     },
     onSaveClick: function(grid, rowIndex) {
         var rec = grid.getStore().getAt(rowIndex);

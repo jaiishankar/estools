@@ -6,7 +6,6 @@
 package edu.aspen.capstone.estimation.relative.service;
 
 import edu.aspen.capstone.estimation.relative.domain.UserDO;
-import edu.aspen.capstone.estimation.relative.entity.ApplicationUser;
 import edu.aspen.capstone.estimation.relative.utils.JSONResponseWrapper;
 
 /**
@@ -30,6 +29,8 @@ public interface UsersService {
     JSONResponseWrapper getUserById(Integer id); //Gets the specific user
 
     JSONResponseWrapper updateUser(UserDO usr); //Updates the specific user
+    
+    JSONResponseWrapper deleteUser(Integer id); //removes a specific user from the DB
 
     //internal functions for developers
     JSONResponseWrapper listAll(); //lists all the current user data from DB

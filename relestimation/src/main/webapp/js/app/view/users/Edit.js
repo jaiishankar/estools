@@ -53,6 +53,12 @@ Ext.define('estools.view.users.Edit', {
                                 name: 'uname',
                                 fieldLabel: 'User Name'
                             },
+                                                        {
+                                xtype: 'textfield',
+                                itemId: 'passwordField',
+                                name: 'passcode',
+                                fieldLabel: 'Password'
+                            },
                             {
                                 xtype: 'textfield',
                                 itemId: 'firstnameField',

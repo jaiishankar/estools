@@ -18,7 +18,7 @@ INSERT INTO `tms`.`sizing` (`CREATED_TS`, `sizename`, `sizevalue`, `uom`, `UPDAT
 INSERT INTO `tms`.`sizing` (`CREATED_TS`, `sizename`, `sizevalue`, `uom`, `UPDATED_TS`) VALUES (now(), '3XL', 200, 'MM',now());
 INSERT INTO `tms`.`sizing` (`CREATED_TS`, `sizename`, `sizevalue`, `uom`, `UPDATED_TS`) VALUES (now(), 'BIG', 300, 'MM',now());
 --  Adds a default root user for this application
-INSERT INTO `tms`.`applicationuser` (`CREATED_TS`, `email`, `fname`, `ACTIVE`, `lname`, `mname`, `passcode`, `phone`, `uname`, `UPDATED_TS`) VALUES (now(), 'admin@estool.com', 'Admin', 1, 'Admin', ' ', 'admin', '6000000911', 'root', now());
+INSERT INTO `tms`.`applicationuser` (`CREATED_TS`, `email`, `fname`, `ACTIVE`, `lname`, `mname`, `passcode`, `phone`, `uname`, `adminuser`,`UPDATED_TS`) VALUES (now(), 'admin@estool.com', 'Admin', 1, 'Admin', ' ', 'admin', '6000000911', 'root', 1,now());
 
 --  Insert some project groups
 INSERT INTO `tms`.`developmentgroup` (`created_ts`, `name`, `updated_ts`) VALUES (now(), 'Default Development Group', now());

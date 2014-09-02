@@ -1,6 +1,5 @@
 package edu.aspen.capstone.estimation.relative.domain;
 
-import edu.aspen.capstone.estimation.relative.entity.ApplicationUser;
 import java.util.Date;
 
 /**
@@ -17,7 +16,7 @@ public class UserDO {
     private String email;
     private String phone;
     private String mname;
-    private Boolean isLoggedIn;
+    private Boolean isAdminUser;
     private Boolean isActive;
     private Date created;
     private Date updated;
@@ -86,12 +85,12 @@ public class UserDO {
         this.mname = mname;
     }
 
-    public Boolean isIsLoggedIn() {
-        return isLoggedIn;
+    public Boolean isIsAdminUser() {
+        return isAdminUser;
     }
 
-    public void setIsLoggedIn(Boolean isLoggedIn) {
-        this.isLoggedIn = isLoggedIn;
+    public void setIsAdminUser(Boolean isAdminUser) {
+        this.isAdminUser = isAdminUser;
     }
 
     public Boolean isIsActive() {

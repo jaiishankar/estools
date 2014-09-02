@@ -26,4 +26,6 @@ public interface UserDAO {
     List<ApplicationUser> listAllLoggedUser();
     
     Object logon(ApplicationUser usr);
+    
+    boolean removeUser(Integer id);
 }

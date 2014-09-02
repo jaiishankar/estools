@@ -69,11 +69,11 @@ public class UserResourceController {
         return service.signup(usr);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE,
-            value = "/users", headers = "Accept=application/json")
+    @RequestMapping(method = RequestMethod.POST,
+            value = "/users/delete/{id}", headers = "Accept=application/json")
     public @ResponseBody
-    JSONResponseWrapper removeUser(@RequestBody UserDO usr) {
-        return service.signup(usr);
+    JSONResponseWrapper removeUser(@PathVariable Integer id) {
+        return service.deleteUser(id);
     }
 
     @RequestMapping(method = RequestMethod.POST,

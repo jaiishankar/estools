@@ -74,8 +74,8 @@ public class ApplicationUser implements AuditableBaseDomainObject,Serializable {
     private Collection<ProjectContributors> projectContributorsCollection;
     @OneToMany(mappedBy = "userId")
     private Collection<ProjectFeatureSizing> projectFeatureSizingCollection;
-    @Column(name = "logged_in")
-    private Boolean isLoggedIn;
+    @Column(name = "adminuser")
+    private Boolean isAdminUser;
     @Column(name = "active")
     private Boolean isActive;
     @Temporal(TemporalType.TIMESTAMP)
@@ -152,12 +152,12 @@ public class ApplicationUser implements AuditableBaseDomainObject,Serializable {
         this.mname = mname;
     }
 
-    public Boolean getIsLoggedIn() {
-        return isLoggedIn;
+    public Boolean getIsAdminUser() {
+        return isAdminUser;
     }
 
-    public void setIsLoggedIn(Boolean isLoggedIn) {
-        this.isLoggedIn = isLoggedIn;
+    public void setIsAdminUser(Boolean isAdminUser) {
+        this.isAdminUser = isAdminUser;
     }
 
     public Boolean getIsActive() {

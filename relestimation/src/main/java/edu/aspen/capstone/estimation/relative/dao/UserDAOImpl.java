@@ -59,7 +59,7 @@ public class UserDAOImpl implements UserDAO {
         JSONExceptionWrapper msg = new JSONExceptionWrapper("Decativate error", "User not found");
         ApplicationUser dbUser = (ApplicationUser) sessionFactory.getCurrentSession().get(ApplicationUser.class, id);
         if (dbUser != null) {
-            dbUser.setIsLoggedIn(Boolean.FALSE);
+            dbUser.setIsAdminUser(Boolean.FALSE);
             dbUser.setIsActive(Boolean.FALSE);
             this.addUser(dbUser);
             return JSONResponseWrapper.getDefaultSuccessResponseInstance("User deactivated");
@@ -90,18 +90,12 @@ public class UserDAOImpl implements UserDAO {
         //this block is made very simple initially so that in future
             //we may need to have pretty complex logic and even return object 
             //will be changed eventually.
-            System.out.println("in dao signup " + dbUser);
             if (dbUser != null) {
-                System.out.println("User is not null");
                 if (dbUser.getIsActive()) {
-                    System.out.println("user is active");
                     if (dbUser.getUname().equals(usr.getUname())) {
-                        System.out.println("uname matchs the records");
                         if (dbUser.getPasscode().equals(usr.getPasscode())) {
-                            System.out.println("passcode matchs");
                             success = true;
-                            dbUser.setIsLoggedIn(true);
-                            System.out.println("updating the records");
+                            dbUser.setIsAdminUser(true);
                             dbUser = this.addUser(dbUser);
                         } else {
                             errorResponse = new JSONExceptionWrapper("Logon Error", "Password mis-match");
@@ -115,7 +109,6 @@ public class UserDAOImpl implements UserDAO {
             } else {
                 errorResponse = new JSONExceptionWrapper("Logon Error", "User not available, signup to add user");
             }
-            System.out.println("in dao signup ==> " + success);
             return success ? dbUser : errorResponse;
         } catch (Exception e) {
             return new JSONExceptionWrapper("Logon Error", e);
@@ -142,10 +135,21 @@ public class UserDAOImpl implements UserDAO {
         }
 
         if (dbUser != null) {
-            dbUser.setIsLoggedIn(false);
+            dbUser.setIsAdminUser(false);
             this.addUser(dbUser);
         }
 
         return true;
+    }
+
+    @Override
+    public boolean removeUser(Integer id) {
+        try {
+            sessionFactory.getCurrentSession().delete(this.getByID(id));
+            return true;
+        } catch (HibernateException hbe) {
+            hbe.printStackTrace();
+            return false;
+        }
     }
 }
