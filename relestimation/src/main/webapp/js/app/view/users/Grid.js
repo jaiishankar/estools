@@ -2,7 +2,7 @@ Ext.define('estools.view.users.Grid', {
     extend: 'Ext.grid.Panel',
     requires: ['estools.store.User'],
     alias: 'widget.usersgrid',
-    id:'usersgridid',
+    id: 'usersgridid',
     border: 0,
     // override
     initComponent: function() {
@@ -11,10 +11,17 @@ Ext.define('estools.view.users.Grid', {
             {text: "ID", width: 40, dataIndex: 'id', sortable: true, hidden: true},
             {text: "User Name", width: 100, dataIndex: 'uname', sortable: true},
             {text: "First Name", width: 100, dataIndex: 'fname', sortable: true},
-            {text: "Middle Name", width: 100, dataIndex: 'mname', sortable: true},
+            {text: "Middle Name", width: 50, dataIndex: 'mname', sortable: true},
             {text: "Last Name", width: 100, dataIndex: 'lname', sortable: true},
             {text: "Email", width: 200, dataIndex: 'email', sortable: true},
             {text: "Phone", width: 100, dataIndex: 'phone', sortable: true},
+            {
+                xtype: 'checkcolumn',
+                header: 'Admin?',
+                dataIndex: 'isAdminUser',
+                width: 65,
+                editable: false
+            },
             {text: "created", width: 3, dataIndex: 'created', hidden: true},
             {text: "updated", width: 3, dataIndex: 'updated', hidden: true}
         ];

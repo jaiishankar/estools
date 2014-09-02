@@ -9,7 +9,7 @@ Ext.define('estools.model.User', {
         {name: 'email', type: 'string'},
         {name: 'phone', type: 'string'},
         {name: 'mname', type: 'string'},
-        {name: 'isLoggedIn', type: 'int'},
+        {name: 'isAdminUser', type: 'bool'},
         {name: 'isActive', type: 'int'},
         {name: 'created', type: 'date'},
         {name: 'updated', type: 'date'}

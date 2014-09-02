@@ -5,10 +5,10 @@
  *  be modified and stored in the storage.
  * 
  */
-
 globalvar = {
     updateFromLocal: true,
-    currentUserId: 0
+    currentUserId: 0,
+    isAdminUser: false
 };
 
 Ext.define('estools.utils', {
@@ -26,7 +26,6 @@ Ext.define('estools.utils', {
                     globalvar = instance;
                 }
             } else {
-                console.log(globalvar);
                 localStorage.setItem("globalvars", Ext.encode(globalvar)); 
             }
         }

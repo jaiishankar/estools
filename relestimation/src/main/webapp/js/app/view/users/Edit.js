@@ -88,7 +88,12 @@ Ext.define('estools.view.users.Edit', {
                                 itemId: 'phoneField',
                                 name: 'phone',
                                 fieldLabel: 'Phone'
-                            }
+                            },
+                            {
+                                xtype:'checkbox',
+                                itemId:'adminField',
+                                name:'isAdminUser',
+                                fieldLabel:'Admin?'                            }
                         ]
                     }, {
                         title: 'Groups',
@@ -145,18 +150,14 @@ Ext.define('estools.view.users.Edit', {
         this.callParent();
     }, 
     loadDefaultValues: function() {
-        if (this.isAdmin()) {
+        if (globalvar.isAdminUser) {
             this.enableTabsForProject();
             this.loadUserGroups();
-            //this.down('#projectmetricslistgrid').selectedProjectId = this.selectedProjectId;
-            //this.down('#projectmetricsForm').selectedProjectId = this.selectedProjectId;
-
+            //var field = Ext.ComponentQuery.query('[name=isAdminUser]');
+            //field.setDisabled(false);
         } else {
             this.disableTabsForProject();
         }
-    },
-    isAdmin: function(){
-        return true;
     },
     enableTabsForProject: function() {
         //disable the groups tab abd other tabs.
@@ -169,7 +170,6 @@ Ext.define('estools.view.users.Edit', {
     loadUserGroups: function() {
         //calls the server and gets the selected groups for the selected project
         var url = './v1/usergroups/user/' + globalvar.currentUserId;
-        console.log(url);
         Ext.Ajax.request({
             method: 'GET',
             url: url,

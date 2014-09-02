@@ -13,6 +13,7 @@ Ext.application({
         'estools.view.Viewport',
         'estools.view.applicationlayout.Header',
         'estools.view.applicationlayout.MainScreen',
+        'estools.view.applicationlayout.Settings',
         'estools.view.logon.LogonWindow',
         'estools.view.logon.LogonFormPanel',
         'estools.view.logon.SignupFormPanel',

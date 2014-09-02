@@ -57,7 +57,6 @@ Ext.define('estools.controller.Logon', {
         });
     },
     loadUsersTab: function(button){
-//        console.log(button);
         var mainScreen = this.getMainscreen(); 
         mainScreen.addGroupsTab();
         
@@ -123,13 +122,12 @@ Ext.define('estools.controller.Logon', {
             jsonData: formPanel.getForm().getValues(),
             scope: this,
             success: function(response, options) {
-
                 var responseData = Ext.decode(response.responseText);
-
                 if (responseData.success) {
                     win.close();
                     //Set the logged in user
                     globalvar.currentUserId = responseData.results.id;
+                    globalvar.isAdminUser = responseData.results.isAdminUser;
                     estools.utils.updateCache(globalvar);
                     Ext.create('estools.view.Viewport');
                 }

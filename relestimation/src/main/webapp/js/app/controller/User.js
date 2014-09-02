@@ -56,7 +56,6 @@ Ext.define('estools.controller.User', {
                 if (selectedRow.length === 1) {
                     record = (selectedRow[0].data);
                 }
-                console.log(record);
                 Ext.Ajax.request({
                     method: 'POST',
                     url: './v1/users/delete/' + record.id,
