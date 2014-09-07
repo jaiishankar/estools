@@ -29,7 +29,6 @@ public class UsersServiceImpl implements UsersService {
             usr.setIsActive(Boolean.TRUE);
             ApplicationUser createdUsr = usersDAO.addUser(usr);
             UserDO tempUsr = modelMapper.map(createdUsr, UserDO.class);
-            System.out.println(createdUsr);
             return (tempUsr != null)
                     ? JSONResponseWrapper.getResponseInstance(tempUsr)
                     : JSONResponseWrapper.getDefaultFailResponseInstance();
@@ -53,13 +52,10 @@ public class UsersServiceImpl implements UsersService {
             Object result = usersDAO.logon(usr);
 
             if (result instanceof ApplicationUser) {
-                System.out.println("Got response from DAO");
                 UserDO loggedUser = modelMapper.map(result, UserDO.class);
-                System.out.println("Returning to caller");
                 return JSONResponseWrapper.getResponseInstance(
                         loggedUser);
             }
-            System.out.println("Comming here too.");
             return JSONResponseWrapper.getErrorResponseInstance((JSONExceptionWrapper) result);
 
         } catch (Exception e) {

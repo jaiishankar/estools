@@ -95,7 +95,7 @@ public class UserDAOImpl implements UserDAO {
                     if (dbUser.getUname().equals(usr.getUname())) {
                         if (dbUser.getPasscode().equals(usr.getPasscode())) {
                             success = true;
-                            dbUser.setIsAdminUser(true);
+                            //dbUser.setIsAdminUser(true);
                             dbUser = this.addUser(dbUser);
                         } else {
                             errorResponse = new JSONExceptionWrapper("Logon Error", "Password mis-match");

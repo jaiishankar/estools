@@ -10,7 +10,7 @@ Ext.define('estools.view.users.Edit', {
      */
     initComponent: function() {
         // Set the window's title
-        this.title = 'Edit User Window';
+        this.title = 'Add/Edit User Window';
         this.groupsStore = Ext.StoreMgr.get("DevGroup");
         if (this.groupsStore) {
             if (this.groupsStore.getCount() <= 0) {
@@ -31,7 +31,7 @@ Ext.define('estools.view.users.Edit', {
                         buttons: [
                             {
                                 itemId: 'saveButton',
-                                text: 'Upadte', //this.getSaveButtonText(),
+                                text: 'Update', //this.getSaveButtonText(),
                                 action: 'save'
                             },
                             {
@@ -53,7 +53,7 @@ Ext.define('estools.view.users.Edit', {
                                 name: 'uname',
                                 fieldLabel: 'User Name'
                             },
-                                                        {
+                            {
                                 xtype: 'textfield',
                                 itemId: 'passwordField',
                                 name: 'passcode',
@@ -90,10 +90,11 @@ Ext.define('estools.view.users.Edit', {
                                 fieldLabel: 'Phone'
                             },
                             {
-                                xtype:'checkbox',
-                                itemId:'adminField',
-                                name:'isAdminUser',
-                                fieldLabel:'Admin?'                            }
+                                xtype: 'checkbox',
+                                itemId: 'adminField',
+                                name: 'isAdminUser',
+                                fieldLabel: 'Admin?'
+                            }
                         ]
                     }, {
                         title: 'Groups',
@@ -148,13 +149,12 @@ Ext.define('estools.view.users.Edit', {
         ];
         this.on('afterrender', this.loadDefaultValues, this);
         this.callParent();
-    }, 
+    },
     loadDefaultValues: function() {
-        if (globalvar.isAdminUser) {
+        var saveBtn = this.down("form").getValues().id;
+        if (globalvar.isAdminUser && saveBtn.text !== "0") {
             this.enableTabsForProject();
             this.loadUserGroups();
-            //var field = Ext.ComponentQuery.query('[name=isAdminUser]');
-            //field.setDisabled(false);
         } else {
             this.disableTabsForProject();
         }

@@ -162,6 +162,14 @@ Ext.define('estools.controller.User', {
         if (button.text !== 'Update') {
             delete values.id;
         }
+        if(values.isAdminUser){
+            if(values.isAdminUser === "on"){
+                values.isAdminUser = true;
+            }
+        } else {
+            values.isAdminUser = false;
+        }
+
         Ext.Ajax.request({
             method: 'POST',
             url: './v1/users',

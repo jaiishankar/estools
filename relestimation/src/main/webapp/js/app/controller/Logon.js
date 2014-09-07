@@ -11,7 +11,6 @@ Ext.define('estools.controller.Logon', {
             selector: 'applicationmainscreen'
     }],
     init: function() {
-        
         this.control({
             'button[action=showUserTab]': {
                 click: this.loadUsersTab
@@ -82,7 +81,6 @@ Ext.define('estools.controller.Logon', {
                 var responseData = Ext.decode(response.responseText);
 
                 if (responseData.success) {
-                    console.log(responseData.results.id);
                     var userId = responseData.results.id;
                     this.displayProfileDetails(userId, win,responseData.results );
                 }
