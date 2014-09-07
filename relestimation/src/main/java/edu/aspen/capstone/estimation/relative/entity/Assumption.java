@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Assumption.findById", query = "SELECT a FROM Assumption a WHERE a.id = :id"),
     @NamedQuery(name = "Assumption.findByAssumption", query = "SELECT a FROM Assumption a WHERE a.assumption = :assumption"),
     @NamedQuery(name = "Assumption.findByBusinesscase", query = "SELECT a FROM Assumption a WHERE a.caseId = :caseId"),
+    @NamedQuery(name = "Assumption.deleteByBusinesscase", query = "DELETE FROM Assumption a WHERE a.caseId = :caseId")
 })
 public class Assumption implements AuditableBaseDomainObject, Serializable {
 
