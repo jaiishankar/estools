@@ -1,9 +1,7 @@
 Ext.define('estools.view.project.sizing.Grid', {
     extend: 'Ext.grid.Panel',
     requires: [
-        'Ext.selection.CellModel',
         'estools.store.ProjectFeatureSizing'
-
     ],
     title: 'Update Sizing',
     alias: 'widget.featuressizinggrid',
@@ -11,68 +9,44 @@ Ext.define('estools.view.project.sizing.Grid', {
     editable: false,
     frame: true,
     id: 'featuresizegridid',
+    autoSync: false,
     viewConfig: {
         stripeRows: true,
-        enableTextSelection: true
+        enableTextSelection: true,
+        markDirty: false
+
     },
-    projectGroupStore: {},
-    groupUserStore: {},
     configs: {
         selectedFeatureId: 0,
         selectedProjectId: 0
     },
     // override
     initComponent: function() {
-        // Pass in a column model definition
-        this.cellEditing = new Ext.grid.plugin.CellEditing({
-            clicksToEdit: 1
-        });
-
         Ext.apply(this, {
-            plugins: [this.cellEditing],
-            selModel: {
-                selType: 'cellmodel'
-            },
             tbar: [{
                     text: 'Add Sizing',
                     scope: this,
                     handler: this.onAddClick
+                }, {
+                    text: 'Delete Sizing',
+                    scope: this,
+                    handler: this.onRemoveClick
                 }]
         });
-        this.projectGroupStore = Ext.create('Ext.data.Store', {
-            fields: ['id', 'name']
-        });
-        this.loadProjectGroups();
 
         this.columns = [
             {text: "ID", dataIndex: 'id', width: 5, sortable: true, hidden: true},
             {text: "Group", dataIndex: 'groupId', flex: 1, sortable: true, hidden: false,
-                editor: new Ext.form.field.ComboBox({
-                    typeAhead: true,
-                    triggerAction: 'all',
-                    store: this.projectGroupStore,
-                    valueField: 'name',
-                    displayField: 'name',
-                    queryMode: 'local'
-                })
-                ,
                 renderer: function(value, metaData, record, row, col, store, gridView) {
                     var val = parseInt(value);
                     if (val !== NaN) {
-                        return this.projectGroupStore.findRecord('id', val).data.name;
+                        var rec = Ext.StoreMgr.get("DevGroup").findRecord('id', val);
+                        return rec.data.name;
                     } else {
                         return value;
                     }
-                }
-            },
+                }},
             {text: "Size", dataIndex: 'sizingId', flex: 1, sortable: true, hidden: false,
-                editor: new Ext.form.field.ComboBox({
-                    typeAhead: true,
-                    triggerAction: 'all',
-                    store: Ext.StoreMgr.get("Sizing"),
-                    valueField: 'sizeName',
-                    displayField: 'sizeName'
-                }),
                 renderer: function(value, metaData, record, row, col, store, gridView) {
                     var val = parseInt(value);
                     if (val !== NaN) {
@@ -84,15 +58,7 @@ Ext.define('estools.view.project.sizing.Grid', {
                 }
             },
             {text: "User", dataIndex: 'userId', flex: 1, sortable: true, hidden: false,
-                editor: new Ext.form.field.ComboBox({
-                    typeAhead: true,
-                    triggerAction: 'all',
-                    store: Ext.StoreMgr.get("User"),
-                    valueField: 'lname',
-                    displayField: 'lname'
-                }),
                 renderer: function(value, metaData, record, row, col, store, gridView) {
-
                     var val = parseInt(value);
                     if (val !== NaN) {
                         var rec = Ext.StoreMgr.get("User").findRecord('id', val);
@@ -104,37 +70,23 @@ Ext.define('estools.view.project.sizing.Grid', {
             },
             {text: "Project", dataIndex: 'projectId', width: 1, sortable: true, hidden: true},
             {text: "Feature", dataIndex: 'featureId', width: 1, sortable: true, hidden: true},
-            {
-                xtype: 'actioncolumn',
-                width: 30,
-                sortable: false,
-                menuDisabled: true,
-                items: [{
-                        icon: './images/save.png',
-                        tooltip: 'Save',
-                        scope: this,
-                        handler: this.onSaveClick
-                    }]
-            },
-            {
-                xtype: 'actioncolumn',
-                width: 30,
-                sortable: false,
-                menuDisabled: true,
-                items: [{
-                        icon: './images/delete.png',
-                        tooltip: 'Delete',
-                        scope: this,
-                        handler: this.onRemoveClick
-                    }]
-            }
+            {text: "id", dataIndex: 'id', width: 1, sortable: true, hidden: true}
         ];
-
+        this.win = new Ext.window.Window({
+            items: [this.form],
+            scope: this,
+            closable: true,
+            title: "Add/Update Sizing",
+            buttons: [{
+                    text: 'Save',
+                    handler: this.onSaveClick
+                }]
+        });
         // Note the use of a storeId, this will register thisStore
         // with the StoreManager and allow us to retrieve it very easily.
         this.store = Ext.StoreMgr.get("ProjectFeatureSizing");
         this.on('render', this.loadStore, this);
-        this.on('edit', this.onSaveClick, this);
+        this.on('itemdblclick', this.loadEdit, this);
         // finally call the superclasses implementation
         this.callParent();
     },
@@ -153,23 +105,82 @@ Ext.define('estools.view.project.sizing.Grid', {
             }
         }
     },
-    onAddClick: function() {
-
+    loadEdit: function(grid, record) {
+        this.onAddClick(record);
+    },
+    onAddClick: function(rec) {
         if (this.selectedFeatureId > 0) {
-            // Create a model instance
-            var rec = new estools.model.ProjectFeatureSizing({
-                'sizingId': '1',
-                'userId': '1',
-                'groupId': '1',
-                'featureId': this.selectedFeatureId,
-                'projectId': this.selectedProjectId
-            });
+            this.form = new Ext.form.Panel({
+                id: 'sizingsavedetailsform',
+                width: 400,
+                height: 200,
+                bodyPadding: 15,
+                projectId: this.selectedProjectId,
+                featureId: this.selectedFeatureId,
+                recordId: 0,
+                store: this.store,
+                items: [{
+                        type: 'hidden',
+                        name: 'id',
+                        value: 0
+                    },
+                    {
+                        type: 'hidden',
+                        name: 'projectId',
+                        value: this.selectedProjectId
+                    },
+                    {
+                        type: 'hidden',
+                        name: 'featureId',
+                        value: this.selectedFeatureId
+                    },
+                    {
+                        xtype: 'combo',
+                        fieldLabel: 'Development Group',
+                        displayField: 'name',
+                        valueField: 'id',
+                        triggerAction: 'all',
+                        editable: false,
+                        store: Ext.StoreMgr.get("DevGroup"),
+                        name: 'groupId'
 
-            this.getStore().insert(0, rec);
-            this.cellEditing.startEditByPosition({
-                row: 0,
-                column: 0
+                    }, {xtype: 'combo',
+                        fieldLabel: 'Size',
+                        displayField: 'sizeName',
+                        valueField: 'id',
+                        triggerAction: 'all',
+                        editable: false,
+                        store: Ext.StoreMgr.get("Sizing"),
+                        name: 'sizingId'},
+                    {
+                        xtype: 'combo',
+                        fieldLabel: 'User',
+                        displayField: 'lname',
+                        valueField: 'id',
+                        triggerAction: 'all',
+                        editable: false,
+                        store: Ext.StoreMgr.get("User"),
+                        name: 'userId'
+                    }]
             });
+            if (!rec.text) {
+                this.form.loadRecord(rec);
+                if (rec.data.id && rec.data.id > 0) {
+                    this.form.recordId = rec.data.id;
+                }
+            }
+
+            this.win = new Ext.window.Window({
+                items: [this.form],
+                scope: this,
+                closable: true,
+                title: "New Sizing",
+                buttons: [{
+                        text: 'Save',
+                        handler: this.onSaveClick
+                    }]
+            });
+            this.win.show();
         } else {
             Ext.Msg.show({
                 title: "Error !!!",
@@ -179,10 +190,11 @@ Ext.define('estools.view.project.sizing.Grid', {
             });
         }
     },
-    onRemoveClick: function(grid, rowIndex) {
-        //this.getStore().removeAt(rowIndex);
-        var rec = grid.getStore().getAt(rowIndex);
-        Ext.Ajax.request({
+    onRemoveClick: function(button) {
+        var sm = this.getSelectionModel();
+        if (sm.hasSelection()) {
+            var rec = sm.getSelection()[0];
+            Ext.Ajax.request({
                 method: 'POST',
                 url: './v1/mappings/delete/' + rec.data.id,
                 headers: {
@@ -209,19 +221,33 @@ Ext.define('estools.view.project.sizing.Grid', {
                         });
                     }
                 }});
+        } else {
+            Ext.Msg.show({
+                title: "Error !!!",
+                msg: "No Rows selected, Please select a row to delete.",
+                icon: Ext.Msg.ERROR,
+                buttons: Ext.Msg.OK
+            });
+        }
+
+
     },
-    onSaveClick: function(grid, rowIndex) {
-        var rec = grid.getStore().getAt(rowIndex);
-        var values = rec.data;
+    onSaveClick: function(button) {
+        var win = button.up('window');
+        var formPanel = Ext.getCmp('sizingsavedetailsform');
+        var mainGrid = Ext.getCmp('featuresizegridid');
+        var formValues = formPanel.getForm().getValues();
+        formValues.projectId = mainGrid.selectedProjectId;
+        formValues.featureId = mainGrid.selectedFeatureId;
+        formValues.id = formPanel.recordId;
+        mainGrid.onSaveClicker(formValues, win);
+    },
+    onSaveClicker: function(values, win) {
         if (values.id <= 0) {
             delete values.id;
         }
         console.log(values);
         //convert all the ids to number
-        values.groupId = this.getIdForGroupName(values.groupId);
-        values.sizingId = this.getIdForSizeName(values.sizingId);
-        values.userId = globalvar.currentUserId;
-
         Ext.Ajax.request({
             method: 'POST',
             url: './v1/mappings/',
@@ -233,11 +259,8 @@ Ext.define('estools.view.project.sizing.Grid', {
             success: function(response, options) {
                 var responseData = Ext.decode(response.responseText);
                 if (responseData.success) {
-                    this.getStore().reload({
-                        callback: function() {
-                            alert("done");
-                        }
-                    });
+                    this.getStore().reload();
+                    win.close();
                 }
                 else {
                     var errorObject = responseData.results;
@@ -249,7 +272,6 @@ Ext.define('estools.view.project.sizing.Grid', {
                     });
                 }
             }});
-        console.log(values);
 
     },
     getIdForLastName: function(name) {
@@ -267,7 +289,7 @@ Ext.define('estools.view.project.sizing.Grid', {
         return rec.data.id;
     },
     getIdForSizeName: function(name) {
-        if(parseInt(name) !== NaN){
+        if (parseInt(name) !== NaN) {
             return parseInt(name);
         }
         var rec = Ext.StoreMgr.get("Sizing").findRecord('sizeName', name);

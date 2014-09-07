@@ -384,7 +384,10 @@ Ext.define('estools.controller.Project', {
     },
     newFeatures: function(button) {
         var form = button.up('#projectfeaturesForm');
+        var featuresSizingGrid = Ext.getCmp('featuresizegridid');
+        featuresSizingGrid.getSelectionModel().deselectAll();
         form.getForm().reset();
+        
     },
     newCases: function(button) {
         var form = button.up('#featurecasesForm');

@@ -218,12 +218,6 @@ Ext.define('estools.view.project.Edit', {
                                                 itemId: 'deleteFeaturesButton',
                                                 text: 'Delete',
                                                 action: 'deleteFeatures'
-                                            },
-                                            {
-                                                itemId: 'cancelButton',
-                                                text: 'Cancel',
-                                                scope: this,
-                                                handler: this.destroy
                                             }],
                                         items: [
                                             {

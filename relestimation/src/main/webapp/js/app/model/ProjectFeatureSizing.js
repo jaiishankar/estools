@@ -2,9 +2,9 @@ Ext.define('estools.model.ProjectFeatureSizing', {
     extend: 'Ext.data.Model',
     fields: [
         {name: 'id', type: 'int'},
-        {name: 'sizingId', type: 'string'},
-        {name: 'userId', type: 'string'},
-        {name: 'groupId', type: 'string'},
+        {name: 'sizingId', type: 'int'},
+        {name: 'userId', type: 'int'},
+        {name: 'groupId', type: 'int'},
         {name: 'featureId', type: 'int'},
         {name: 'projectId', type: 'int'},
         {name: 'created', type: 'date'},

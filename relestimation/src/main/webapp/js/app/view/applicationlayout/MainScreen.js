@@ -39,7 +39,6 @@ Ext.define('estools.view.applicationlayout.MainScreen', {
         this.on('render', this.setUserActions, this);
     },
     setUserActions: function() {
-        console.log(this.down('#usermastertab'));
         this.down('#usermastertab').setDisabled(!globalvar.isAdminUser);
         this.down('#groupsmastertab').setDisabled(!globalvar.isAdminUser);
         this.down('#sizingmastertab').setDisabled(!globalvar.isAdminUser);
