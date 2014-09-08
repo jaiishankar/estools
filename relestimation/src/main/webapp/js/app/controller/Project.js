@@ -18,8 +18,8 @@ Ext.define('estools.controller.Project', {
         this.control({
             'projectgrid': {
                 itemdblclick: this.onItemDblClick
-                //,
-                //itemclick:this.onItemDblClick
+                        //,
+                        //itemclick:this.onItemDblClick
             },
             'projectfeaturesgrid': {
                 select: this.featuresSelect,
@@ -97,90 +97,106 @@ Ext.define('estools.controller.Project', {
                     selectedFeatureId: this.selectedFeatureId
                 }, {
                     region: 'south',
-                    xtype: 'form',
-                    id: 'featurecasesForm',
-                    border: 0,
-                    boddyPadding: 5,
-                    selectedFeatureId: this.selectedFeatureId,
-                    buttons: [
-                        {
-                            itemId: 'newCasesButton',
-                            text: 'New',
-                            action: 'newCases'
-                        },
-                        {
-                            itemId: 'saveCasesButton',
-                            text: 'Save',
-                            action: 'saveCases'
-                        },
-                        {
-                            itemId: 'deleteCasesButton',
-                            text: 'Delete',
-                            action: 'deleteCases'
-                        },
-                        {
-                            itemId: 'cancelButton',
-                            text: 'Cancel',
-                            scope: this,
-                            handler: this.destroy
-                        }],
-                    items: [
-                        {
-                            xtype: 'hidden',
-                            name: 'featureId',
-                            value: this.selectedFeatureId
-                        },
-                        {
-                            xtype: 'hidden',
-                            name: 'id'
-                        },
-                        {
-                            fieldLabel: 'Name',
-                            name: 'name',
-                            xtype: 'textfield'
-                        },
-                        {
-                            fieldLabel: 'Note',
-                            name: 'note',
-                            xtype: 'textfield'
-                        },
-                        {
-                            fieldLabel: 'Enter any queries:',
-                            width: 800,
-                            xtype: 'textarea',
-                            name: 'question',
-                            allowBlank: false
-                        },
-                        {
-                            fieldLabel: 'Enter Task details:',
-                            width: 800,
-                            xtype: 'textarea',
-                            name: 'taskDetails',
-                            allowBlank: false
-                        },
-                        {
-                            fieldLabel: 'Scoped (Y/N)',
-                            name: 'scoped',
-                            xtype: 'textfield',
-                            size: 1,
-                            msgTarget: 'side',
-                            validator: function(value) {
-                                if (value && ((value === 'y' || value === 'Y') || (value === 'N' || value === 'n'))) {
-                                    return true;
-                                } else {
-                                    return 'Input can be only Y or N';
+                    xtype: 'panel',
+                    layout: {
+                        type: 'hbox',
+                        align: 'stretch'
+                    },
+                    items: [{
+                            flex: 2,
+                            xtype: 'form',
+                            id: 'featurecasesForm',
+                            border: 0,
+                            boddyPadding: 5,
+                            selectedFeatureId: this.selectedFeatureId,
+                            buttons: [
+                                {
+                                    itemId: 'newCasesButton',
+                                    text: 'New',
+                                    action: 'newCases'
+                                },
+                                {
+                                    itemId: 'saveCasesButton',
+                                    text: 'Save',
+                                    action: 'saveCases'
+                                },
+                                {
+                                    itemId: 'deleteCasesButton',
+                                    text: 'Delete',
+                                    action: 'deleteCases'
+                                },
+                                {
+                                    itemId: 'cancelButton',
+                                    text: 'Cancel',
+                                    scope: this,
+                                    handler: this.destroy
+                                }],
+                            items: [
+                                {
+                                    xtype: 'hidden',
+                                    name: 'featureId',
+                                    value: this.selectedFeatureId
+                                },
+                                {
+                                    xtype: 'hidden',
+                                    name: 'id'
+                                },
+                                {
+                                    fieldLabel: 'Name',
+                                    name: 'name',
+                                    xtype: 'textfield'
+                                },
+                                {
+                                    fieldLabel: 'Note',
+                                    name: 'note',
+                                    xtype: 'textfield'
+                                },
+                                {
+                                    fieldLabel: 'Enter any queries:',
+                                    width: 800,
+                                    xtype: 'textarea',
+                                    name: 'question',
+                                    allowBlank: false
+                                },
+                                {
+                                    fieldLabel: 'Enter Task details:',
+                                    width: 800,
+                                    xtype: 'textarea',
+                                    name: 'taskDetails',
+                                    allowBlank: false
+                                },
+                                {
+                                    fieldLabel: 'Scoped (Y/N)',
+                                    name: 'scoped',
+                                    xtype: 'textfield',
+                                    size: 1,
+                                    msgTarget: 'side',
+                                    validator: function(value) {
+                                        if (value && ((value === 'y' || value === 'Y') || (value === 'N' || value === 'n'))) {
+                                            return true;
+                                        } else {
+                                            return 'Input can be only Y or N';
+                                        }
+                                    }
+                                },
+                                {
+                                    xtype: 'combo',
+                                    fieldLabel: 'Priority',
+                                    editable: false,
+                                    itemId: 'prioritiesComboTypeData',
+                                    name: 'priorityId',
+                                    valueField: 'id',
+                                    displayField: 'priority',
+                                    store: Ext.StoreMgr.get("Priority")
                                 }
-                            }
-                        },
-                        {
-                            xtype: 'combo',
-                            fieldLabel: 'Priority',
-                            editable: false,
-                            itemId: 'prioritiesComboTypeData',
-                            name: 'priorityId',
-                            valueField: 'id',
-                            displayField: 'priority',
-                            store: Ext.StoreMgr.get("Priority")
+                            ]
+                        }, {
+                            flex: 2,
+                            title: 'Assumptions',
+                            disable: true,
+                            xtype: 'casesassumptionsgrid',
+                            itemId: 'casesassumptionsgridid',
+                            selectedProjectId: this.selectedProjectId
                         }
                     ]
                 }]
@@ -295,8 +311,8 @@ Ext.define('estools.controller.Project', {
         globalvar.selectedProjectId = record.data.id;
         var view = Ext.widget('projectedit');
         view.selectedProjectId = record.data.id;
-     
-        
+
+
         var form = view.down('form');
         var saveBtn = view.down('#saveButton');
         saveBtn.text = "Update";
@@ -387,20 +403,20 @@ Ext.define('estools.controller.Project', {
         var featuresSizingGrid = Ext.getCmp('featuresizegridid');
         featuresSizingGrid.getSelectionModel().deselectAll();
         form.getForm().reset();
-        
+
     },
     newCases: function(button) {
         var form = button.up('#featurecasesForm');
         form.getForm().reset();
     },
-    featuresSelect: function(grid, record, index, options) {
+    featuresSelect: function(grid, record) {
         var featuresForm = Ext.getCmp('projectfeaturesForm');
-        
+
         var featuresSizingGrid = Ext.getCmp('featuresizegridid');
-        featuresSizingGrid.selectedFeatureId=record.data.id;
-        featuresSizingGrid.selectedProjectId=record.data.projectId;
+        featuresSizingGrid.selectedFeatureId = record.data.id;
+        featuresSizingGrid.selectedProjectId = record.data.projectId;
         featuresSizingGrid.loadStore();
-        
+
         featuresForm.loadRecord(record);
         var typeComboItem = featuresForm.down("#featuresComboTypeData");
         typeComboItem.setValue(record.data.type);
@@ -408,12 +424,20 @@ Ext.define('estools.controller.Project', {
 
     },
     casesSelect: function(grid, record) {
-        var featuresForm = Ext.getCmp('featurecasesForm');
-        featuresForm.selectedFeatureId = record.data.featureId;
-        featuresForm.loadRecord(record);
-        var typeComboItem = featuresForm.down("#prioritiesComboTypeData");
+        var casesForm = Ext.getCmp('featurecasesForm');
+        casesForm.selectedFeatureId = record.data.featureId;
+        
+        var assumptionGrid = Ext.getCmp('casesassumptionsgridid');
+        assumptionGrid.selectedCaseId = record.data.id;
+        assumptionGrid.loadStore();
+        
+        casesForm.loadRecord(record);
+        var typeComboItem = casesForm.down("#prioritiesComboTypeData");
         typeComboItem.setValue(record.data.priorityId);
-        featuresForm.store = grid.store;
+        casesForm.store = grid.store;
+        
+
+        
     },
     saveCases: function(button) {
         var form = button.up('#featurecasesForm'),
@@ -540,7 +564,7 @@ Ext.define('estools.controller.Project', {
                         });
                     }
                 }});
-        } 
+        }
     },
     deleteMetrics: function(button) {
         var grid = Ext.getCmp('projectmetricsgridid');

@@ -34,6 +34,7 @@ Ext.application({
         'estools.view.project.features.Grid',
         'estools.view.project.case.Grid',
         'estools.view.project.sizing.Grid',
+        'estools.view.project.assumptions.Grid',
         'estools.view.sizing.Grid',
         'estools.view.sizing.DetailPanel',
         'estools.view.sizing.MasterPanel',
@@ -53,11 +54,13 @@ Ext.application({
     ],
     models: [
         'User', 'DevGroup', 'Project', 'Sizing', 'Priority', 'AssumptionType',
-        'ProjectMetrics', 'ProjectFeatures', 'FeatureCases','ProjectFeatureSizing'
+        'ProjectMetrics', 'ProjectFeatures', 'FeatureCases','ProjectFeatureSizing',
+        'Assumption'
     ],
     stores: [
         'User', 'DevGroup', 'Project', 'Sizing', 'Priority', 'AssumptionType',
-        'ProjectMetrics', 'ProjectFeatures', 'FeatureCases','ProjectFeatureSizing'
+        'ProjectMetrics', 'ProjectFeatures', 'FeatureCases','ProjectFeatureSizing',
+        'Assumption'
     ],
     // Stuff to do at launch
     launch: function() {

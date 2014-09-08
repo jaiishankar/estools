@@ -45,7 +45,13 @@ public class AssumptionServiceImpl implements AssumptionService {
     public JSONResponseWrapper saveOrUpdate(AssumptionDO type) {
         try {
             ModelMapper modelMapper = new ModelMapper();
-            return JSONResponseWrapper.getResponseInstance(null);
+            Assumption assum = modelMapper.map(type,Assumption.class);
+            Assumption returned = dao.saveOrUpdate(assum);
+            if(returned != null){
+                AssumptionDO result = modelMapper.map(returned, AssumptionDO.class);
+                return JSONResponseWrapper.getResponseInstance(result);
+            }
+            return JSONResponseWrapper.getDefaultFailResponseInstance();
         } catch (Exception e) {
             return JSONResponseWrapper.getErrorResponseInstance(
                     new JSONExceptionWrapper("Error", e));
@@ -56,7 +62,12 @@ public class AssumptionServiceImpl implements AssumptionService {
     public JSONResponseWrapper getById(Integer id) {
         try {
             ModelMapper modelMapper = new ModelMapper();
-            return JSONResponseWrapper.getResponseInstance(null);
+            Assumption returned = dao.getById(id);
+            if(returned != null){
+                AssumptionDO result = modelMapper.map(returned, AssumptionDO.class);
+                return JSONResponseWrapper.getResponseInstance(result);
+            }
+            return JSONResponseWrapper.getDefaultFailResponseInstance();
         } catch (Exception e) {
             return JSONResponseWrapper.getErrorResponseInstance(
                     new JSONExceptionWrapper("Error", e));

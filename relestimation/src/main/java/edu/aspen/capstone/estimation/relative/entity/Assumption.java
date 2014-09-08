@@ -127,4 +127,20 @@ public class Assumption implements AuditableBaseDomainObject, Serializable {
         return this.updated;
     }
 
+    public Integer getCaseId() {
+        return caseId;
+    }
+
+    public void setCaseId(Integer caseId) {
+        this.caseId = caseId;
+    }
+
+    public Integer getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(Integer typeId) {
+        this.typeId = typeId;
+    }
+
 }
