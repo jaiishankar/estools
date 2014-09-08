@@ -1,8 +1,7 @@
 package edu.aspen.capstone.estimation.relative.dao;
 
 import edu.aspen.capstone.estimation.relative.entity.Assumption;
-import edu.aspen.capstone.estimation.relative.entity.AssumptionType;
-import edu.aspen.capstone.estimation.relative.entity.Feature;
+import edu.aspen.capstone.estimation.relative.service.AssumptionService;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -12,7 +11,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- *
+ * Implementation class for the <code>AssumptionDAO</code> class.
+ * @see AssumptionService
  * @author JaiShankar
  */
 @Repository("AssumptionDAO")

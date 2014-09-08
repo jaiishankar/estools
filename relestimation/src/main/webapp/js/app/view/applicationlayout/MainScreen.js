@@ -6,6 +6,10 @@ Ext.define('estools.view.applicationlayout.MainScreen', {
      * Initialize Component.
      */
     initComponent: function() {
+        this.bbar = [{
+                xtype: 'label',
+                text: 'Developed and Owned by - Jaishankararam Venkatesan contact: jaiishankar@gmail.com'
+            }];
         this.items = [
             {
                 xtype: 'projectmasterpanel',
