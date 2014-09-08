@@ -33,12 +33,6 @@ Ext.define('estools.view.users.Edit', {
                                 itemId: 'saveButton',
                                 text: 'Update', //this.getSaveButtonText(),
                                 action: 'save'
-                            },
-                            {
-                                itemId: 'cancelButton',
-                                text: 'Cancel', //this.getCancelButtonText(),
-                                scope: this,
-                                handler: this.destroy
                             }
                         ],
                         items: [
@@ -51,25 +45,29 @@ Ext.define('estools.view.users.Edit', {
                                 xtype: 'textfield',
                                 itemId: 'usernameField',
                                 name: 'uname',
-                                fieldLabel: 'User Name'
+                                fieldLabel: 'User Name',
+                                allowBlank: false
                             },
                             {
                                 xtype: 'textfield',
                                 itemId: 'passwordField',
                                 name: 'passcode',
-                                fieldLabel: 'Password'
+                                fieldLabel: 'Password',
+                                allowBlank: false
                             },
                             {
                                 xtype: 'textfield',
                                 itemId: 'firstnameField',
                                 name: 'fname',
-                                fieldLabel: 'First Name'
+                                fieldLabel: 'First Name',
+                                allowBlank: false
                             },
                             {
                                 xtype: 'textfield',
                                 itemId: 'lastnameField',
                                 name: 'lname',
-                                fieldLabel: 'Last Name'
+                                fieldLabel: 'Last Name',
+                                allowBlank: false
                             },
                             {
                                 xtype: 'textfield',
@@ -81,13 +79,15 @@ Ext.define('estools.view.users.Edit', {
                                 xtype: 'textfield',
                                 itemId: 'emailField',
                                 name: 'email',
-                                fieldLabel: 'Email'
+                                fieldLabel: 'Email',
+                                vtype:'email'
                             },
                             {
                                 xtype: 'textfield',
                                 itemId: 'phoneField',
                                 name: 'phone',
-                                fieldLabel: 'Phone'
+                                fieldLabel: 'Phone',
+                                vtype:'phone'
                             },
                             {
                                 xtype: 'checkbox',

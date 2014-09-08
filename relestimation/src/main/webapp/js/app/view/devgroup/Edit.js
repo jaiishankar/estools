@@ -34,12 +34,6 @@ Ext.define('estools.view.devgroup.Edit', {
                                         itemId: 'saveButton',
                                         text: 'Upadte',
                                         action: 'save'
-                                    },
-                                    {
-                                        itemId: 'cancelButton',
-                                        text: 'Cancel',
-                                        scope: this,
-                                        handler: this.destroy
                                     }
                                 ],
                                 items: [
@@ -53,7 +47,8 @@ Ext.define('estools.view.devgroup.Edit', {
                                         itemId: 'groupnameField',
                                         name: 'name',
                                         width: 550,
-                                        fieldLabel: 'Group Name'
+                                        fieldLabel: 'Group Name',
+                                        allowBlank: false
                                     }
                                 ]
                             }

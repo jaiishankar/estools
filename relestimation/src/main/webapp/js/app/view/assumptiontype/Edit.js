@@ -29,7 +29,8 @@ Ext.define('estools.view.assumptiontype.Edit', {
                         xtype: 'textfield',
                         itemId: 'assumtypenameField',
                         name: 'typeName',
-                        fieldLabel: 'Assumption Type Name'
+                        fieldLabel: 'Assumption Type Name',
+                        allowBlank: false
                     }
                 ]
             }
@@ -39,14 +40,8 @@ Ext.define('estools.view.assumptiontype.Edit', {
         this.buttons = [
             {
                 itemId: 'saveButton',
-                text: 'Upadte', 
+                text: 'Upadte',
                 action: 'save'
-            },
-            {
-                itemId: 'cancelButton',
-                text: 'Cancel',
-                scope: this,
-                handler: this.destroy
             }
         ];
 

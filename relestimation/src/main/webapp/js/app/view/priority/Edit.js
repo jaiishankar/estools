@@ -29,7 +29,8 @@ Ext.define('estools.view.priority.Edit', {
                         xtype: 'textfield',
                         itemId: 'priorityNameField',
                         name: 'priority',
-                        fieldLabel: 'Priority Name'
+                        fieldLabel: 'Priority Name',
+                        allowBlank: false
                     }
                 ]
             }
@@ -41,12 +42,6 @@ Ext.define('estools.view.priority.Edit', {
                 itemId: 'saveButton',
                 text: 'Upadte', 
                 action: 'save'
-            },
-            {
-                itemId: 'cancelButton',
-                text: 'Cancel',
-                scope: this,
-                handler: this.destroy
             }
         ];
 

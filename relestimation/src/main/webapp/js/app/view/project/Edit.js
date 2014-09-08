@@ -41,12 +41,6 @@ Ext.define('estools.view.project.Edit', {
                                         itemId: 'saveButton',
                                         text: 'Upadte',
                                         action: 'save'
-                                    },
-                                    {
-                                        itemId: 'cancelButton',
-                                        text: 'Cancel',
-                                        scope: this,
-                                        handler: this.destroy
                                     }
                                 ],
                                 items: [
@@ -64,7 +58,8 @@ Ext.define('estools.view.project.Edit', {
                                         xtype: 'textfield',
                                         itemId: 'projecttitleField',
                                         name: 'title',
-                                        fieldLabel: 'Project Title'
+                                        fieldLabel: 'Project Title',
+                                        allowBlank: false
                                     },
                                     {
                                         xtype: 'textarea',
@@ -105,12 +100,6 @@ Ext.define('estools.view.project.Edit', {
                                         itemId: 'deleteMetricsButton',
                                         text: 'Delete',
                                         action: 'deleteMetrics'
-                                    },
-                                    {
-                                        itemId: 'cancelButton',
-                                        text: 'Cancel',
-                                        scope: this,
-                                        handler: this.destroy
                                     }],
                                 items: [
                                     {
@@ -147,12 +136,6 @@ Ext.define('estools.view.project.Edit', {
                                         itemId: 'saveProjectGroupsButton',
                                         text: 'Update',
                                         action: 'saveProjectGroupsButton'
-                                    },
-                                    {
-                                        itemId: 'cancelButton',
-                                        text: 'Cancel',
-                                        scope: this,
-                                        handler: this.destroy
                                     }
                                 ],
                                 items: [
@@ -237,7 +220,8 @@ Ext.define('estools.view.project.Edit', {
                                             {
                                                 fieldLabel: 'Name',
                                                 name: 'name',
-                                                xtype: 'textfield'
+                                                xtype: 'textfield',
+                                                allowBlank: false
                                             },
                                             {
                                                 fieldLabel: 'Enter Project Task:',

@@ -29,13 +29,15 @@ Ext.define('estools.view.sizing.Edit', {
                         xtype: 'textfield',
                         itemId: 'sizingNameField',
                         name: 'sizeName',
-                        fieldLabel: 'Sizing Name'
+                        fieldLabel: 'Sizing Name',
+                        allowBlank: false
                     },
                     {
                         xtype: 'numberfield',
                         itemId: 'sizingValueField',
                         name: 'sizeValue',
-                        fieldLabel: 'Sizing Value'
+                        fieldLabel: 'Sizing Value',
+                        allowBlank: false
                     },
                     {
                         xtype: 'textfield',
@@ -54,12 +56,6 @@ Ext.define('estools.view.sizing.Edit', {
                 itemId: 'saveButton',
                 text: 'Upadte', 
                 action: 'save'
-            },
-            {
-                itemId: 'cancelButton',
-                text: 'Cancel',
-                scope: this,
-                handler: this.destroy
             }
         ];
 
