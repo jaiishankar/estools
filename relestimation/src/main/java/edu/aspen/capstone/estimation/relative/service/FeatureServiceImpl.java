@@ -1,5 +1,6 @@
 package edu.aspen.capstone.estimation.relative.service;
 
+import edu.aspen.capstone.estimation.relative.dao.BusinesscaseDAO;
 import edu.aspen.capstone.estimation.relative.dao.FeatureDAO;
 import edu.aspen.capstone.estimation.relative.domain.FeatureDO;
 import edu.aspen.capstone.estimation.relative.entity.Feature;
@@ -21,6 +22,8 @@ public class FeatureServiceImpl implements FeatureService {
 
     @Autowired
     FeatureDAO featureDAO;
+    @Autowired
+    BusinesscaseDAO caseDAO;
 
     @Override
     public JSONResponseWrapper add(FeatureDO feature) {
@@ -55,9 +58,9 @@ public class FeatureServiceImpl implements FeatureService {
         try {
             ModelMapper modelMapper = new ModelMapper();
             Feature thisFeature = featureDAO.get(id);
-            if(thisFeature != null){
-            FeatureDO tempFeature = modelMapper.map(thisFeature, FeatureDO.class);
-            return JSONResponseWrapper.getResponseInstance(tempFeature);
+            if (thisFeature != null) {
+                FeatureDO tempFeature = modelMapper.map(thisFeature, FeatureDO.class);
+                return JSONResponseWrapper.getResponseInstance(tempFeature);
             } else {
                 return JSONResponseWrapper.getDefaultFailResponseInstance();
             }
@@ -70,11 +73,13 @@ public class FeatureServiceImpl implements FeatureService {
     @Override
     public JSONResponseWrapper delete(Integer id) {
         try {
-            if (featureDAO.delete(id)) {
-                return JSONResponseWrapper.getDefaultSuccessResponseInstance();
-            } else {
-                return JSONResponseWrapper.getDefaultFailResponseInstance();
-            }
+            //delete all the business cases
+            caseDAO.deleteByFeature(id);
+                if (featureDAO.delete(id)) {
+                    return JSONResponseWrapper.getDefaultSuccessResponseInstance();
+                } else {
+                    return JSONResponseWrapper.getDefaultFailResponseInstance();
+                }
         } catch (Exception e) {
             return JSONResponseWrapper.getErrorResponseInstance(
                     new JSONExceptionWrapper("Error", e));
@@ -93,12 +98,11 @@ public class FeatureServiceImpl implements FeatureService {
                     projectFeatures.add(tempFeature);
                 }
             }
-            System.out.println("Response : "+ projectFeatures);
+            System.out.println("Response : " + projectFeatures);
             return JSONResponseWrapper.getResponseInstance(projectFeatures);
         } catch (Exception e) {
             return JSONResponseWrapper.getErrorResponseInstance(
                     new JSONExceptionWrapper("Error", e));
         }
     }
-
 }

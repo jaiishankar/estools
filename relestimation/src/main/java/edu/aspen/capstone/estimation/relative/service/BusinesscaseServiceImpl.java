@@ -1,5 +1,6 @@
 package edu.aspen.capstone.estimation.relative.service;
 
+import edu.aspen.capstone.estimation.relative.dao.AssumptionDAO;
 import edu.aspen.capstone.estimation.relative.dao.BusinesscaseDAO;
 import edu.aspen.capstone.estimation.relative.domain.BusinesscaseDO;
 import edu.aspen.capstone.estimation.relative.entity.Businesscase;
@@ -21,6 +22,10 @@ public class BusinesscaseServiceImpl implements BusinesscaseService {
 
     @Autowired
     BusinesscaseDAO caseDAO;
+    
+    @Autowired
+    private AssumptionDAO assumptionDAO;
+
 
     @Override
     public JSONResponseWrapper add(BusinesscaseDO bc) {
@@ -69,6 +74,7 @@ public class BusinesscaseServiceImpl implements BusinesscaseService {
     @Override
     public JSONResponseWrapper delete(Integer id) {
         try {
+            assumptionDAO.deleteByCase(id);
             if (caseDAO.delete(id)) {
                 return JSONResponseWrapper.getDefaultSuccessResponseInstance();
             } else {

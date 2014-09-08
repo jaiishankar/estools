@@ -1,6 +1,10 @@
 package edu.aspen.capstone.estimation.relative.service;
 
+import edu.aspen.capstone.estimation.relative.dao.FeatureDAO;
 import edu.aspen.capstone.estimation.relative.dao.ProjectDAO;
+import edu.aspen.capstone.estimation.relative.dao.ProjectFeatureSizingDAO;
+import edu.aspen.capstone.estimation.relative.dao.ProjectGroupDAO;
+import edu.aspen.capstone.estimation.relative.dao.ProjectMetricDAO;
 import edu.aspen.capstone.estimation.relative.domain.ProjectDO;
 import edu.aspen.capstone.estimation.relative.entity.Project;
 import edu.aspen.capstone.estimation.relative.utils.DOUtils;
@@ -22,7 +26,14 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     private ProjectDAO projectDAO;
-
+    @Autowired
+    private FeatureDAO featureDAO;
+    @Autowired
+    private ProjectFeatureSizingDAO featureSizingDAO;
+    @Autowired
+    private ProjectMetricDAO projectMetricDAO;
+    @Autowired
+    private ProjectGroupDAO projectGroupDAO;
     @Override
     public JSONResponseWrapper getAllProjects(Integer id) {
         try {
@@ -90,6 +101,13 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public JSONResponseWrapper deleteProject(Integer id) {
         try {
+            //before delete the project let us delete all the other 
+            //details
+            //delete all features
+            featureDAO.deleteAllByProject(id);
+            featureSizingDAO.deleteAllByProject(id);
+            projectMetricDAO.deleteMetricsForProject(id);
+            projectGroupDAO.deleteAllByProject(id);
             if (projectDAO.deleteProject(id)) {
                 return JSONResponseWrapper.getDefaultSuccessResponseInstance();
             } else {
