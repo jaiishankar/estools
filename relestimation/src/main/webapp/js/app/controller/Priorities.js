@@ -91,7 +91,6 @@ Ext.define('estools.controller.Priorities', {
                 if (selectedRow.length === 1) {
                     record = (selectedRow[0].data);
                 }
-                console.log(record);
                 Ext.Ajax.request({
                     method: 'POST',
                     url: './v1/priorities/delete/' + record.id,

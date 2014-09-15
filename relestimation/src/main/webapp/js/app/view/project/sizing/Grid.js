@@ -246,7 +246,6 @@ Ext.define('estools.view.project.sizing.Grid', {
         if (values.id <= 0) {
             delete values.id;
         }
-        console.log(values);
         //convert all the ids to number
         Ext.Ajax.request({
             method: 'POST',

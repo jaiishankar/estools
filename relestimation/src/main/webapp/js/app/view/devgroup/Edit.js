@@ -142,7 +142,6 @@ Ext.define('estools.view.devgroup.Edit', {
     loadProjectGroups: function() {
         //calls the server and gets the selected users for the selected group
         var url = './v1/usergroups/group/' + this.selectedGroupdId;
-        console.log(url);
         Ext.Ajax.request({
             method: 'GET',
             url: url,

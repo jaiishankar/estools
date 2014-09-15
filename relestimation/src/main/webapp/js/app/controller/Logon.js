@@ -168,7 +168,6 @@ Ext.define('estools.controller.Logon', {
 
         var win = button.up('window'),
                 formPanel = button.up('form');
-        console.log(formPanel.getForm().getValues());
         Ext.Ajax.request({
             method: 'POST',
             url: './v1/users/',

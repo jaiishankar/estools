@@ -91,7 +91,6 @@ Ext.define('estools.controller.Assumptiontype', {
                 if (selectedRow.length === 1) {
                     record = (selectedRow[0].data);
                 }
-                console.log(record);
                 Ext.Ajax.request({
                     method: 'POST',
                     url: './v1/assumptiontypes/delete/' + record.id,

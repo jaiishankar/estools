@@ -153,7 +153,6 @@ Ext.define('estools.view.project.MasterPanel', {
 
     },
     onSummaryToggle: function(sm, rs) {
-        console.log(rs.data);
         //this.editPanel.show();
 
     }

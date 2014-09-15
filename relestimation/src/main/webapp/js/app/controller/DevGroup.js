@@ -82,7 +82,6 @@ Ext.define('estools.controller.DevGroup', {
                 if (selectedRow.length === 1) {
                     record = (selectedRow[0].data);
                 }
-                console.log(record);
                 Ext.Ajax.request({
                     method: 'POST',
                     url: './v1/devgroups/delete/' + record.id,
@@ -129,7 +128,6 @@ Ext.define('estools.controller.DevGroup', {
         form.loadRecord(record);
         form.store = grid.store;
         view.selectedGroupdId = record.data.id;
-        console.log(view.selectedGroupdId);
         view.show();
     },
     updateDevGroup: function(button) {
@@ -174,10 +172,8 @@ Ext.define('estools.controller.DevGroup', {
         var win = button.up('window'),
                 form = win.down('#userstogroupsForm'),
                 values = form.getValues();
-        console.log(values);
         values.groupId = win.selectedGroupdId;
         values.userIds = values.userIds.split(",").map(Number);
-        console.log(values);
         Ext.Ajax.request({
             method: 'POST',
             url: './v1/usergroups/group/users/',

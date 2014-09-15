@@ -150,10 +150,7 @@ Ext.define('estools.view.users.MasterPanel', {
             var detailPanel = this.previewpane;
             detailPanel.updateDetail(rs[0].data);
         }
-
     },
     onSummaryToggle: function(sm, rs) {
-        console.log(rs.data);
     }
-
 });
