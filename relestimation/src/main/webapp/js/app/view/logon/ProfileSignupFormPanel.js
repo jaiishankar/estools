@@ -29,7 +29,7 @@ Ext.define('estools.view.logon.ProfileSignupFormPanel', {
             },
             {
                 xtype: 'hiddenfield',
-                name: 'isLoggedIn',
+                name: 'isAdminUser',
                 value: false
             },
             {
@@ -44,14 +44,14 @@ Ext.define('estools.view.logon.ProfileSignupFormPanel', {
                 fieldLabel: 'Email'
             },
             {
-                xtype: 'numberfield',
+                xtype: 'textfield',
                 name: 'phone',
                 fieldLabel: 'Phone',
                 vtype: 'phone',
                 hideTrigger: true
 
             }
-        ],
+        ];
                 this.buttons = [
                     this.createCancelSignupButton(),
                     this.createSignupButton()

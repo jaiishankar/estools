@@ -3,7 +3,7 @@ Ext.define('estools.view.project.assumptions.Grid', {
     requires: [
         'estools.store.Assumption'
     ],
-    title: 'Update Sizing',
+    title: 'Update Assumptions',
     alias: 'widget.casesassumptionsgrid',
     border: 0,
     editable: false,
@@ -130,7 +130,7 @@ Ext.define('estools.view.project.assumptions.Grid', {
                 items: [this.form],
                 scope: this,
                 closable: true,
-                title: "New Sizing",
+                title: "New Assumption",
                 buttons: [{
                         text: 'Save',
                         handler: this.onSaveClick

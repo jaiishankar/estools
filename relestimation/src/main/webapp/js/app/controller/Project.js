@@ -85,8 +85,12 @@ Ext.define('estools.controller.Project', {
         var view = grid.up('window');
         var tabPanel = view.down('#projectmaintabpanel');
         this.selectedFeatureId = record.data.id;
+        var oldTab = view.down('#casesTab');
+        if(oldTab){
+           tabPanel.remove(oldTab);
+        }
         var addedTab = tabPanel.add({
-            title: 'Business cases',
+            title: 'Cases for '+ record.data.title,
             closable: true,
             itemId: 'casesTab',
             layout: 'border',

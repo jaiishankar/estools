@@ -67,7 +67,7 @@ Ext.define('estools.controller.Logon', {
 
         //We don't need the password repeated here
         delete formValues.repeatpassword;
-
+        delete formValues.id;
         Ext.Ajax.request({
             method: 'POST',
             url: './v1/users/signup',
@@ -168,13 +168,16 @@ Ext.define('estools.controller.Logon', {
 
         var win = button.up('window'),
                 formPanel = button.up('form');
+        var values = formPanel.getForm().getValues();
+        values.id = parseInt(values.id);
+        //delete values.id;
         Ext.Ajax.request({
             method: 'POST',
             url: './v1/users/',
             headers: {
                 'Accept': 'application/json'
             },
-            jsonData: formPanel.getForm().getValues(),
+            jsonData: values,
             scope: this,
             success: function(response, options) {
                 var responseData = Ext.decode(response.responseText);
